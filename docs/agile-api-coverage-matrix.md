@@ -1,61 +1,106 @@
-# Jira Agile REST API coverage matrix
+# JiraAgilePS API Coverage Matrix
 
-Issue: [#11](https://github.com/AtlassianPS/JiraAgilePS/issues/11)  
-Last updated: 2026-05-20
+Issue: [#11](https://github.com/AtlassianPS/JiraAgilePS/issues/11)
 
-This document maps Jira Agile REST operations (Cloud + Data Center) to JiraAgilePS cmdlet coverage and locks the first-production-release cmdlet scope.
+Last reviewed: 27 July 2026
 
-## Reference sources
+## Purpose
 
-- Jira Software Cloud REST intro: <https://developer.atlassian.com/cloud/jira/software/rest/intro/>
-- Jira Software Cloud board operations: <https://developer.atlassian.com/cloud/jira/software/rest/api-group-board/>
-- Jira Software Cloud sprint operations: <https://developer.atlassian.com/cloud/jira/software/rest/api-group-sprint/>
-- Jira Software Data Center REST 9.17: <https://docs.atlassian.com/jira-software/REST/9.17.0/>
+This matrix maps every exported JiraAgilePS command and parameter set to its implemented Cloud route, required enhanced Cloud replacement, Data Center route, pagination model, count and reconciliation behavior, permissions, OAuth scopes, output adapter, and automated coverage.
+It describes the current source rather than implying that planned Cloud migration work is already complete.
 
-## Existing cmdlet coverage
+JiraAgilePS exports ten commands with eighteen parameter sets after applying its `JiraAgile` command prefix.
+Six `Get-JiraAgileIssue` parameter sets currently call Cloud endpoints that Atlassian will remove after 1 November 2026.
 
-| Cmdlet | Current endpoint coverage | Notes |
-| --- | --- | --- |
-| `Get-JiraAgileBoard` | `GET /rest/agile/1.0/board`, `GET /rest/agile/1.0/board/{boardId}` | Read boards |
-| `Get-JiraAgileSprint` | `GET /rest/agile/1.0/board/{boardId}/sprint`, `GET /rest/agile/1.0/sprint/{sprintId}` | Read sprints |
-| `Add-JiraAgileIssueToSprint` | `POST /rest/agile/1.0/sprint/{sprintId}/issue` | Add issues to sprint |
+## Contract conventions
 
-## Endpoint-to-cmdlet decision matrix
+- **Current Cloud route** is the route used by the code today.
+- **Cloud target** is the route that should be used after deployment-aware migration.
+- **Data Center route** must remain on `/rest/agile/1.0` while Data Center is supported.
+- **Offset** means `startAt`, `maxResults`, and a response `total`.
+- **Token** means `nextPageToken`, `maxResults`, and `isLast`; enhanced responses do not return `total`.
+- **Parity integration** refers to the shared Cloud/Data Center suite.
+  A row explicitly says when that suite does not exercise the parameter set.
+- OAuth scopes are the current Jira Software granular scopes documented by Atlassian.
+  JiraAgilePS does not yet implement OAuth token handling.
 
-| API area | Endpoint(s) | Cloud | Data Center | Current coverage | First-release decision | Backlog linkage |
-| --- | --- | --- | --- | --- | --- | --- |
-| Boards | `GET /board`, `GET /board/{boardId}` | Yes | Yes | `Get-JiraAgileBoard` | Keep (fix defects before GA) | [#12](https://github.com/AtlassianPS/JiraAgilePS/issues/12) |
-| Sprints | `GET /board/{boardId}/sprint`, `GET /sprint/{sprintId}` | Yes | Yes | `Get-JiraAgileSprint` | Keep (fix defects before GA) | [#12](https://github.com/AtlassianPS/JiraAgilePS/issues/12) |
-| Sprint issue assignment | `POST /sprint/{sprintId}/issue` | Yes | Yes | `Add-JiraAgileIssueToSprint` | Keep (fix defects before GA) | [#12](https://github.com/AtlassianPS/JiraAgilePS/issues/12) |
-| Board issues | `GET /board/{boardId}/issue` | Yes | Yes | None | Add `Get-JiraAgileIssue` (board parameter set) | [#13](https://github.com/AtlassianPS/JiraAgilePS/issues/13) |
-| Backlog issues | `GET /board/{boardId}/backlog` | Yes (deprecated) | Yes | None | Add `Get-JiraAgileIssue` (backlog parameter set; document Cloud deprecation) | [#13](https://github.com/AtlassianPS/JiraAgilePS/issues/13) |
-| Sprint issues | `GET /board/{boardId}/sprint/{sprintId}/issue` | Yes | Yes | None | Add `Get-JiraAgileIssue` (sprint parameter set) | [#13](https://github.com/AtlassianPS/JiraAgilePS/issues/13) |
-| Board configuration | `GET /board/{boardId}/configuration` | Yes | Yes | None | Add `Get-JiraAgileBoardConfiguration` | [#13](https://github.com/AtlassianPS/JiraAgilePS/issues/13) |
-| Board epics | `GET /board/{boardId}/epic` | Yes | Yes | None | Add `Get-JiraAgileEpic` (board parameter set) | [#13](https://github.com/AtlassianPS/JiraAgilePS/issues/13) |
-| Epic issues (board-scoped) | `GET /board/{boardId}/epic/{epicId}/issue`, `GET /board/{boardId}/epic/none/issue` | Yes | Yes | None | Add `Get-JiraAgileIssue` (board+epic and board+withoutEpic parameter sets) | [#13](https://github.com/AtlassianPS/JiraAgilePS/issues/13) |
-| Epic details/issues | `GET /epic/{epicId}`, `GET /epic/{epicId}/issue` | Yes | Yes | None | Add `Get-JiraAgileEpic` (id parameter set) and `Get-JiraAgileIssue` (epic parameter set) | [#13](https://github.com/AtlassianPS/JiraAgilePS/issues/13) |
-| Move issues to backlog | `POST /backlog/issue` | Yes | Yes | None | Add `Move-JiraAgileIssueToBacklog` | [#14](https://github.com/AtlassianPS/JiraAgilePS/issues/14) |
-| Sprint create/update/delete | `POST /sprint`, `PUT /sprint/{sprintId}`, `DELETE /sprint/{sprintId}` | Yes | Yes | None | Add `New/Set/Remove-JiraAgileSprint` | [#14](https://github.com/AtlassianPS/JiraAgilePS/issues/14) |
-| Sprint swap | `POST /sprint/{sprintId}/swap` | Yes | Yes | None | Defer (operationally risky, lower day-1 value) | [#11](https://github.com/AtlassianPS/JiraAgilePS/issues/11) |
-| Board create/delete | `POST /board`, `DELETE /board/{boardId}` | Yes | Yes | None | Defer (admin permissions + high blast radius) | [#11](https://github.com/AtlassianPS/JiraAgilePS/issues/11) |
-| Board properties | `GET/PUT/DELETE /board/{boardId}/properties/{propertyKey}` | Yes | Yes | None | Defer (app/admin use-case, not first-release core) | [#11](https://github.com/AtlassianPS/JiraAgilePS/issues/11) |
-| Refined velocity settings | `GET/PUT /board/{boardId}/settings/refined-velocity` | No | Yes | None | Defer (Data Center-only board admin operation) | [#11](https://github.com/AtlassianPS/JiraAgilePS/issues/11) |
-| Board versions | `GET /board/{boardId}/version` | Yes | Yes | None | Defer (release planning support, lower immediate priority) | [#11](https://github.com/AtlassianPS/JiraAgilePS/issues/11) |
+## Command and parameter-set coverage
 
-## First-production-release cmdlet scope lock
+| Exported command/source | Parameter set | HTTP | Current Cloud route | Cloud target | Data Center route | Pagination | Approximate count and reconciliation | Permission class | OAuth 2.0 scopes | Output adapter | Unit test | Integration test | Status |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| [`Add-JiraAgileIssueToSprint`](../JiraAgilePS/Public/Add-IssueToSprint.ps1) | `__AllParameterSets` | POST | `/rest/agile/1.0/sprint/{sprintId}/issue` | Same; not in the issue-list deprecation | Same | Input batches of 50; no response paging | N/A | Write; edit issues and manage sprint assignment | `write:sprint:jira-software` | None | [Unit](../Tests/Functions/Public/Add-IssueToSprint.Unit.Tests.ps1) | [Parity](../Tests/Integration/AgileParity.Integration.Tests.ps1) when disposable issue/sprint fixtures exist | Current; write-sensitive |
+| [`Get-JiraAgileBoard`](../JiraAgilePS/Public/Get-Board.ps1) | `_All` | GET | `/rest/agile/1.0/board` | Same; current documented route | Same | Offset through JiraPS transport | N/A | Read; view boards | `read:board-scope:jira-software`, `read:project:jira` | `ConvertTo-Board` | [Unit](../Tests/Functions/Public/Get-Board.Unit.Tests.ps1) | [Smoke](../Tests/Integration/AgileSmoke.Integration.Tests.ps1), [Parity](../Tests/Integration/AgileParity.Integration.Tests.ps1) | Current |
+| [`Get-JiraAgileBoard`](../JiraAgilePS/Public/Get-Board.ps1) | `_Search` | GET | `/rest/agile/1.0/board/{boardId}` | Same; current documented route | Same | None; one request per ID | N/A | Read; view board | `read:board-scope:jira-software`, `read:issue-details:jira` | `ConvertTo-Board` | [Unit](../Tests/Functions/Public/Get-Board.Unit.Tests.ps1) | [Parity](../Tests/Integration/AgileParity.Integration.Tests.ps1) | Current |
+| [`Get-JiraAgileBoardConfiguration`](../JiraAgilePS/Public/Get-BoardConfiguration.ps1) | `__AllParameterSets` | GET | `/rest/agile/1.0/board/{boardId}/configuration` | Same; current documented route | Same | None | N/A | Board-admin read; view board configuration and project | `read:board-scope.admin:jira-software`, `read:project:jira` | `ConvertTo-BoardConfiguration` | [Unit](../Tests/Functions/Public/Get-BoardConfiguration.Unit.Tests.ps1) | [Parity](../Tests/Integration/AgileParity.Integration.Tests.ps1) | Current; board configuration is sensitive |
+| [`Get-JiraAgileEpic`](../JiraAgilePS/Public/Get-Epic.ps1) | `_ById` | GET | `/rest/agile/1.0/epic/{epicIdOrKey}` | Same; current documented route | Same | None; one request per epic | N/A | Read; view epic | `read:epic:jira-software` | `ConvertTo-Epic` | [Unit](../Tests/Functions/Public/Get-Epic.Unit.Tests.ps1) | Not covered by live parity suite | Current route; integration gap |
+| [`Get-JiraAgileEpic`](../JiraAgilePS/Public/Get-Epic.ps1) | `_ByBoard` | GET | `/rest/agile/1.0/board/{boardId}/epic` | Same; current documented route | Same | Offset through JiraPS transport | N/A | Read; view board epics | `read:epic:jira-software` | `ConvertTo-Epic` | [Unit](../Tests/Functions/Public/Get-Epic.Unit.Tests.ps1) | [Parity](../Tests/Integration/AgileParity.Integration.Tests.ps1) | Current |
+| [`Get-JiraAgileIssue`](../JiraAgilePS/Public/Get-Issue.ps1) | `_Board` | GET | `/rest/agile/1.0/board/{boardId}/issue` | `/rest/software/1.0/board/{boardId}/issue` | `/rest/agile/1.0/board/{boardId}/issue` | Cloud target: token; Data Center: offset | Board count: `GET /rest/software/1.0/board/{boardId}/issue/approximate-count`; `reconcileIssues` accepts up to 50 IDs and must remain constant across pages | Read; view board and browse issues | `read:board-scope:jira-software`, `read:issue-details:jira`, `read:jql:jira` | `Get-AgilePageItem`, `ConvertTo-Issue` | [Unit](../Tests/Functions/Public/Get-Issue.Unit.Tests.ps1) | [Parity](../Tests/Integration/AgileParity.Integration.Tests.ps1) | Deprecated on Cloud; removal after 1 November 2026 |
+| [`Get-JiraAgileIssue`](../JiraAgilePS/Public/Get-Issue.ps1) | `_Backlog` | GET | `/rest/agile/1.0/board/{boardId}/backlog` | `/rest/software/1.0/board/{boardId}/backlog` | `/rest/agile/1.0/board/{boardId}/backlog` | Cloud target: token; Data Center: offset | Backlog count: `GET /rest/software/1.0/board/{boardId}/backlog/approximate-count`; `reconcileIssues` accepts up to 50 IDs and must remain constant across pages | Read; view board and browse backlog issues | `read:board-scope:jira-software`, `read:issue-details:jira`, `read:jql:jira` | `Get-AgilePageItem`, `ConvertTo-Issue` | [Unit](../Tests/Functions/Public/Get-Issue.Unit.Tests.ps1) | [Parity](../Tests/Integration/AgileParity.Integration.Tests.ps1) | Deprecated on Cloud; removal after 1 November 2026 |
+| [`Get-JiraAgileIssue`](../JiraAgilePS/Public/Get-Issue.ps1) | `_Sprint` | GET | `/rest/agile/1.0/board/{boardId}/sprint/{sprintId}/issue` | `/rest/software/1.0/board/{boardId}/sprint/{sprintId}/issue` | `/rest/agile/1.0/board/{boardId}/sprint/{sprintId}/issue` | Cloud target: token; Data Center: offset | Board count endpoint with JQL `sprint = {sprintId}`; `reconcileIssues` accepts up to 50 IDs and must remain constant across pages | Read; view board/sprint and browse issues | `read:sprint:jira-software`, `read:issue-details:jira`, `read:jql:jira` | `Get-AgilePageItem`, `ConvertTo-Issue` | [Unit](../Tests/Functions/Public/Get-Issue.Unit.Tests.ps1) | Not covered by live parity suite | Deprecated on Cloud; removal after 1 November 2026; integration gap |
+| [`Get-JiraAgileIssue`](../JiraAgilePS/Public/Get-Issue.ps1) | `_Epic` | GET | `/rest/agile/1.0/epic/{epicIdOrKey}/issue` | `/rest/software/1.0/epic/{epicIdOrKey}/issue` | `/rest/agile/1.0/epic/{epicIdOrKey}/issue` | Cloud target: token; Data Center: offset | `POST /rest/api/3/search/approximate-count` with JQL `parent = {epicIdOrKey}`; `reconcileIssues` accepts up to 50 IDs and must remain constant across pages | Read; view epic and browse issues | `read:epic:jira-software`, `read:issue-details:jira`, `read:jql:jira` | `Get-AgilePageItem`, `ConvertTo-Issue` | [Unit](../Tests/Functions/Public/Get-Issue.Unit.Tests.ps1) | Not covered by live parity suite | Deprecated on Cloud; removal after 1 November 2026; integration gap |
+| [`Get-JiraAgileIssue`](../JiraAgilePS/Public/Get-Issue.ps1) | `_BoardEpic` | GET | `/rest/agile/1.0/board/{boardId}/epic/{epicId}/issue` | `/rest/software/1.0/board/{boardId}/epic/{epicId}/issue` | `/rest/agile/1.0/board/{boardId}/epic/{epicId}/issue` | Cloud target: token; Data Center: offset | Board count endpoint with JQL `parent = {epicIdOrKey}`; `reconcileIssues` accepts up to 50 IDs and must remain constant across pages | Read; view board/epic and browse issues | `read:epic:jira-software`, `read:issue-details:jira`, `read:jql:jira` | `Get-AgilePageItem`, `ConvertTo-Issue` | [Unit](../Tests/Functions/Public/Get-Issue.Unit.Tests.ps1) | Not covered by live parity suite | Deprecated on Cloud; removal after 1 November 2026; integration gap |
+| [`Get-JiraAgileIssue`](../JiraAgilePS/Public/Get-Issue.ps1) | `_BoardWithoutEpic` | GET | `/rest/agile/1.0/board/{boardId}/epic/none/issue` | `/rest/software/1.0/board/{boardId}/epic/none/issue` | `/rest/agile/1.0/board/{boardId}/epic/none/issue` | Cloud target: token; Data Center: offset | Board count endpoint with JQL `parent = null`; `reconcileIssues` accepts up to 50 IDs and must remain constant across pages | Read; view board and browse issues | `read:epic:jira-software`, `read:issue-details:jira`, `read:jql:jira` | `Get-AgilePageItem`, `ConvertTo-Issue` | [Unit](../Tests/Functions/Public/Get-Issue.Unit.Tests.ps1) | Not covered by live parity suite | Deprecated on Cloud; removal after 1 November 2026; integration gap |
+| [`Get-JiraAgileSprint`](../JiraAgilePS/Public/Get-Sprint.ps1) | `_All` | GET | `/rest/agile/1.0/board/{boardId}/sprint` | Same; current documented route | Same | Offset through JiraPS transport | N/A | Read; view board sprints | `read:sprint:jira-software` | `ConvertTo-Sprint` | [Unit](../Tests/Functions/Public/Get-Sprint.Unit.Tests.ps1) | [Parity](../Tests/Integration/AgileParity.Integration.Tests.ps1) | Current |
+| [`Get-JiraAgileSprint`](../JiraAgilePS/Public/Get-Sprint.ps1) | `_ById` | GET | `/rest/agile/1.0/sprint/{sprintId}` | Same; current documented route | Same | None; one request per sprint | N/A | Read; view sprint or its issues | `read:sprint:jira-software` | `ConvertTo-Sprint` | [Unit](../Tests/Functions/Public/Get-Sprint.Unit.Tests.ps1) | [Parity](../Tests/Integration/AgileParity.Integration.Tests.ps1) when a sprint exists | Current |
+| [`Move-JiraAgileIssueToBacklog`](../JiraAgilePS/Public/Move-IssueToBacklog.ps1) | `__AllParameterSets` | POST | `/rest/agile/1.0/backlog/issue` | Same; not in the issue-list deprecation | Same | Input batches of 50; no response paging | N/A | Write; edit issues and change sprint assignment | `write:board-scope:jira-software` | None | [Unit](../Tests/Functions/Public/Move-IssueToBacklog.Unit.Tests.ps1) | [Parity](../Tests/Integration/AgileParity.Integration.Tests.ps1) when disposable fixtures exist | Current; write-sensitive |
+| [`New-JiraAgileSprint`](../JiraAgilePS/Public/New-Sprint.ps1) | `__AllParameterSets` | POST | `/rest/agile/1.0/sprint` | Same; current documented route | Same | None | N/A | Write/board-admin; manage sprints | `write:sprint:jira-software` | `ConvertTo-Sprint` | [Unit](../Tests/Functions/Public/New-Sprint.Unit.Tests.ps1) | [Parity](../Tests/Integration/AgileParity.Integration.Tests.ps1) when a disposable board exists | Current; board-admin write |
+| [`Remove-JiraAgileSprint`](../JiraAgilePS/Public/Remove-Sprint.ps1) | `__AllParameterSets` | DELETE | `/rest/agile/1.0/sprint/{sprintId}` | Same; current documented route | Same | None | N/A | Destructive/board-admin; manage sprints | `write:sprint:jira-software` | None | [Unit](../Tests/Functions/Public/Remove-Sprint.Unit.Tests.ps1) | [Parity](../Tests/Integration/AgileParity.Integration.Tests.ps1) with a disposable sprint | Current; destructive and confirmation-protected |
+| [`Set-JiraAgileSprint`](../JiraAgilePS/Public/Set-Sprint.ps1) | `__AllParameterSets` | POST | `/rest/agile/1.0/sprint/{sprintId}` partial update | Same; current documented route | Same | None | N/A | Write/board-admin; manage sprints | `write:sprint:jira-software` | `ConvertTo-Sprint` | [Unit](../Tests/Functions/Public/Set-Sprint.Unit.Tests.ps1) | [Parity](../Tests/Integration/AgileParity.Integration.Tests.ps1) with a disposable sprint | Current; state transitions are operationally sensitive |
 
-The first-production-release scope is:
+## Cloud issue-list migration contract
 
-1. Stabilize existing cmdlets in [#12](https://github.com/AtlassianPS/JiraAgilePS/issues/12).
-2. Deliver first-release read cmdlets in [#13](https://github.com/AtlassianPS/JiraAgilePS/issues/13):
-   - `Get-JiraAgileIssue` (board, backlog, sprint parameter sets)
-   - `Get-JiraAgileBoardConfiguration`
-   - `Get-JiraAgileEpic` (id and board parameter sets)
-   - `Get-JiraAgileIssue` epic parameter sets for epic-scoped issue retrieval
-3. Deliver first-release write cmdlets in [#14](https://github.com/AtlassianPS/JiraAgilePS/issues/14):
-   - `Move-JiraAgileIssueToBacklog`
-   - `New-JiraAgileSprint`
-   - `Set-JiraAgileSprint`
-   - `Remove-JiraAgileSprint`
+All six enhanced Cloud issue-list routes:
 
-All other listed endpoints remain explicitly deferred until the first-release scope above is complete.
+- replace `startAt` with opaque `nextPageToken`;
+- retain `maxResults`;
+- return `isLast` and omit `total`;
+- accept `reconcileIssues` with at most 50 issue IDs;
+- require the same `reconcileIssues` values on every page;
+- preserve JQL, field, expand, and validation options supported by the selected endpoint.
+
+The migration must treat tokens as opaque and fetch pages sequentially.
+PowerShell `-Skip` can only be implemented by reading and discarding results in order.
+`-IncludeTotalCount` cannot be synthesized from the enhanced list response.
+Callers that explicitly request a count should use the mapped approximate-count operation and must understand that the result can be eventually consistent.
+
+Data Center keeps offset pagination and its `total` response.
+The shared public output must remain typed as JiraPS-compatible issues even though Cloud and Data Center wire envelopes differ.
+
+## Security and permission classes
+
+| Class | Commands | Review requirement |
+|---|---|---|
+| Read | Board, epic, sprint, and issue retrieval | Use only the documented read scopes and test restricted board/project visibility. |
+| Write | Sprint assignment, backlog movement, sprint creation/update | Require edit/manage permission, preserve `ShouldProcess`, and limit batches to 50 issues. |
+| Board-admin | Board configuration and sprint management | Do not use administrator credentials merely to make read tests pass; verify least-privilege board access. |
+| Destructive | Sprint deletion | Require confirmation, disposable fixtures, and explicit cleanup verification. |
+
+Issue results can include personal data, restricted fields, security-level content, sprint history, and rank information.
+Fixtures and test output must be synthetic or redacted.
+OAuth tokens, API tokens, cookies, account IDs, tenant URLs, and issue content must not be written to this matrix or persisted in test artifacts.
+
+## Coverage gaps and next actions
+
+1. Migrate the six Cloud issue-list parameter sets before the 1 November 2026 removal date.
+2. Add Cloud contract fixtures for token pagination, absent `total`, repeated/missing tokens, `reconcileIssues`, and approximate counts.
+3. Add live Cloud canaries for `_Sprint`, `_Epic`, `_BoardEpic`, and `_BoardWithoutEpic`.
+4. Retain and run Data Center parity tests for all six legacy offset routes.
+5. Add a direct `_ById` epic canary.
+6. Validate JiraPS 3 typed issue compatibility after the envelope and pagination migration.
+
+## Maintenance rules
+
+- Add a matrix row in the same change that adds an exported command or parameter set.
+- Keep one unique row for every exported command/parameter-set pair.
+- Keep source and test links relative so the documentation test can validate them.
+- Mark Cloud-only, Data Center-only, deprecated, experimental, destructive, or unverified behavior explicitly.
+- Update the current route, target route, permissions, scopes, and coverage together when an API migration lands.
+
+## Official references
+
+- [Jira Software Cloud REST API](https://developer.atlassian.com/cloud/jira/software/rest/intro/)
+- [Jira Software Cloud board operations](https://developer.atlassian.com/cloud/jira/software/rest/api-group-board/)
+- [Jira Software Cloud sprint operations](https://developer.atlassian.com/cloud/jira/software/rest/api-group-sprint/)
+- [Jira Software Cloud epic operations](https://developer.atlassian.com/cloud/jira/software/rest/api-group-epic/)
+- [Jira Software Cloud changelog and enhanced-route mapping](https://developer.atlassian.com/cloud/jira/software/changelog/)
+- [Jira Software Data Center REST API](https://docs.atlassian.com/jira-software/REST/latest/)
