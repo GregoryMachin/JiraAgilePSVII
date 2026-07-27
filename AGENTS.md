@@ -58,6 +58,15 @@ Notes for this repository's current legacy state:
 - If validation fails in `Build`/`Test`, capture the exact failing task and error; do not report validation as passed.
 - During iteration, use focused `Invoke-Pester` runs when test files are present (for example `Invoke-Pester -Path 'Tests/Functions/Public/Get-Board.Unit.Tests.ps1'`).
 
+## Branch, Commit, and Merge Workflow
+
+- Start each new coherent piece of work from a clean `master` branch and create a dedicated, descriptively named task branch before editing tracked files.
+- Keep directly related implementation, tests, documentation, and changelog changes together on that branch; do not mix unrelated work or reuse a merged branch.
+- Commit the completed work only after the repository's required focused and full validation passes.
+- When a requested series has further directly related work, keep the task branch open and continue there.
+- When no further related work remains and validation is green, merge the completed task branch into `master` using the repository's normal protected-branch or pull-request workflow, then verify `master` is clean.
+- Do not push branches, tags, or merges to a remote unless the user explicitly requests it.
+
 ## Supported API Reference Tracks (Cloud + Data Center)
 
 - Cloud track (Jira Software REST): https://developer.atlassian.com/cloud/jira/software/rest/
