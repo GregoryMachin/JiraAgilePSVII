@@ -13,7 +13,7 @@ function Sync-PSScriptAnalyzerSetting {
     Write-Host "Syncing PSScriptAnalyzer settings from AtlassianPS.Standards"
 
     try {
-        Import-Module AtlassianPS.Standards -RequiredVersion '0.1.2' -Force -ErrorAction Stop
+        Import-Module AtlassianPS.Standards -RequiredVersion '0.1.11' -Force -ErrorAction Stop
         $resolvedSettingsPath = Sync-AtlassianPSScriptAnalyzerSettings `
             -DestinationPath $psScriptAnalyzerSettingsPath `
             -ErrorAction Stop

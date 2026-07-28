@@ -1,5 +1,11 @@
 # Change Log
 
+## Unreleased
+
+### Changed
+
+- Updated the shared build dependency and workflow action pins to `AtlassianPS.Standards` `0.1.11`.
+
 ## 0.1 - 2026-05-20
 
 ### Added
