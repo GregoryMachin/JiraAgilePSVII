@@ -42,12 +42,11 @@ function Get-Issue {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
 
         $server = Get-JiraConfigServer -ErrorAction Stop
-        $resourceUrl_Board = "$server/rest/agile/1.0/board/{0}/issue"
-        $resourceUrl_Backlog = "$server/rest/agile/1.0/board/{0}/backlog"
-        $resourceUrl_Sprint = "$server/rest/agile/1.0/board/{0}/sprint/{1}/issue"
-        $resourceUrl_Epic = "$server/rest/agile/1.0/epic/{0}/issue"
-        $resourceUrl_BoardEpic = "$server/rest/agile/1.0/board/{0}/epic/{1}/issue"
-        $resourceUrl_BoardWithoutEpic = "$server/rest/agile/1.0/board/{0}/epic/none/issue"
+        $deploymentType = $null
+        $serverInformation = Get-JiraServerInformation -Credential $Credential -ErrorAction Stop
+        if ($serverInformation.PSObject.Properties.Name -contains 'DeploymentType') {
+            $deploymentType = $serverInformation.DeploymentType
+        }
     }
 
     process {
@@ -80,7 +79,7 @@ function Get-Issue {
                 Write-Verbose "[$($MyInvocation.MyCommand.Name)] Processing Board ID [$($Board.Id)]"
                 Write-Debug "[$($MyInvocation.MyCommand.Name)] Processing `$Board [$($Board.Id)]"
 
-                $requestParameter["Uri"] = $resourceUrl_Board -f $Board.Id
+                $requestParameter["Uri"] = Resolve-JiraSoftwareRoute -BaseUri $server -DeploymentType $deploymentType -Operation BoardIssue -BoardId $Board.Id
                 Write-Debug "[$($MyInvocation.MyCommand.Name)] Invoking JiraMethod with `$requestParameter"
                 Invoke-JiraMethod @requestParameter | Get-AgilePageItem | ConvertTo-Issue
             }
@@ -92,7 +91,7 @@ function Get-Issue {
                 Write-Verbose "[$($MyInvocation.MyCommand.Name)] Processing Board ID [$($Board.Id)] backlog"
                 Write-Debug "[$($MyInvocation.MyCommand.Name)] Processing `$Board [$($Board.Id)]"
 
-                $requestParameter["Uri"] = $resourceUrl_Backlog -f $Board.Id
+                $requestParameter["Uri"] = Resolve-JiraSoftwareRoute -BaseUri $server -DeploymentType $deploymentType -Operation BacklogIssue -BoardId $Board.Id
                 Write-Debug "[$($MyInvocation.MyCommand.Name)] Invoking JiraMethod with `$requestParameter"
                 Invoke-JiraMethod @requestParameter | Get-AgilePageItem | ConvertTo-Issue
             }
@@ -108,7 +107,7 @@ function Get-Issue {
                     Write-Verbose "[$($MyInvocation.MyCommand.Name)] Processing Sprint ID [$($_sprint.Id)] for Board ID [$($Board.Id)]"
                     Write-Debug "[$($MyInvocation.MyCommand.Name)] Processing `$_sprint [$($_sprint.Id)]"
 
-                    $requestParameter["Uri"] = $resourceUrl_Sprint -f $Board.Id, $_sprint.Id
+                    $requestParameter["Uri"] = Resolve-JiraSoftwareRoute -BaseUri $server -DeploymentType $deploymentType -Operation SprintIssue -BoardId $Board.Id -SprintId $_sprint.Id
                     Write-Debug "[$($MyInvocation.MyCommand.Name)] Invoking JiraMethod with `$requestParameter"
                     Invoke-JiraMethod @requestParameter | Get-AgilePageItem | ConvertTo-Issue
                 }
@@ -122,7 +121,7 @@ function Get-Issue {
                     Write-Verbose "[$($MyInvocation.MyCommand.Name)] Processing Epic ID [$($_epic.Id)]"
                     Write-Debug "[$($MyInvocation.MyCommand.Name)] Processing `$_epic [$($_epic.Id)]"
 
-                    $requestParameter["Uri"] = $resourceUrl_Epic -f $_epic.Id
+                    $requestParameter["Uri"] = Resolve-JiraSoftwareRoute -BaseUri $server -DeploymentType $deploymentType -Operation EpicIssue -EpicId $_epic.Id
                     Write-Debug "[$($MyInvocation.MyCommand.Name)] Invoking JiraMethod with `$requestParameter"
                     Invoke-JiraMethod @requestParameter | Get-AgilePageItem | ConvertTo-Issue
                 }
@@ -139,7 +138,7 @@ function Get-Issue {
                     Write-Verbose "[$($MyInvocation.MyCommand.Name)] Processing Epic ID [$($_epic.Id)] for Board ID [$($Board.Id)]"
                     Write-Debug "[$($MyInvocation.MyCommand.Name)] Processing `$_epic [$($_epic.Id)]"
 
-                    $requestParameter["Uri"] = $resourceUrl_BoardEpic -f $Board.Id, $_epic.Id
+                    $requestParameter["Uri"] = Resolve-JiraSoftwareRoute -BaseUri $server -DeploymentType $deploymentType -Operation BoardEpicIssue -BoardId $Board.Id -EpicId $_epic.Id
                     Write-Debug "[$($MyInvocation.MyCommand.Name)] Invoking JiraMethod with `$requestParameter"
                     Invoke-JiraMethod @requestParameter | Get-AgilePageItem | ConvertTo-Issue
                 }
@@ -152,7 +151,7 @@ function Get-Issue {
                 Write-Verbose "[$($MyInvocation.MyCommand.Name)] Processing Board ID [$($Board.Id)] with no epic"
                 Write-Debug "[$($MyInvocation.MyCommand.Name)] Processing `$Board [$($Board.Id)]"
 
-                $requestParameter["Uri"] = $resourceUrl_BoardWithoutEpic -f $Board.Id
+                $requestParameter["Uri"] = Resolve-JiraSoftwareRoute -BaseUri $server -DeploymentType $deploymentType -Operation BoardWithoutEpicIssue -BoardId $Board.Id
                 Write-Debug "[$($MyInvocation.MyCommand.Name)] Invoking JiraMethod with `$requestParameter"
                 Invoke-JiraMethod @requestParameter | Get-AgilePageItem | ConvertTo-Issue
             }

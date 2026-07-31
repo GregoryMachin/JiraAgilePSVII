@@ -52,14 +52,16 @@ Get-Issue [-Board] <Board> -WithoutEpic [[-PageSize] <UInt32>] [-Credential <PSC
 
 ## DESCRIPTION
 
-`Get-Issue` consolidates Jira Agile issue retrieval endpoints:
+`Get-Issue` consolidates Jira Agile issue retrieval endpoints.
+For Jira Cloud, issue-list operations use the enhanced Jira Software route family under `/rest/software/1.0`.
+For Jira Data Center, the command preserves the existing `/rest/agile/1.0` route family.
 
-- `GET /rest/agile/1.0/board/{boardId}/issue` (board scope)
-- `GET /rest/agile/1.0/board/{boardId}/backlog` (backlog scope)
-- `GET /rest/agile/1.0/board/{boardId}/sprint/{sprintId}/issue` (sprint scope)
-- `GET /rest/agile/1.0/epic/{epicId}/issue` (epic scope)
-- `GET /rest/agile/1.0/board/{boardId}/epic/{epicId}/issue` (board + epic scope)
-- `GET /rest/agile/1.0/board/{boardId}/epic/none/issue` (board issues with no epic)
+- Cloud: `GET /rest/software/1.0/board/{boardId}/issue`; Data Center: `GET /rest/agile/1.0/board/{boardId}/issue`.
+- Cloud: `GET /rest/software/1.0/board/{boardId}/backlog`; Data Center: `GET /rest/agile/1.0/board/{boardId}/backlog`.
+- Cloud: `GET /rest/software/1.0/board/{boardId}/sprint/{sprintId}/issue`; Data Center: `GET /rest/agile/1.0/board/{boardId}/sprint/{sprintId}/issue`.
+- Cloud: `GET /rest/software/1.0/epic/{epicId}/issue`; Data Center: `GET /rest/agile/1.0/epic/{epicId}/issue`.
+- Cloud: `GET /rest/software/1.0/board/{boardId}/epic/{epicId}/issue`; Data Center: `GET /rest/agile/1.0/board/{boardId}/epic/{epicId}/issue`.
+- Cloud: `GET /rest/software/1.0/board/{boardId}/epic/none/issue`; Data Center: `GET /rest/agile/1.0/board/{boardId}/epic/none/issue`.
 
 The command supports paging and converts issue results into JiraAgilePS issue objects.
 

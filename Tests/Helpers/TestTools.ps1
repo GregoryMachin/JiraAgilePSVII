@@ -8,6 +8,7 @@ function Initialize-TestEnvironment {
 
     $manifestPath = Resolve-ModuleSource
     $moduleDir = Split-Path $manifestPath -Parent
+    Import-JiraPSCandidate
 
     $fingerprint = (
         Get-ChildItem $moduleDir -Recurse -File -ErrorAction SilentlyContinue |
@@ -36,6 +37,31 @@ function Initialize-TestEnvironment {
     & (Get-Module JiraAgilePS) { param($fp) $script:__TestImportFingerprint = $fp } $fingerprint
 
     return $manifestPath
+}
+
+function Import-JiraPSCandidate {
+    [CmdletBinding()]
+    param()
+
+    $projectRoot = Resolve-ProjectRoot
+    $workspaceRoot = Split-Path $projectRoot -Parent
+    $localJiraManifest = Join-Path $workspaceRoot 'JiraPS/JiraPS/JiraPS.psd1'
+
+    if (Test-Path -LiteralPath $localJiraManifest -PathType Leaf) {
+        $manifest = Test-ModuleManifest -Path $localJiraManifest -ErrorAction Stop -WarningAction SilentlyContinue
+        if ($manifest.Version -ge [Version]'3.0.0') {
+            $pathSeparator = [IO.Path]::PathSeparator
+            $moduleSearchRoot = Join-Path $workspaceRoot 'JiraPS'
+            $modulePaths = @($env:PSModulePath -split [Regex]::Escape($pathSeparator))
+            if ($moduleSearchRoot -notin $modulePaths) {
+                $env:PSModulePath = "$moduleSearchRoot$pathSeparator$env:PSModulePath"
+            }
+            Import-Module $localJiraManifest -Force -ErrorAction Stop
+            return
+        }
+    }
+
+    Import-Module JiraPS -RequiredVersion 3.0.0 -Force -ErrorAction Stop
 }
 
 function Resolve-ModuleSource {

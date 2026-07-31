@@ -31,6 +31,10 @@ if ($VersionToPublish) {
 
 Import-Module "$PSScriptRoot/Tools/BuildTools.psm1" -Force
 
+if (Test-Path -LiteralPath (Join-Path (Split-Path $PSScriptRoot -Parent) 'JiraPS/JiraPS/JiraPS.psd1') -PathType Leaf) {
+    Add-ToModulePath -Path (Join-Path (Split-Path $PSScriptRoot -Parent) 'JiraPS')
+}
+
 $ProjectName = 'JiraAgilePS'
 $script:BuildInfo = Initialize-AtlassianPSBuildEnvironment `
     -ProjectName $ProjectName `

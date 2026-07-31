@@ -84,6 +84,19 @@ Describe "Move-JiraAgileIssueToBacklog" -Tag 'Unit' {
             }
         }
 
+        It "accepts JiraPS 3 typed issue objects" {
+            $issues = @(
+                [AtlassianPS.JiraPS.Issue]::new("AG-4")
+                [AtlassianPS.JiraPS.Issue]::new("AG-5")
+            )
+
+            { Move-JiraAgileIssueToBacklog -Issue $issues -Confirm:$false } | Should -Not -Throw
+
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+                (($Body | ConvertFrom-Json).issues -join ",") -eq "AG-4,AG-5"
+            }
+        }
+
         It "sends backlog payloads in pages of 50 issue keys" {
             $issues = @(1..55 | ForEach-Object { [pscustomobject]@{ Key = "AG-$_" } })
 

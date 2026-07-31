@@ -84,6 +84,21 @@ Describe "Add-JiraAgileIssueToSprint" -Tag 'Unit' {
             }
         }
 
+        It "accepts JiraPS 3 typed issue objects" {
+            $sprint = [AtlassianPS.JiraAgilePS.Sprint]::new(99)
+            $sprint.Self = [Uri]$sprintUri
+            $issues = @(
+                [AtlassianPS.JiraPS.Issue]::new("AG-3")
+                [AtlassianPS.JiraPS.Issue]::new("AG-4")
+            )
+
+            { Add-JiraAgileIssueToSprint -Issue $issues -Sprint $sprint } | Should -Not -Throw
+
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+                (($Body | ConvertFrom-Json).issues -join ",") -eq "AG-3,AG-4"
+            }
+        }
+
         It "resolves sprint details when Self is not provided" {
             $sprintWithoutSelf = [AtlassianPS.JiraAgilePS.Sprint]::new(99)
             $issues = @([pscustomobject]@{ Key = "AG-1" })

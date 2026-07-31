@@ -19,6 +19,12 @@ Describe "Get-JiraAgileIssue" -Tag 'Unit' {
         Mock Get-JiraConfigServer -ModuleName JiraAgilePS {
             $jiraServer
         }
+
+        Mock Get-JiraServerInformation -ModuleName JiraAgilePS {
+            [pscustomobject]@{
+                DeploymentType = 'DataCenter'
+            }
+        }
     }
 
     Describe "Signature" {
@@ -68,6 +74,23 @@ Describe "Get-JiraAgileIssue" -Tag 'Unit' {
                 $Paging
             }
             $result[0].Key | Should -Be "AG-1000"
+        }
+
+        It "uses enhanced Jira Software issue-list endpoint for Cloud deployments" {
+            Mock Get-JiraServerInformation -ModuleName JiraAgilePS {
+                [pscustomobject]@{
+                    DeploymentType = 'Cloud'
+                }
+            }
+            $board = [AtlassianPS.JiraAgilePS.Board]::new(7)
+
+            $null = Get-JiraAgileIssue -Board $board
+
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+                $Method -eq "GET" -and
+                $Uri -eq "$jiraServer/rest/software/1.0/board/7/issue" -and
+                $Paging
+            }
         }
 
         It "uses backlog endpoint when Backlog switch is specified" {
