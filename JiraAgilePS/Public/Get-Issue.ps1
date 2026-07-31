@@ -48,6 +48,11 @@ function Get-Issue {
         $Expand,
 
         [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [Object[]]
+        $ReconcileIssue,
+
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.Credential()]
         $Credential = [System.Management.Automation.PSCredential]::Empty
@@ -87,6 +92,14 @@ function Get-Issue {
         }
         if ($PSBoundParameters.ContainsKey('Expand')) {
             $requestParameter["GetParameter"]["expand"] = $Expand -join ","
+        }
+        if ($PSBoundParameters.ContainsKey('ReconcileIssue')) {
+            if ($deploymentType -ne 'Cloud') {
+                throw "[$($MyInvocation.MyCommand.Name)] -ReconcileIssue is supported only for Jira Cloud issue-list routes."
+            }
+
+            $reconcileIssueIds = Resolve-JiraAgileReconcileIssueId -InputObject $ReconcileIssue
+            $requestParameter["GetParameter"]["reconcileIssues"] = $reconcileIssueIds -join ","
         }
 
         # Paging
@@ -185,4 +198,49 @@ function Get-Issue {
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
     }
+}
+
+function Resolve-JiraAgileReconcileIssueId {
+    [CmdletBinding()]
+    [OutputType([String[]])]
+    param(
+        [Parameter(Mandatory)]
+        [Object[]]
+        $InputObject
+    )
+
+    $ids = @(
+        foreach ($item in $InputObject) {
+            $candidate = if ($null -ne $item -and $item.PSObject.Properties.Name -contains 'Id') {
+                $item.Id
+            }
+            else {
+                $item
+            }
+
+            if ($candidate -is [Array]) {
+                foreach ($value in $candidate) {
+                    [String]$value
+                }
+            }
+            else {
+                [String]$candidate
+            }
+        }
+    ) |
+        Where-Object { -not [String]::IsNullOrWhiteSpace($_) } |
+        ForEach-Object { $_.Trim() } |
+        Select-Object -Unique
+
+    foreach ($id in $ids) {
+        if ($id -notmatch '^\d+$' -or [UInt64]$id -eq 0) {
+            throw "[$($MyInvocation.MyCommand.Name)] -ReconcileIssue accepts only non-zero numeric Jira issue IDs."
+        }
+    }
+
+    if ($ids.Count -gt 50) {
+        throw "[$($MyInvocation.MyCommand.Name)] -ReconcileIssue accepts at most 50 unique Jira issue IDs."
+    }
+
+    $ids
 }

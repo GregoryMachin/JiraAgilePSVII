@@ -17,37 +17,37 @@ Gets Jira Agile issues across board, backlog, sprint, and epic scopes.
 ### _Board (Default)
 
 ```powershell
-Get-Issue [-Board] <Board> [[-PageSize] <UInt32>] [-Query <String>] [-Fields <String[]>] [-Expand <String[]>] [-Credential <PSCredential>] [<CommonParameters>]
+Get-Issue [-Board] <Board> [[-PageSize] <UInt32>] [-Query <String>] [-Fields <String[]>] [-Expand <String[]>] [-ReconcileIssue <Object[]>] [-Credential <PSCredential>] [<CommonParameters>]
 ```
 
 ### _Backlog
 
 ```powershell
-Get-Issue [-Board] <Board> -Backlog [[-PageSize] <UInt32>] [-Query <String>] [-Fields <String[]>] [-Expand <String[]>] [-Credential <PSCredential>] [<CommonParameters>]
+Get-Issue [-Board] <Board> -Backlog [[-PageSize] <UInt32>] [-Query <String>] [-Fields <String[]>] [-Expand <String[]>] [-ReconcileIssue <Object[]>] [-Credential <PSCredential>] [<CommonParameters>]
 ```
 
 ### _Sprint
 
 ```powershell
-Get-Issue [-Board] <Board> [-Sprint] <Sprint[]> [[-PageSize] <UInt32>] [-Query <String>] [-Fields <String[]>] [-Expand <String[]>] [-Credential <PSCredential>] [<CommonParameters>]
+Get-Issue [-Board] <Board> [-Sprint] <Sprint[]> [[-PageSize] <UInt32>] [-Query <String>] [-Fields <String[]>] [-Expand <String[]>] [-ReconcileIssue <Object[]>] [-Credential <PSCredential>] [<CommonParameters>]
 ```
 
 ### _Epic
 
 ```powershell
-Get-Issue [-Epic] <Epic[]> [[-PageSize] <UInt32>] [-Query <String>] [-Fields <String[]>] [-Expand <String[]>] [-Credential <PSCredential>] [<CommonParameters>]
+Get-Issue [-Epic] <Epic[]> [[-PageSize] <UInt32>] [-Query <String>] [-Fields <String[]>] [-Expand <String[]>] [-ReconcileIssue <Object[]>] [-Credential <PSCredential>] [<CommonParameters>]
 ```
 
 ### _BoardEpic
 
 ```powershell
-Get-Issue [-Board] <Board> [-Epic] <Epic[]> [[-PageSize] <UInt32>] [-Query <String>] [-Fields <String[]>] [-Expand <String[]>] [-Credential <PSCredential>] [<CommonParameters>]
+Get-Issue [-Board] <Board> [-Epic] <Epic[]> [[-PageSize] <UInt32>] [-Query <String>] [-Fields <String[]>] [-Expand <String[]>] [-ReconcileIssue <Object[]>] [-Credential <PSCredential>] [<CommonParameters>]
 ```
 
 ### _BoardWithoutEpic
 
 ```powershell
-Get-Issue [-Board] <Board> -WithoutEpic [[-PageSize] <UInt32>] [-Query <String>] [-Fields <String[]>] [-Expand <String[]>] [-Credential <PSCredential>] [<CommonParameters>]
+Get-Issue [-Board] <Board> -WithoutEpic [[-PageSize] <UInt32>] [-Query <String>] [-Fields <String[]>] [-Expand <String[]>] [-ReconcileIssue <Object[]>] [-Credential <PSCredential>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -66,6 +66,7 @@ For Jira Data Center, the command preserves the existing `/rest/agile/1.0` route
 The command supports paging and converts issue results into JiraAgilePS issue objects while preserving JiraPS issue typing.
 Cloud issue-list routes use token pagination (`nextPageToken`/`isLast`) through JiraPS; Data Center routes keep offset pagination.
 `-Query`, `-Fields`, and `-Expand` are forwarded as query parameters to Jira.
+`-ReconcileIssue` is Cloud-only and forwards up to 50 unique numeric Jira issue IDs through the enhanced issue-list reconciliation option.
 
 ## EXAMPLES
 
@@ -133,6 +134,15 @@ JiraAgilePS\Get-Issue -Board $board -Query 'project = AG ORDER BY rank' -Fields 
 ```
 
 Returns board issues matching the JQL expression with only the requested fields.
+
+### EXAMPLE 8
+
+```powershell
+$board = JiraAgilePS\Get-Board -BoardId 7 -Credential $cred
+JiraAgilePS\Get-Issue -Board $board -ReconcileIssue 10000,10001 -Credential $cred
+```
+
+Returns board issues while asking Jira Cloud to reconcile the supplied issue IDs during eventually consistent search.
 
 ## PARAMETERS
 
@@ -270,6 +280,23 @@ Issue expansions to request from Jira.
 
 ```yaml
 Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ReconcileIssue
+
+Cloud-only Jira issue IDs, or JiraPS issue objects with numeric `Id` values, to reconcile during enhanced issue-list retrieval.
+The command deduplicates values and accepts at most 50 unique IDs.
+
+```yaml
+Type: Object[]
 Parameter Sets: (All)
 Aliases:
 

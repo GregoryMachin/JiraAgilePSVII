@@ -43,6 +43,7 @@ Describe "Get-JiraAgileIssue" -Tag 'Unit' {
                 @{ parameter = "Query"; type = [String] }
                 @{ parameter = "Fields"; type = [String[]] }
                 @{ parameter = "Expand"; type = [String[]] }
+                @{ parameter = "ReconcileIssue"; type = [Object[]] }
                 @{ parameter = "Credential"; type = [System.Management.Automation.PSCredential] }
             ) {
                 $command | Should -HaveParameter $parameter -Type $type
@@ -287,6 +288,76 @@ Describe "Get-JiraAgileIssue" -Tag 'Unit' {
 
             @($result).Key | Should -Be @("AG-1001", "AG-1002")
             $result[0].PSObject.Properties.Name | Should -Not -Contain 'total'
+        }
+
+        It "forwards deduplicated reconcile issue IDs for Cloud deployments" {
+            Mock Get-JiraServerInformation -ModuleName JiraAgilePS {
+                [pscustomobject]@{
+                    DeploymentType = 'Cloud'
+                }
+            }
+            $board = [AtlassianPS.JiraAgilePS.Board]::new(16)
+            $issue = [pscustomobject]@{
+                Id  = 10001
+                Key = 'AG-1'
+            }
+            $issue.PSObject.TypeNames.Insert(0, 'AtlassianPS.JiraPS.Issue')
+
+            $null = Get-JiraAgileIssue -Board $board -ReconcileIssue 10000, $issue, 10000
+
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+                $Method -eq "GET" -and
+                $Uri -eq "$jiraServer/rest/software/1.0/board/16/issue" -and
+                $GetParameter['reconcileIssues'] -eq '10000,10001'
+            }
+        }
+
+        It "accepts 50 reconcile issue IDs" {
+            Mock Get-JiraServerInformation -ModuleName JiraAgilePS {
+                [pscustomobject]@{
+                    DeploymentType = 'Cloud'
+                }
+            }
+            $board = [AtlassianPS.JiraAgilePS.Board]::new(17)
+            $ids = 1..50
+
+            { Get-JiraAgileIssue -Board $board -ReconcileIssue $ids } | Should -Not -Throw
+
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+                $GetParameter['reconcileIssues'].Split(',').Count -eq 50
+            }
+        }
+
+        It "rejects more than 50 unique reconcile issue IDs" {
+            Mock Get-JiraServerInformation -ModuleName JiraAgilePS {
+                [pscustomobject]@{
+                    DeploymentType = 'Cloud'
+                }
+            }
+            $board = [AtlassianPS.JiraAgilePS.Board]::new(18)
+            $ids = 1..51
+
+            { Get-JiraAgileIssue -Board $board -ReconcileIssue $ids } |
+                Should -Throw "*at most 50 unique Jira issue IDs*"
+        }
+
+        It "rejects nonnumeric reconcile issue IDs" {
+            Mock Get-JiraServerInformation -ModuleName JiraAgilePS {
+                [pscustomobject]@{
+                    DeploymentType = 'Cloud'
+                }
+            }
+            $board = [AtlassianPS.JiraAgilePS.Board]::new(19)
+
+            { Get-JiraAgileIssue -Board $board -ReconcileIssue 'AG-1' } |
+                Should -Throw "*only non-zero numeric Jira issue IDs*"
+        }
+
+        It "rejects reconcile issue IDs for Data Center deployments" {
+            $board = [AtlassianPS.JiraAgilePS.Board]::new(20)
+
+            { Get-JiraAgileIssue -Board $board -ReconcileIssue 10000 } |
+                Should -Throw "*supported only for Jira Cloud*"
         }
 
         It "throws when Board has no numeric id" {
