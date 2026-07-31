@@ -192,6 +192,132 @@ InModuleScope JiraAgilePS {
             { @(Get-JiraAgileIssue -Board $script:testBoard -Backlog -PageSize 1 -ErrorAction Stop) } | Should -Not -Throw
         }
 
+        It "can list sprint issues through the migrated Cloud issue-list route" {
+            if (-not $script:env.IsCloud) {
+                Set-ItResult -Skipped -Because 'Enhanced issue-list canaries are Cloud-only.'
+                return
+            }
+            if (-not $script:testBoard -or $script:sprints.Count -eq 0) {
+                Set-ItResult -Skipped -Because 'A visible Agile board with at least one sprint is required for sprint issue coverage.'
+                return
+            }
+
+            { @(Get-JiraAgileIssue -Board $script:testBoard -Sprint $script:sprints[0] -PageSize 1 -ErrorAction Stop) } | Should -Not -Throw
+        }
+
+        It "can list epic issues through the migrated Cloud issue-list route" {
+            if (-not $script:env.IsCloud) {
+                Set-ItResult -Skipped -Because 'Enhanced issue-list canaries are Cloud-only.'
+                return
+            }
+            if (-not $script:testBoard) {
+                Set-ItResult -Skipped -Because 'A visible Agile board is required to discover an epic for issue coverage.'
+                return
+            }
+
+            $epics = @(Get-JiraAgileEpic -Board $script:testBoard -PageSize 1 -ErrorAction Stop)
+            if ($epics.Count -eq 0) {
+                Set-ItResult -Skipped -Because 'The parity board has no visible epics.'
+                return
+            }
+
+            { @(Get-JiraAgileIssue -Epic $epics[0] -PageSize 1 -ErrorAction Stop) } | Should -Not -Throw
+        }
+
+        It "can list board epic issues through the migrated Cloud issue-list route" {
+            if (-not $script:env.IsCloud) {
+                Set-ItResult -Skipped -Because 'Enhanced issue-list canaries are Cloud-only.'
+                return
+            }
+            if (-not $script:testBoard) {
+                Set-ItResult -Skipped -Because 'A visible Agile board is required to discover an epic for board-epic issue coverage.'
+                return
+            }
+
+            $epics = @(Get-JiraAgileEpic -Board $script:testBoard -PageSize 1 -ErrorAction Stop)
+            if ($epics.Count -eq 0) {
+                Set-ItResult -Skipped -Because 'The parity board has no visible epics.'
+                return
+            }
+
+            { @(Get-JiraAgileIssue -Board $script:testBoard -Epic $epics[0] -PageSize 1 -ErrorAction Stop) } | Should -Not -Throw
+        }
+
+        It "can list board issues without an epic through the migrated Cloud issue-list route" {
+            if (-not $script:env.IsCloud) {
+                Set-ItResult -Skipped -Because 'Enhanced issue-list canaries are Cloud-only.'
+                return
+            }
+            if (-not $script:testBoard) {
+                Set-ItResult -Skipped -Because 'A visible Agile board is required for no-epic issue coverage.'
+                return
+            }
+
+            { @(Get-JiraAgileIssue -Board $script:testBoard -WithoutEpic -PageSize 1 -ErrorAction Stop) } | Should -Not -Throw
+        }
+
+        It "can reconcile a temporary issue through the migrated Cloud issue-list route" {
+            if (-not $script:env.IsCloud) {
+                Set-ItResult -Skipped -Because 'Enhanced issue-list canaries are Cloud-only.'
+                return
+            }
+            if (-not $script:testBoard -or -not $script:createdIssue -or -not $script:createdIssue.Id) {
+                Set-ItResult -Skipped -Because 'A visible Agile board and temporary issue with a numeric ID are required for reconciliation coverage.'
+                return
+            }
+
+            { @(Get-JiraAgileIssue -Board $script:testBoard -ReconcileIssue $script:createdIssue -PageSize 1 -ErrorAction Stop) } | Should -Not -Throw
+        }
+
+        It "can retrieve a board issue approximate count" {
+            if (-not $script:env.IsCloud) {
+                Set-ItResult -Skipped -Because 'Approximate-count canaries are Cloud-only.'
+                return
+            }
+            if (-not $script:testBoard) {
+                Set-ItResult -Skipped -Because 'A visible Agile board is required for board count coverage.'
+                return
+            }
+
+            { Get-JiraAgileIssueApproximateCount -Board $script:testBoard -ErrorAction Stop } | Should -Not -Throw
+        }
+
+        It "can retrieve a backlog issue approximate count" {
+            if (-not $script:env.IsCloud) {
+                Set-ItResult -Skipped -Because 'Approximate-count canaries are Cloud-only.'
+                return
+            }
+            if (-not $script:testBoard) {
+                Set-ItResult -Skipped -Because 'A visible Agile board is required for backlog count coverage.'
+                return
+            }
+
+            { Get-JiraAgileIssueApproximateCount -Board $script:testBoard -Backlog -ErrorAction Stop } | Should -Not -Throw
+        }
+
+        It "can retrieve sprint, epic, and no-epic approximate counts when fixtures exist" {
+            if (-not $script:env.IsCloud) {
+                Set-ItResult -Skipped -Because 'Approximate-count canaries are Cloud-only.'
+                return
+            }
+            if (-not $script:testBoard) {
+                Set-ItResult -Skipped -Because 'A visible Agile board is required for scoped count coverage.'
+                return
+            }
+
+            if ($script:sprints.Count -gt 0) {
+                { Get-JiraAgileIssueApproximateCount -Board $script:testBoard -Sprint $script:sprints[0] -ErrorAction Stop } | Should -Not -Throw
+            }
+
+            $epics = @(Get-JiraAgileEpic -Board $script:testBoard -PageSize 1 -ErrorAction Stop)
+            if ($epics.Count -gt 0) {
+                { Get-JiraAgileIssueApproximateCount -Epic $epics[0] -ErrorAction Stop } | Should -Not -Throw
+                { Get-JiraAgileIssueApproximateCount -Board $script:testBoard -Epic $epics[0] -ErrorAction Stop } | Should -Not -Throw
+            }
+
+            { Get-JiraAgileIssueApproximateCount -Board $script:testBoard -WithoutEpic -ErrorAction Stop } | Should -Not -Throw
+        }
+
         It "can add an issue to a sprint when sprint and issue fixtures exist" {
             if (-not $script:createdIssue -or $script:sprints.Count -eq 0) {
                 Set-ItResult -Skipped -Because 'A temporary issue and sprint are required for Add-JiraAgileIssueToSprint coverage.'

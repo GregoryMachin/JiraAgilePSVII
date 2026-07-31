@@ -10,6 +10,7 @@
 - Migrated `Get-JiraAgileIssue` issue-list behavior to JiraPS token pagination for Cloud, forwarded JQL/field/expand query options, and preserved JiraPS issue typing in Agile issue output.
 - Added Cloud-only `Get-JiraAgileIssueApproximateCount` for board, backlog, sprint, epic, board-epic, and no-epic issue count scopes.
 - Added Cloud-only `Get-JiraAgileIssue -ReconcileIssue` support for up to 50 unique numeric Jira issue IDs.
+- Added live parity canaries for migrated Cloud issue-list, reconciliation, and approximate-count scopes.
 
 ## 0.1 - 2026-05-20
 
