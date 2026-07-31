@@ -17,37 +17,37 @@ Gets Jira Agile issues across board, backlog, sprint, and epic scopes.
 ### _Board (Default)
 
 ```powershell
-Get-Issue [-Board] <Board> [[-PageSize] <UInt32>] [-Credential <PSCredential>] [<CommonParameters>]
+Get-Issue [-Board] <Board> [[-PageSize] <UInt32>] [-Query <String>] [-Fields <String[]>] [-Expand <String[]>] [-Credential <PSCredential>] [<CommonParameters>]
 ```
 
 ### _Backlog
 
 ```powershell
-Get-Issue [-Board] <Board> -Backlog [[-PageSize] <UInt32>] [-Credential <PSCredential>] [<CommonParameters>]
+Get-Issue [-Board] <Board> -Backlog [[-PageSize] <UInt32>] [-Query <String>] [-Fields <String[]>] [-Expand <String[]>] [-Credential <PSCredential>] [<CommonParameters>]
 ```
 
 ### _Sprint
 
 ```powershell
-Get-Issue [-Board] <Board> [-Sprint] <Sprint[]> [[-PageSize] <UInt32>] [-Credential <PSCredential>] [<CommonParameters>]
+Get-Issue [-Board] <Board> [-Sprint] <Sprint[]> [[-PageSize] <UInt32>] [-Query <String>] [-Fields <String[]>] [-Expand <String[]>] [-Credential <PSCredential>] [<CommonParameters>]
 ```
 
 ### _Epic
 
 ```powershell
-Get-Issue [-Epic] <Epic[]> [[-PageSize] <UInt32>] [-Credential <PSCredential>] [<CommonParameters>]
+Get-Issue [-Epic] <Epic[]> [[-PageSize] <UInt32>] [-Query <String>] [-Fields <String[]>] [-Expand <String[]>] [-Credential <PSCredential>] [<CommonParameters>]
 ```
 
 ### _BoardEpic
 
 ```powershell
-Get-Issue [-Board] <Board> [-Epic] <Epic[]> [[-PageSize] <UInt32>] [-Credential <PSCredential>] [<CommonParameters>]
+Get-Issue [-Board] <Board> [-Epic] <Epic[]> [[-PageSize] <UInt32>] [-Query <String>] [-Fields <String[]>] [-Expand <String[]>] [-Credential <PSCredential>] [<CommonParameters>]
 ```
 
 ### _BoardWithoutEpic
 
 ```powershell
-Get-Issue [-Board] <Board> -WithoutEpic [[-PageSize] <UInt32>] [-Credential <PSCredential>] [<CommonParameters>]
+Get-Issue [-Board] <Board> -WithoutEpic [[-PageSize] <UInt32>] [-Query <String>] [-Fields <String[]>] [-Expand <String[]>] [-Credential <PSCredential>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -63,7 +63,9 @@ For Jira Data Center, the command preserves the existing `/rest/agile/1.0` route
 - Cloud: `GET /rest/software/1.0/board/{boardId}/epic/{epicId}/issue`; Data Center: `GET /rest/agile/1.0/board/{boardId}/epic/{epicId}/issue`.
 - Cloud: `GET /rest/software/1.0/board/{boardId}/epic/none/issue`; Data Center: `GET /rest/agile/1.0/board/{boardId}/epic/none/issue`.
 
-The command supports paging and converts issue results into JiraAgilePS issue objects.
+The command supports paging and converts issue results into JiraAgilePS issue objects while preserving JiraPS issue typing.
+Cloud issue-list routes use token pagination (`nextPageToken`/`isLast`) through JiraPS; Data Center routes keep offset pagination.
+`-Query`, `-Fields`, and `-Expand` are forwarded as query parameters to Jira.
 
 ## EXAMPLES
 
@@ -122,6 +124,15 @@ JiraAgilePS\Get-Issue -Board $board -WithoutEpic -Credential $cred
 ```
 
 Returns board issues that are not assigned to an epic.
+
+### EXAMPLE 7
+
+```powershell
+$board = JiraAgilePS\Get-Board -BoardId 7 -Credential $cred
+JiraAgilePS\Get-Issue -Board $board -Query 'project = AG ORDER BY rank' -Fields key,summary,status -Credential $cred
+```
+
+Returns board issues matching the JQL expression with only the requested fields.
 
 ## PARAMETERS
 
@@ -217,6 +228,54 @@ Aliases:
 Required: False
 Position: Named
 Default value: 25
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Query
+
+JQL expression forwarded to Jira for additional issue filtering.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases: JQL
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Fields
+
+Issue fields to request from Jira.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Expand
+
+Issue expansions to request from Jira.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

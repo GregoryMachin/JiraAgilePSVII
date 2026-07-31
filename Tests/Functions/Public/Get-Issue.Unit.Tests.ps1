@@ -40,6 +40,9 @@ Describe "Get-JiraAgileIssue" -Tag 'Unit' {
                 @{ parameter = "Epic"; type = [AtlassianPS.JiraAgilePS.Epic[]] }
                 @{ parameter = "WithoutEpic"; type = [System.Management.Automation.SwitchParameter] }
                 @{ parameter = "PageSize"; type = [UInt32] }
+                @{ parameter = "Query"; type = [String] }
+                @{ parameter = "Fields"; type = [String[]] }
+                @{ parameter = "Expand"; type = [String[]] }
                 @{ parameter = "Credential"; type = [System.Management.Automation.PSCredential] }
             ) {
                 $command | Should -HaveParameter $parameter -Type $type
@@ -90,6 +93,59 @@ Describe "Get-JiraAgileIssue" -Tag 'Unit' {
                 $Method -eq "GET" -and
                 $Uri -eq "$jiraServer/rest/software/1.0/board/7/issue" -and
                 $Paging
+            }
+        }
+
+        It "uses enhanced Jira Software issue-list endpoints for every Cloud parameter set" -TestCases @(
+            @{
+                Board        = [AtlassianPS.JiraAgilePS.Board]::new(7)
+                Arguments    = @{}
+                ExpectedPath = "rest/software/1.0/board/7/issue"
+            }
+            @{
+                Board        = [AtlassianPS.JiraAgilePS.Board]::new(8)
+                Arguments    = @{ Backlog = $true }
+                ExpectedPath = "rest/software/1.0/board/8/backlog"
+            }
+            @{
+                Board        = [AtlassianPS.JiraAgilePS.Board]::new(9)
+                Arguments    = @{ Sprint = [AtlassianPS.JiraAgilePS.Sprint]::new(21) }
+                ExpectedPath = "rest/software/1.0/board/9/sprint/21/issue"
+            }
+            @{
+                Arguments    = @{ Epic = [AtlassianPS.JiraAgilePS.Epic]::new(55) }
+                ExpectedPath = "rest/software/1.0/epic/55/issue"
+            }
+            @{
+                Board        = [AtlassianPS.JiraAgilePS.Board]::new(10)
+                Arguments    = @{ Epic = [AtlassianPS.JiraAgilePS.Epic]::new(56) }
+                ExpectedPath = "rest/software/1.0/board/10/epic/56/issue"
+            }
+            @{
+                Board        = [AtlassianPS.JiraAgilePS.Board]::new(11)
+                Arguments    = @{ WithoutEpic = $true }
+                ExpectedPath = "rest/software/1.0/board/11/epic/none/issue"
+            }
+        ) {
+            Mock Get-JiraServerInformation -ModuleName JiraAgilePS {
+                [pscustomobject]@{
+                    DeploymentType = 'Cloud'
+                }
+            }
+
+            $splat = @{} + $Arguments
+            if ($Board) {
+                $splat['Board'] = $Board
+            }
+
+            $script:expectedCloudIssueUri = "$jiraServer/$ExpectedPath"
+            $null = Get-JiraAgileIssue @splat
+
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+                $Method -eq "GET" -and
+                $Uri -eq $script:expectedCloudIssueUri -and
+                $Paging -and
+                $OutputType -eq "JiraIssue"
             }
         }
 
@@ -196,6 +252,41 @@ Describe "Get-JiraAgileIssue" -Tag 'Unit' {
                 $First -eq 2 -and
                 $Skip -eq 1
             }
+        }
+
+        It "forwards JQL, field, expand, and page-size options to Invoke-JiraMethod" {
+            $board = [AtlassianPS.JiraAgilePS.Board]::new(14)
+
+            $null = Get-JiraAgileIssue -Board $board -Query 'project = AG ORDER BY rank' -Fields key, summary, status -Expand renderedFields -PageSize 10
+
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+                $GetParameter['maxResults'] -eq 10 -and
+                $GetParameter['jql'] -eq 'project = AG ORDER BY rank' -and
+                $GetParameter['fields'] -eq 'key,summary,status' -and
+                $GetParameter['expand'] -eq 'renderedFields'
+            }
+        }
+
+        It "expands token-paged issue envelopes that have no total property" {
+            Mock Invoke-JiraMethod -ModuleName JiraAgilePS {
+                @(
+                    [pscustomobject]@{
+                        issues        = @([pscustomobject]@{ id = "1001"; key = "AG-1001" })
+                        nextPageToken = "opaque-token"
+                        isLast        = $false
+                    }
+                    [pscustomobject]@{
+                        issues = @([pscustomobject]@{ id = "1002"; key = "AG-1002" })
+                        isLast = $true
+                    }
+                )
+            }
+            $board = [AtlassianPS.JiraAgilePS.Board]::new(15)
+
+            $result = Get-JiraAgileIssue -Board $board
+
+            @($result).Key | Should -Be @("AG-1001", "AG-1002")
+            $result[0].PSObject.Properties.Name | Should -Not -Contain 'total'
         }
 
         It "throws when Board has no numeric id" {

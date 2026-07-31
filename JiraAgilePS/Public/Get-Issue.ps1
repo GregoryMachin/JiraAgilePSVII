@@ -33,6 +33,21 @@ function Get-Issue {
         [UInt32]$PageSize = $script:DefaultPageSize,
 
         [Parameter()]
+        [Alias('JQL')]
+        [String]
+        $Query,
+
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [String[]]
+        $Fields,
+
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [String[]]
+        $Expand,
+
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.Credential()]
         $Credential = [System.Management.Automation.PSCredential]::Empty
@@ -51,18 +66,27 @@ function Get-Issue {
 
     process {
         Write-DebugMessage "[$($MyInvocation.MyCommand.Name)] ParameterSetName: $($PsCmdlet.ParameterSetName)"
-        Write-DebugMessage "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
 
         $requestParameter = @{
             Method       = "GET"
             GetParameter = @{
                 maxResults = $PageSize
             }
+            OutputType   = "JiraIssue"
             Paging       = $true
             Credential   = $Credential
             Cmdlet       = $PSCmdlet
             Verbose      = $VerbosePreference
             Debug        = $DebugPreference
+        }
+        if ($PSBoundParameters.ContainsKey('Query')) {
+            $requestParameter["GetParameter"]["jql"] = $Query
+        }
+        if ($PSBoundParameters.ContainsKey('Fields')) {
+            $requestParameter["GetParameter"]["fields"] = $Fields -join ","
+        }
+        if ($PSBoundParameters.ContainsKey('Expand')) {
+            $requestParameter["GetParameter"]["expand"] = $Expand -join ","
         }
 
         # Paging

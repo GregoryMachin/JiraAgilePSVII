@@ -24,6 +24,11 @@ function ConvertTo-Issue {
             Write-Debug "[$($MyInvocation.MyCommand.Name)] Converting `$InputObject to AtlassianPS.JiraAgilePS.Issue"
 
             $issue = [PSCustomObject](ConvertTo-Hashtable -InputObject ($object | Select-Object -Property *))
+            foreach ($typeName in @($object.PSObject.TypeNames)) {
+                if ($typeName -like 'AtlassianPS.JiraPS.*' -and $issue.PSObject.TypeNames -notcontains $typeName) {
+                    $issue.PSObject.TypeNames.Insert(0, $typeName)
+                }
+            }
             $issue.PSObject.TypeNames.Insert(0, "AtlassianPS.JiraAgilePS.Issue")
 
             $issue

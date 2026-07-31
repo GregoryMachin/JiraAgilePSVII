@@ -7,6 +7,7 @@
 - Updated the shared build dependency and workflow action pins to `AtlassianPS.Standards` `0.1.11`.
 - Updated the build dependency pin and compatibility tests for JiraPS `3.0.0`.
 - Added deployment-aware Jira Software route selection for `Get-JiraAgileIssue`, using enhanced Cloud issue-list routes while preserving Data Center Agile routes.
+- Migrated `Get-JiraAgileIssue` issue-list behavior to JiraPS token pagination for Cloud, forwarded JQL/field/expand query options, and preserved JiraPS issue typing in Agile issue output.
 
 ## 0.1 - 2026-05-20
 

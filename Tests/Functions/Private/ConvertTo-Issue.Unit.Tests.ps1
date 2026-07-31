@@ -35,6 +35,19 @@ InModuleScope JiraAgilePS {
                 $result.fields.summary | Should -Be 'Fix board view'
             }
 
+            It "preserves JiraPS issue typing behind the Agile issue type" {
+                $typedIssue = [pscustomobject]@{
+                    id  = '10011'
+                    key = 'DEL-11'
+                }
+                $typedIssue.PSObject.TypeNames.Insert(0, 'AtlassianPS.JiraPS.Issue')
+
+                $result = ConvertTo-Issue -InputObject $typedIssue
+
+                $result.PSObject.TypeNames[0] | Should -Be 'AtlassianPS.JiraAgilePS.Issue'
+                $result.PSObject.TypeNames | Should -Contain 'AtlassianPS.JiraPS.Issue'
+            }
+
             It "ignores null pipeline input" {
                 $result = $null | ConvertTo-Issue
 
