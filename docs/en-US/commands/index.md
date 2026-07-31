@@ -14,6 +14,7 @@ The documentation pages use the source function names that back the exported com
 | `Get-JiraAgileBoardConfiguration` | [Get-BoardConfiguration](/docs/JiraAgilePS/commands/Get-BoardConfiguration/) |
 | `Get-JiraAgileEpic` | [Get-Epic](/docs/JiraAgilePS/commands/Get-Epic/) |
 | `Get-JiraAgileIssue` | [Get-Issue](/docs/JiraAgilePS/commands/Get-Issue/) |
+| `Get-JiraAgileIssueApproximateCount` | [Get-IssueApproximateCount](/docs/JiraAgilePS/commands/Get-IssueApproximateCount/) |
 | `Get-JiraAgileSprint` | [Get-Sprint](/docs/JiraAgilePS/commands/Get-Sprint/) |
 | `Move-JiraAgileIssueToBacklog` | [Move-IssueToBacklog](/docs/JiraAgilePS/commands/Move-IssueToBacklog/) |
 | `New-JiraAgileSprint` | [New-Sprint](/docs/JiraAgilePS/commands/New-Sprint/) |

@@ -8,6 +8,7 @@
 - Updated the build dependency pin and compatibility tests for JiraPS `3.0.0`.
 - Added deployment-aware Jira Software route selection for `Get-JiraAgileIssue`, using enhanced Cloud issue-list routes while preserving Data Center Agile routes.
 - Migrated `Get-JiraAgileIssue` issue-list behavior to JiraPS token pagination for Cloud, forwarded JQL/field/expand query options, and preserved JiraPS issue typing in Agile issue output.
+- Added Cloud-only `Get-JiraAgileIssueApproximateCount` for board, backlog, sprint, epic, board-epic, and no-epic issue count scopes.
 
 ## 0.1 - 2026-05-20
 
