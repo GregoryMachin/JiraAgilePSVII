@@ -6,7 +6,7 @@
     CompanyName          = 'AtlassianPS.org'
     Copyright            = '(c) 2017 AtlassianPS. All rights reserved.'
     Description          = 'placeholder'
-    PowerShellVersion    = '3.0'
+    PowerShellVersion    = '5.1'
     RequiredModules      = @("JiraPS")
     FormatsToProcess     = 'JiraAgilePS.format.ps1xml'
     # NestedModules     = @()

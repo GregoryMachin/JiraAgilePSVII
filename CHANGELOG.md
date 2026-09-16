@@ -4,6 +4,7 @@
 
 ### Changed
 
+- Raised the minimum supported PowerShell version from 3.0 to 5.1 (Phase 9 Task 59), aligning the manifest's declared `PowerShellVersion` with CI reality: the CI matrix has never actually tested PowerShell 3.0/4.0, only Windows PowerShell 5.x and current PowerShell 7.x, and this module's own required dependency, `JiraPS`, already declares `PowerShellVersion = '5.1'`, so the previous `3.0` declaration was already inconsistent in practice. No PowerShell 3.0/4.0-specific compatibility code was found to remove.
 - Declared the source manifest's `FunctionsToExport`/`AliasesToExport` explicitly instead of `'*'` (Phase 9 Task 58), making the manifest's `FunctionsToExport` this module's committed compatibility baseline, and added new `Tests/Project.Tests.ps1` assertions that fail the build if the declared list drifts from the actual `Public/` folder contents. Module behavior is unchanged: `JiraAgilePS.psm1` already restricted runtime exports to `Public/*.ps1` via `Export-ModuleMember`, and no persistent alias was ever actually exported despite the wildcard.
 - Updated the shared build dependency and workflow action pins to `AtlassianPS.Standards` `0.1.11`.
 - Updated the build dependency pin and compatibility tests for JiraPS `3.0.0`.
