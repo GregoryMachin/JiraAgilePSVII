@@ -6,6 +6,18 @@ param()
 
 $psScriptAnalyzerSettingsPath = Join-Path (Join-Path $PSScriptRoot '..') 'PSScriptAnalyzerSettings.psd1'
 
+# A sibling, git-ignored ".local-modules" directory (outside every repo, never committed)
+# holds AtlassianPS.Standards builds that have not been published to the real PowerShell
+# Gallery -- consumed directly per the project's own direction, without ever installing
+# into (or colliding with) the machine's real, shared module path. Prepending it here is
+# scoped to this process only; it is never written to $PROFILE or a persistent
+# environment variable.
+$projectRoot = (Resolve-Path -LiteralPath (Join-Path -Path $PSScriptRoot -ChildPath '..')).ProviderPath
+$localModulesPath = Join-Path -Path (Split-Path -Path $projectRoot -Parent) -ChildPath '.local-modules'
+if ((Test-Path -LiteralPath $localModulesPath -PathType Container) -and ($env:PSModulePath -notlike "*$localModulesPath*")) {
+    $env:PSModulePath = "$localModulesPath;$env:PSModulePath"
+}
+
 function Sync-PSScriptAnalyzerSetting {
     [CmdletBinding()]
     param()
@@ -13,7 +25,20 @@ function Sync-PSScriptAnalyzerSetting {
     Write-Host "Syncing PSScriptAnalyzer settings from AtlassianPS.Standards"
 
     try {
-        Import-Module AtlassianPS.Standards -RequiredVersion '0.1.11' -Force -ErrorAction Stop
+        # Read the pinned version from build.requirements.psd1 instead of a hardcoded
+        # literal here: Install-Dependency (below) already installs/imports whatever
+        # version that file pins, so a separate hardcoded version in this function could
+        # silently drift from it and try to load a different (possibly no longer
+        # installed) copy of AtlassianPS.Standards.
+        $buildRequirements = Import-PowerShellDataFile -Path (Join-Path $PSScriptRoot 'build.requirements.psd1')
+        $standardsRequirement = $buildRequirements |
+            Where-Object { $_.ModuleName -eq 'AtlassianPS.Standards' } |
+            Select-Object -First 1
+        if (-not $standardsRequirement -or -not $standardsRequirement.RequiredVersion) {
+            throw "Could not resolve AtlassianPS.Standards required version from 'Tools/build.requirements.psd1'."
+        }
+
+        Import-Module AtlassianPS.Standards -RequiredVersion $standardsRequirement.RequiredVersion -Force -ErrorAction Stop
         $resolvedSettingsPath = Sync-AtlassianPSScriptAnalyzerSettings `
             -DestinationPath $psScriptAnalyzerSettingsPath `
             -ErrorAction Stop
