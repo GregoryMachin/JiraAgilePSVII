@@ -87,5 +87,22 @@ Describe "General project validation" -Tag Unit {
                 $publicFunctionFiles | Should -Contain $normalizedExportedFunctionName -Because "exported function '$normalizedExportedFunctionName' should have a corresponding file in JiraAgilePS/Public/"
             }
         }
+
+        It "exports every public function file" {
+            foreach ($publicFunction in $publicFunctionFiles) {
+                $normalizedExportedFunctionNames | Should -Contain $publicFunction
+            }
+        }
+
+        It "declares its exported functions explicitly in the manifest (Task 58)" {
+            # The manifest's own FunctionsToExport is this module's committed compatibility
+            # baseline: unlike the Public-folder-consistency checks above (which only catch a
+            # folder/export mismatch), this catches an unreviewed addition or removal of a
+            # public command, since updating the manifest is the explicit approval step.
+            $manifestData = Import-PowerShellDataFile -Path "$moduleRoot/JiraAgilePS/JiraAgilePS.psd1"
+            $manifestData.FunctionsToExport | Should -Not -Be '*'
+            Compare-Object -ReferenceObject ($manifestData.FunctionsToExport | Sort-Object) -DifferenceObject ($publicFunctionFiles | Sort-Object) |
+                Should -BeNullOrEmpty
+        }
     }
 }

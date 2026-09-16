@@ -10,10 +10,22 @@
     RequiredModules      = @("JiraPS")
     FormatsToProcess     = 'JiraAgilePS.format.ps1xml'
     # NestedModules     = @()
-    FunctionsToExport    = '*'
+    FunctionsToExport    = @(
+        'Add-IssueToSprint'
+        'Get-Board'
+        'Get-BoardConfiguration'
+        'Get-Epic'
+        'Get-Issue'
+        'Get-IssueApproximateCount'
+        'Get-Sprint'
+        'Move-IssueToBacklog'
+        'New-Sprint'
+        'Remove-Sprint'
+        'Set-Sprint'
+    )
     # CmdletsToExport   = '*'
     # VariablesToExport = '*'
-    AliasesToExport      = '*'
+    AliasesToExport      = @()
     FileList             = @()
     PrivateData          = @{
         PSData = @{

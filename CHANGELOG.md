@@ -4,6 +4,7 @@
 
 ### Changed
 
+- Declared the source manifest's `FunctionsToExport`/`AliasesToExport` explicitly instead of `'*'` (Phase 9 Task 58), making the manifest's `FunctionsToExport` this module's committed compatibility baseline, and added new `Tests/Project.Tests.ps1` assertions that fail the build if the declared list drifts from the actual `Public/` folder contents. Module behavior is unchanged: `JiraAgilePS.psm1` already restricted runtime exports to `Public/*.ps1` via `Export-ModuleMember`, and no persistent alias was ever actually exported despite the wildcard.
 - Updated the shared build dependency and workflow action pins to `AtlassianPS.Standards` `0.1.11`.
 - Updated the build dependency pin and compatibility tests for JiraPS `3.0.0`.
 - Added deployment-aware Jira Software route selection for `Get-JiraAgileIssue`, using enhanced Cloud issue-list routes while preserving Data Center Agile routes.
