@@ -10,7 +10,7 @@ BeforeDiscovery {
 }
 
 InModuleScope JiraAgilePS {
-    Describe "Agile smoke" -Tag 'Integration', 'Smoke', 'Cloud' -Skip:$Skip {
+    Describe "Agile smoke" -Tag 'Integration', 'Smoke', 'CanaryRead', 'Cloud' -Skip:$Skip {
         BeforeAll {
             . "$PSScriptRoot/../Helpers/IntegrationTestTools.ps1"
 

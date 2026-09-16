@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- Added scheduled API contract canaries (Phase 9 Task 60): `.github/workflows/api_canary.yml` runs a low-impact `CanaryRead` tier every 4 hours (reusing the existing `Agile smoke` check) and a bounded `CanaryWrite` tier once daily (a new `Tests/Integration/ApiCanary.Integration.Tests.ps1`, one disposable sprint through create/read/update/delete/confirm-gone on the first Scrum board the canary account can see), both Cloud-only and both against a dedicated, least-privilege `ATLASSIAN_CANARY_USER`/`ATLASSIAN_CANARY_PAT` account separate from the shared smoke/nightly credentials. Each run publishes a machine-readable per-operation result (`Tools/Publish-ApiCanaryResult.ps1`) as a workflow artifact. See `docs/ApiCanaries.md`, including the required manual account-provisioning step this environment cannot perform itself, and why the results format is hand-built rather than calling `AtlassianPS.Standards`' already-written `ConvertTo-ApiCanaryResult` (that function has never been published; this repository still pins the release that predates it).
+
 ### Changed
 
 - Raised the minimum supported PowerShell version from 3.0 to 5.1 (Phase 9 Task 59), aligning the manifest's declared `PowerShellVersion` with CI reality: the CI matrix has never actually tested PowerShell 3.0/4.0, only Windows PowerShell 5.x and current PowerShell 7.x, and this module's own required dependency, `JiraPS`, already declares `PowerShellVersion = '5.1'`, so the previous `3.0` declaration was already inconsistent in practice. No PowerShell 3.0/4.0-specific compatibility code was found to remove.
