@@ -80,7 +80,7 @@ jobs:
 
       - name: Publish machine-readable canary results
         if: always()
-        run: ./Tools/Publish-ApiCanaryResult.ps1 -ResultXmlPath 'Test-Integration.xml' -Repository 'JiraAgilePS' -DeploymentType 'Cloud' -OutputPath 'api-canary-read-results.json'
+        run: ./Tools/Publish-ApiCanaryResult.ps1 -ResultXmlPath 'Test-Integration.xml' -Repository 'JiraAgilePSVII' -DeploymentType 'Cloud' -OutputPath 'api-canary-read-results.json'
         shell: pwsh
 
       - uses: actions/upload-artifact@v7
@@ -117,7 +117,7 @@ jobs:
 
       - name: Publish machine-readable canary results
         if: always()
-        run: ./Tools/Publish-ApiCanaryResult.ps1 -ResultXmlPath 'Test-Integration.xml' -Repository 'JiraAgilePS' -DeploymentType 'Cloud' -OutputPath 'api-canary-write-results.json'
+        run: ./Tools/Publish-ApiCanaryResult.ps1 -ResultXmlPath 'Test-Integration.xml' -Repository 'JiraAgilePSVII' -DeploymentType 'Cloud' -OutputPath 'api-canary-write-results.json'
         shell: pwsh
 
       # No separate guaranteed-cleanup step here: Tests/Integration/ApiCanary's

@@ -152,7 +152,7 @@ function Publish-GithubRelease {
         [Parameter( Mandatory )]
         [ValidateNotNullOrEmpty()]
         [String]$GITHUB_ACCESS_TOKEN,
-        [String]$ProjectOwner = "AtlassianPS",
+        [String]$ProjectOwner = "AtlassianPSVII",
         [String]$ReleaseText,
         [Object]$NextBuildVersion
     )

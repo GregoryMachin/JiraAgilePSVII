@@ -1,10 +1,10 @@
-# JiraAgilePS Testing Guide
+# JiraAgilePSVII Testing Guide
 
-This guide explains the JiraAgilePS test layout and the expected commands for targeted and full validation.
+This guide explains the JiraAgilePSVII test layout and the expected commands for targeted and full validation.
 
 ## Test Structure
 
-JiraAgilePS uses Pester 5.7+.
+JiraAgilePSVII uses Pester 5.7+.
 Tests mirror the module structure so contributors can find the test for a function from its source path.
 
 - `Tests/Functions/Public/` contains unit tests for exported cmdlets.
@@ -45,7 +45,7 @@ Run integration tests only when the change affects live Jira Agile behavior and 
 ## Writing Tests
 
 - Load the module with `Initialize-TestEnvironment` from `Tests/Helpers/TestTools.ps1`.
-- Use `InModuleScope JiraAgilePS` when testing private functions or mocking module-internal calls.
+- Use `InModuleScope JiraAgilePSVII` when testing private functions or mocking module-internal calls.
 - Keep test data local to the test file and remove personal or tenant-specific data from fixtures.
 - Prefer table-driven `-TestCases` for property mapping and signature checks.
 - Keep tests close to the behavior under change; do not add broad refactors as part of test-only work.

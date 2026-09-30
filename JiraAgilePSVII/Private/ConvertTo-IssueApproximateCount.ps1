@@ -48,7 +48,7 @@ function ConvertTo-IssueApproximateCount {
                 EpicId   = $EpicId
                 Query    = $Query
             }
-            $result.PSObject.TypeNames.Insert(0, "AtlassianPS.JiraAgilePS.IssueApproximateCount")
+            $result.PSObject.TypeNames.Insert(0, "AtlassianPSVII.JiraAgilePSVII.IssueApproximateCount")
             $result
         }
     }

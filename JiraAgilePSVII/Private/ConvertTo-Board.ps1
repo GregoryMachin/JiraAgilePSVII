@@ -4,11 +4,11 @@ function ConvertTo-Board {
         Converts Jira Agile board payloads to Board objects.
 
     .DESCRIPTION
-        Selects the board properties used by JiraAgilePS and casts each
-        pipeline input object to [AtlassianPS.JiraAgilePS.Board].
+        Selects the board properties used by JiraAgilePSVII and casts each
+        pipeline input object to [AtlassianPSVII.JiraAgilePSVII.Board].
     #>
     [CmdletBinding()]
-    [OutputType( [AtlassianPS.JiraAgilePS.Board] )]
+    [OutputType( [AtlassianPSVII.JiraAgilePSVII.Board] )]
     param(
         [Parameter( ValueFromPipeline )]
         [PSObject[]]
@@ -19,7 +19,7 @@ function ConvertTo-Board {
         foreach ($object in $InputObject) {
             Write-Debug "[$($MyInvocation.MyCommand.Name)] Converting `$object to custom object"
 
-            [AtlassianPS.JiraAgilePS.Board](ConvertTo-Hashtable -InputObject ( $object | Select-Object `
+            [AtlassianPSVII.JiraAgilePSVII.Board](ConvertTo-Hashtable -InputObject ( $object | Select-Object `
                         Id,
                     Name,
                     Type,

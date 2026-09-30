@@ -11,11 +11,11 @@
 
 ### Changed
 
-- Bumped the `AtlassianPS.Standards` pin from `0.1.11` to a locally built `0.2.0`, resolved via a sibling `.local-modules/` directory rather than the real PowerShell Gallery (this fork's own local development has no relationship to the real, independently published `AtlassianPS.Standards` release line). `Tools/Publish-ApiCanaryResult.ps1` now calls that build's `ConvertTo-AtlassianPSApiCanaryResult` directly instead of hand-building the result schema, and `Sync-PSScriptAnalyzerSetting` now resolves the pinned version dynamically from `Tools/build.requirements.psd1` instead of a hardcoded literal. See `docs/ApiCanaries.md`.
-- Raised the minimum supported PowerShell version from 3.0 to 5.1 (Phase 9 Task 59), aligning the manifest's declared `PowerShellVersion` with CI reality: the CI matrix has never actually tested PowerShell 3.0/4.0, only Windows PowerShell 5.x and current PowerShell 7.x, and this module's own required dependency, `JiraPS`, already declares `PowerShellVersion = '5.1'`, so the previous `3.0` declaration was already inconsistent in practice. No PowerShell 3.0/4.0-specific compatibility code was found to remove. This is a pre-1.0 breaking change absorbed into a minor version bump per SemVer's own leniency for packages that have not yet reached 1.0.
-- Declared the source manifest's `FunctionsToExport`/`AliasesToExport` explicitly instead of `'*'` (Phase 9 Task 58), making the manifest's `FunctionsToExport` this module's committed compatibility baseline, and added new `Tests/Project.Tests.ps1` assertions that fail the build if the declared list drifts from the actual `Public/` folder contents. Module behavior is unchanged: `JiraAgilePS.psm1` already restricted runtime exports to `Public/*.ps1` via `Export-ModuleMember`, and no persistent alias was ever actually exported despite the wildcard.
+- Bumped the `AtlassianPSVII.Standards` pin from `0.1.11` to a locally built `0.2.0`, resolved via a sibling `.local-modules/` directory rather than the real PowerShell Gallery (this fork's own local development has no relationship to the real, independently published `AtlassianPSVII.Standards` release line). `Tools/Publish-ApiCanaryResult.ps1` now calls that build's `ConvertTo-AtlassianPSVIIApiCanaryResult` directly instead of hand-building the result schema, and `Sync-PSScriptAnalyzerSetting` now resolves the pinned version dynamically from `Tools/build.requirements.psd1` instead of a hardcoded literal. See `docs/ApiCanaries.md`.
+- Raised the minimum supported PowerShell version from 3.0 to 5.1 (Phase 9 Task 59), aligning the manifest's declared `PowerShellVersion` with CI reality: the CI matrix has never actually tested PowerShell 3.0/4.0, only Windows PowerShell 5.x and current PowerShell 7.x, and this module's own required dependency, `JiraPSVII`, already declares `PowerShellVersion = '5.1'`, so the previous `3.0` declaration was already inconsistent in practice. No PowerShell 3.0/4.0-specific compatibility code was found to remove. This is a pre-1.0 breaking change absorbed into a minor version bump per SemVer's own leniency for packages that have not yet reached 1.0.
+- Declared the source manifest's `FunctionsToExport`/`AliasesToExport` explicitly instead of `'*'` (Phase 9 Task 58), making the manifest's `FunctionsToExport` this module's committed compatibility baseline, and added new `Tests/Project.Tests.ps1` assertions that fail the build if the declared list drifts from the actual `Public/` folder contents. Module behavior is unchanged: `JiraAgilePSVII.psm1` already restricted runtime exports to `Public/*.ps1` via `Export-ModuleMember`, and no persistent alias was ever actually exported despite the wildcard.
 - Added deployment-aware Jira Software route selection for `Get-JiraAgileIssue`, using enhanced Cloud issue-list routes while preserving Data Center Agile routes.
-- Migrated `Get-JiraAgileIssue` issue-list behavior to JiraPS token pagination for Cloud, forwarded JQL/field/expand query options, and preserved JiraPS issue typing in Agile issue output.
+- Migrated `Get-JiraAgileIssue` issue-list behavior to JiraPSVII token pagination for Cloud, forwarded JQL/field/expand query options, and preserved JiraPSVII issue typing in Agile issue output.
 - Added Cloud-only `Get-JiraAgileIssueApproximateCount` for board, backlog, sprint, epic, board-epic, and no-epic issue count scopes.
 - Added Cloud-only `Get-JiraAgileIssue -ReconcileIssue` support for up to 50 unique numeric Jira issue IDs.
 - Added live parity canaries for migrated Cloud issue-list, reconciliation, and approximate-count scopes.
@@ -46,9 +46,9 @@
 
 ### Changed
 
-- Harmonized integration test environment setup with JiraPS by adopting `.env.example` and a shared-style `.env` loader/validator in `Tests/Helpers/IntegrationTestTools.ps1`.
-- Added JiraPS-style test guidance and private helper/converter unit coverage for JiraAgilePS.
-- Documented the release readiness checklist, required secrets, dry-run validation, prerelease path, and stable release path for JiraAgilePS v0.1.0.
+- Harmonized integration test environment setup with JiraPSVII by adopting `.env.example` and a shared-style `.env` loader/validator in `Tests/Helpers/IntegrationTestTools.ps1`.
+- Added JiraPSVII-style test guidance and private helper/converter unit coverage for JiraAgilePSVII.
+- Documented the release readiness checklist, required secrets, dry-run validation, prerelease path, and stable release path for JiraAgilePSVII v0.1.0.
 
 ### Fixed
 

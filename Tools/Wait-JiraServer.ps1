@@ -58,7 +58,7 @@ try {
     }
 }
 catch {
-    throw "Jira Data Center is reachable, but Jira Software Agile REST is not available at $agileUrl. The Docker image is not valid for JiraAgilePS integration coverage. $($_.Exception.Message)"
+    throw "Jira Data Center is reachable, but Jira Software Agile REST is not available at $agileUrl. The Docker image is not valid for JiraAgilePSVII integration coverage. $($_.Exception.Message)"
 }
 
 try {

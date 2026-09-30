@@ -1,18 +1,18 @@
-# JiraAgilePS current state
+# JiraAgilePSVII current state
 
 Reviewed: 2026-07-27
 
 ## Purpose
 
-`JiraAgilePS` adds PowerShell cmdlets for Jira Software boards, sprints, epics, backlogs, and Agile issue listings.
-It builds on JiraPS for authentication, server configuration, transport, and core issue types.
+`JiraAgilePSVII` adds PowerShell cmdlets for Jira Software boards, sprints, epics, backlogs, and Agile issue listings.
+It builds on JiraPSVII for authentication, server configuration, transport, and core issue types.
 
 ## How it works
 
-- The manifest is version `0.1`, declares PowerShell 3.0, requires JiraPS, and applies the `JiraAgile` default prefix.
+- The manifest is version `0.1`, declares PowerShell 3.0, requires JiraPSVII, and applies the `JiraAgile` default prefix.
 - Ten public source files implement board/configuration, sprint CRUD, epic reads, issue listing, sprint assignment, and backlog movement.
 - Eleven private files convert Agile response objects and unwrap paginated values.
-- Every product request is routed through JiraPS `Invoke-JiraMethod`.
+- Every product request is routed through JiraPSVII `Invoke-JiraMethod`.
 - Current routes use `/rest/agile/1.0`.
 - Public source names are unprefixed; imported commands receive names such as `Get-JiraAgileBoard`.
 
@@ -25,14 +25,14 @@ Three workflow files had pre-existing line-ending-only working-tree changes duri
 - Unit tests cover public commands and private converters/helpers.
 - CI lints, builds, performs a release dry-run, tests Windows PowerShell 5.1 and PowerShell 7 across Windows/Linux/macOS, and runs Cloud smoke tests when secrets are available.
 - Scheduled/manual integration workflows cover Cloud and Dockerized Jira Data Center.
-- Build dependencies pin Pester 5.7.1, JiraPS 2.16.0, and Standards 0.1.2.
+- Build dependencies pin Pester 5.7.1, JiraPSVII 2.16.0, and Standards 0.1.2.
 
 ## Current strengths
 
 - The first practical command set and corresponding tests were delivered in 2026.
-- Transport and authentication correctly remain in JiraPS.
+- Transport and authentication correctly remain in JiraPSVII.
 - Cloud/Data Center integration scaffolding exists.
-- The command prefix avoids collisions with JiraPS.
+- The command prefix avoids collisions with JiraPSVII.
 - `docs/agile-api-coverage-matrix.md` provides a useful endpoint planning pattern.
 
 ## Gaps and risks
@@ -42,8 +42,8 @@ Three workflow files had pre-existing line-ending-only working-tree changes duri
 2. Cloud replacements use `/rest/software/1.0/...` and continuation tokens (`nextPageToken`) instead of `startAt`; `total` is no longer returned.
 3. Data Center still uses the legacy Agile routes, so routing and pagination must become deployment-aware without breaking public output.
 4. `docs/agile-api-coverage-matrix.md` is stale: its "current coverage" section lists only three cmdlets even though ten public commands now exist.
-5. The manifest/build requirement still references JiraPS 2.16.0 while the local JiraPS source is 3.0.0.
-   Compatibility with JiraPS 3 types and removed parameters needs an explicit tested release requirement.
+5. The manifest/build requirement still references JiraPSVII 2.16.0 while the local JiraPSVII source is 3.0.0.
+   Compatibility with JiraPSVII 3 types and removed parameters needs an explicit tested release requirement.
 6. `PowerShellVersion = '3.0'` does not match the effective CI baseline.
 7. The local Standards dependency is far behind 0.1.12.
 8. Cloud write consistency and approximate counts are not represented in the public design.
@@ -62,7 +62,7 @@ Three workflow files had pre-existing line-ending-only working-tree changes duri
 ### Next
 
 7. Update the coverage matrix to the actual ten-command surface and mark endpoint behavior separately for Cloud and Data Center.
-8. Validate and declare JiraPS 3.x compatibility; update argument handling noted by the existing `Add-IssueToSprint` TODO.
+8. Validate and declare JiraPSVII 3.x compatibility; update argument handling noted by the existing `Add-IssueToSprint` TODO.
 9. Align the Standards dependency and action pins with the current shared release blueprint.
 10. Raise the minimum PowerShell version in the next intentional compatibility release.
 11. Add typed Agile domain models and stable output contracts rather than exposing loosely shaped responses.

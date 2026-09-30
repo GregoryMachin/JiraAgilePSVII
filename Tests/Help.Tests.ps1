@@ -16,15 +16,15 @@ Describe "Help tests" -Tag "Documentation", "Build" {
             Write-Warning "Tests are being run outside of the 'Release' folder. Some tests may be skipped."
         }
 
-        $script:module = Get-Module JiraAgilePS
+        $script:module = Get-Module JiraAgilePSVII
         $modulePrefix = $module.Prefix
 
         # Public function files are the canonical source names used in docs.
-        $script:publicFunctions = (Get-ChildItem "$projectRoot/JiraAgilePS/Public/*.ps1").BaseName
+        $script:publicFunctions = (Get-ChildItem "$projectRoot/JiraAgilePSVII/Public/*.ps1").BaseName
 
         # Collect exported command infos and map prefixed command names back to
         # source function names when DefaultCommandPrefix is used.
-        $script:commands = Get-Command -Module JiraAgilePS -CommandType Function |
+        $script:commands = Get-Command -Module JiraAgilePSVII -CommandType Function |
             ForEach-Object {
                 $sourceCommandName = $_.Name
                 if (
@@ -89,7 +89,7 @@ Describe "Help tests" -Tag "Documentation", "Build" {
         $script:aboutTopics = @($aboutTopicDeclarations.TopicName | Sort-Object -Unique)
     }
     BeforeAll {
-        $script:module = Get-Module JiraAgilePS
+        $script:module = Get-Module JiraAgilePSVII
     }
 
     Describe "Public Functions" {
@@ -145,7 +145,7 @@ Describe "Help tests" -Tag "Documentation", "Build" {
 
                 It "defines the frontmatter for the homepage" {
                     $markdownFile | Should -Not -BeNullOrEmpty
-                    $markdownFile | Should -FileContentMatch "Module Name: JiraAgilePS"
+                    $markdownFile | Should -FileContentMatch "Module Name: JiraAgilePSVII"
                     $markdownFile | Should -FileContentMatchExactly "layout: documentation"
                     $markdownFile | Should -FileContentMatch "permalink: /docs/JiraAgilePS/commands/$sourceCommandName/"
                 }
@@ -192,7 +192,7 @@ Describe "Help tests" -Tag "Documentation", "Build" {
                         if ($_.type -and $_.type.name) { ($_.type.name -as [String]).Trim() }
                     }
                     foreach ($n in $inputNames) {
-                        $n | Should -Not -Match '^(System\.)?Object\[\]$' -Because "Object[] / System.Object[] in INPUTS is PlatyPS introspection noise from Object[] parameters tagged with [PSTypeName('JiraPS.X')]; use the concrete type heading instead"
+                        $n | Should -Not -Match '^(System\.)?Object\[\]$' -Because "Object[] / System.Object[] in INPUTS is PlatyPS introspection noise from Object[] parameters tagged with [PSTypeName('JiraPSVII.X')]; use the concrete type heading instead"
                     }
                 }
 

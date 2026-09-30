@@ -158,8 +158,8 @@ jobs:
         run: |
           Invoke-Build -Task Clean, Build, SetVersion, Package -VersionToPublish v9999.0.0-alpha1
 
-          $manifestPath = './Release/JiraAgilePS/JiraAgilePS.psd1'
-          $packagePath = './Release/JiraAgilePS.zip'
+          $manifestPath = './Release/JiraAgilePSVII/JiraAgilePSVII.psd1'
+          $packagePath = './Release/JiraAgilePSVII.zip'
 
           if (-not (Test-Path $manifestPath)) {
             throw "Missing release manifest: $manifestPath"

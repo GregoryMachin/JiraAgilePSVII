@@ -1,8 +1,8 @@
-# Releasing JiraAgilePS
+# Releasing JiraAgilePSVII
 
 Issue: [#17](https://github.com/AtlassianPS/JiraAgilePS/issues/17)
 
-Use this checklist for the first production release and later JiraAgilePS releases.
+Use this checklist for the first production release and later JiraAgilePSVII releases.
 
 ## Release readiness
 
@@ -18,7 +18,7 @@ Use this checklist for the first production release and later JiraAgilePS releas
 ## Required repository secrets and variables
 
 - `PSGALLERY_API_KEY`: required by `release.yml` to publish the module to PowerShell Gallery.
-- `HOMEPAGE_PAT`: required by `release.yml` to notify `AtlassianPS.github.io` after a stable release.
+- `HOMEPAGE_PAT`: required by `release.yml` to notify `AtlassianPSVII.github.io` after a stable release.
 - `GITHUB_TOKEN`: provided by GitHub Actions and used by `release.yml` to create the GitHub release.
 - `JIRA_CLOUD_URL`, `ATLASSIAN_CLOUD_USER`, `ATLASSIAN_CLOUD_PAT`, `JIRA_TEST_PROJECT`, and `JIRA_TEST_ISSUE`: required for CI Cloud smoke tests.
 
@@ -32,8 +32,8 @@ Invoke-Build -Task Clean, Build, SetVersion, Package -VersionToPublish v9999.0.0
 
 The job verifies that:
 
-- `Release/JiraAgilePS/JiraAgilePS.psd1` exists.
-- `Release/JiraAgilePS.zip` exists.
+- `Release/JiraAgilePSVII/JiraAgilePSVII.psd1` exists.
+- `Release/JiraAgilePSVII.zip` exists.
 - the manifest version is updated to `9999.0.0`.
 - the manifest prerelease label is updated to `alpha1`.
 
@@ -47,7 +47,7 @@ git push origin v0.1.0-rc1
 ```
 
 Tags containing `alpha`, `beta`, or `rc` are marked as GitHub prereleases by `release.yml`.
-The workflow downloads the `Release` artifact from the successful CI run for the tagged commit, publishes the module with the tag version, and uploads `Release/JiraAgilePS.zip` to the GitHub release.
+The workflow downloads the `Release` artifact from the successful CI run for the tagged commit, publishes the module with the tag version, and uploads `Release/JiraAgilePSVII.zip` to the GitHub release.
 
 ## Stable release path
 
@@ -61,6 +61,6 @@ git push origin v0.1.0
 After the workflow completes, verify:
 
 - the GitHub release exists for the tag.
-- `Release/JiraAgilePS.zip` is attached to the GitHub release.
+- `Release/JiraAgilePSVII.zip` is attached to the GitHub release.
 - the PowerShell Gallery package is available.
 - the homepage dispatch ran for the stable release.

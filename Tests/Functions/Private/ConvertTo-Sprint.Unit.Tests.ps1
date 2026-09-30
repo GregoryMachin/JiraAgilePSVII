@@ -6,7 +6,7 @@ BeforeDiscovery {
     $script:moduleToTest = Initialize-TestEnvironment
 }
 
-InModuleScope JiraAgilePS {
+InModuleScope JiraAgilePSVII {
     Describe "ConvertTo-Sprint" -Tag 'Unit' {
         BeforeAll {
             . "$PSScriptRoot/../../Helpers/TestTools.ps1"
@@ -30,13 +30,13 @@ InModuleScope JiraAgilePS {
             }
 
             It "returns a typed sprint object" {
-                $result | Should -BeOfType ([AtlassianPS.JiraAgilePS.Sprint])
+                $result | Should -BeOfType ([AtlassianPSVII.JiraAgilePSVII.Sprint])
             }
 
             It "maps sprint properties" {
                 $result.Id | Should -Be 25
                 $result.Name | Should -Be 'Sprint 25'
-                $result.State | Should -Be ([AtlassianPS.JiraAgilePS.SprintState]::active)
+                $result.State | Should -Be ([AtlassianPSVII.JiraAgilePSVII.SprintState]::active)
                 $result.OriginBoardId | Should -Be 7
                 $result.Goal | Should -Be 'Ship the board fixes'
                 $result.Self.AbsoluteUri | Should -Be 'https://jira.example.com/rest/agile/1.0/sprint/25'

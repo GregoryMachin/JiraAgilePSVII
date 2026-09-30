@@ -1,11 +1,31 @@
-function Remove-Sprint {
-    # .ExternalHelp ..\JiraAgilePS-help.xml
-    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
-    [OutputType([void])]
+function Set-Sprint {
+    # .ExternalHelp ..\JiraAgilePSVII-help.xml
+    [CmdletBinding(SupportsShouldProcess)]
+    [OutputType([AtlassianPSVII.JiraAgilePSVII.Sprint])]
     param(
         [Parameter(Position = 0, Mandatory, ValueFromPipeline)]
-        [AtlassianPS.JiraAgilePS.Sprint[]]
+        [AtlassianPSVII.JiraAgilePSVII.Sprint[]]
         $Sprint,
+
+        [Parameter()]
+        [string]
+        $Name,
+
+        [Parameter()]
+        [AtlassianPSVII.JiraAgilePSVII.SprintState]
+        $State,
+
+        [Parameter()]
+        [DateTime]
+        $StartDate,
+
+        [Parameter()]
+        [DateTime]
+        $EndDate,
+
+        [Parameter()]
+        [string]
+        $Goal,
 
         [Parameter()]
         [System.Management.Automation.PSCredential]
@@ -29,10 +49,18 @@ function Remove-Sprint {
                 throw "[$($MyInvocation.MyCommand.Name)] Sprint input must contain a non-zero Id."
             }
 
-            if ($PSCmdlet.ShouldProcess("Sprint $($_sprint.Id)", 'Delete Jira Agile sprint')) {
+            $body = @{ }
+            if ($PSBoundParameters.ContainsKey('Name')) { $body['name'] = $Name }
+            if ($PSBoundParameters.ContainsKey('State')) { $body['state'] = $State.ToString() }
+            if ($PSBoundParameters.ContainsKey('StartDate')) { $body['startDate'] = ConvertTo-JiraAgileDateString $StartDate }
+            if ($PSBoundParameters.ContainsKey('EndDate')) { $body['endDate'] = ConvertTo-JiraAgileDateString $EndDate }
+            if ($PSBoundParameters.ContainsKey('Goal')) { $body['goal'] = $Goal }
+
+            if ($PSCmdlet.ShouldProcess("Sprint $($_sprint.Id)", 'Update Jira Agile sprint')) {
                 $requestParameter = @{
                     Uri        = $resourceUrl -f $_sprint.Id
-                    Method     = "DELETE"
+                    Method     = "POST"
+                    Body       = ConvertTo-Json $body
                     Credential = $Credential
                     Cmdlet     = $PSCmdlet
                     Verbose    = $VerbosePreference
@@ -40,7 +68,7 @@ function Remove-Sprint {
                 }
 
                 Write-Debug "[$($MyInvocation.MyCommand.Name)] Invoking JiraMethod with `$requestParameter"
-                Invoke-JiraMethod @requestParameter
+                Invoke-JiraMethod @requestParameter | ConvertTo-Sprint
             }
         }
     }

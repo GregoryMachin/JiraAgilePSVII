@@ -1,5 +1,5 @@
 function Move-IssueToBacklog {
-    # .ExternalHelp ..\JiraAgilePS-help.xml
+    # .ExternalHelp ..\JiraAgilePSVII-help.xml
     [CmdletBinding(SupportsShouldProcess)]
     [OutputType([void])]
     param(

@@ -1,6 +1,6 @@
 ---
-external help file: JiraAgilePS-help.xml
-Module Name: JiraAgilePS
+external help file: JiraAgilePSVII-help.xml
+Module Name: JiraAgilePSVII
 online version: https://atlassianps.org/docs/JiraAgilePS/commands/Get-IssueApproximateCount/
 locale: en-US
 layout: documentation
@@ -65,8 +65,8 @@ Counts are permission-scoped and can be eventually consistent.
 ### EXAMPLE 1
 
 ```powershell
-$board = JiraAgilePS\Get-Board -BoardId 7 -Credential $cred
-JiraAgilePS\Get-IssueApproximateCount -Board $board -Credential $cred
+$board = JiraAgilePSVII\Get-Board -BoardId 7 -Credential $cred
+JiraAgilePSVII\Get-IssueApproximateCount -Board $board -Credential $cred
 ```
 
 Returns an approximate count for issues visible on board 7.
@@ -74,8 +74,8 @@ Returns an approximate count for issues visible on board 7.
 ### EXAMPLE 2
 
 ```powershell
-$board = JiraAgilePS\Get-Board -BoardId 7 -Credential $cred
-JiraAgilePS\Get-IssueApproximateCount -Board $board -Backlog -Query 'project = AG' -Credential $cred
+$board = JiraAgilePSVII\Get-Board -BoardId 7 -Credential $cred
+JiraAgilePSVII\Get-IssueApproximateCount -Board $board -Backlog -Query 'project = AG' -Credential $cred
 ```
 
 Returns an approximate backlog count filtered by the supplied JQL.
@@ -83,9 +83,9 @@ Returns an approximate backlog count filtered by the supplied JQL.
 ### EXAMPLE 3
 
 ```powershell
-$board = JiraAgilePS\Get-Board -BoardId 7 -Credential $cred
-$sprint = JiraAgilePS\Get-Sprint -Board $board -State Active -Credential $cred | Select-Object -First 1
-JiraAgilePS\Get-IssueApproximateCount -Board $board -Sprint $sprint -Credential $cred
+$board = JiraAgilePSVII\Get-Board -BoardId 7 -Credential $cred
+$sprint = JiraAgilePSVII\Get-Sprint -Board $board -State Active -Credential $cred | Select-Object -First 1
+JiraAgilePSVII\Get-IssueApproximateCount -Board $board -Sprint $sprint -Credential $cred
 ```
 
 Returns an approximate count for issues in the sprint.
@@ -93,8 +93,8 @@ Returns an approximate count for issues in the sprint.
 ### EXAMPLE 4
 
 ```powershell
-$epic = [AtlassianPS.JiraAgilePS.Epic]::new(10001)
-JiraAgilePS\Get-IssueApproximateCount -Epic $epic -Credential $cred
+$epic = [AtlassianPSVII.JiraAgilePSVII.Epic]::new(10001)
+JiraAgilePSVII\Get-IssueApproximateCount -Epic $epic -Credential $cred
 ```
 
 Returns an approximate count for issues assigned to the epic.
@@ -102,9 +102,9 @@ Returns an approximate count for issues assigned to the epic.
 ### EXAMPLE 5
 
 ```powershell
-$board = JiraAgilePS\Get-Board -BoardId 7 -Credential $cred
-$epic = [AtlassianPS.JiraAgilePS.Epic]::new(10001)
-JiraAgilePS\Get-IssueApproximateCount -Board $board -Epic $epic -Credential $cred
+$board = JiraAgilePSVII\Get-Board -BoardId 7 -Credential $cred
+$epic = [AtlassianPSVII.JiraAgilePSVII.Epic]::new(10001)
+JiraAgilePSVII\Get-IssueApproximateCount -Board $board -Epic $epic -Credential $cred
 ```
 
 Returns an approximate board-scoped count for issues assigned to the epic.
@@ -112,8 +112,8 @@ Returns an approximate board-scoped count for issues assigned to the epic.
 ### EXAMPLE 6
 
 ```powershell
-$board = JiraAgilePS\Get-Board -BoardId 7 -Credential $cred
-JiraAgilePS\Get-IssueApproximateCount -Board $board -WithoutEpic -Credential $cred
+$board = JiraAgilePSVII\Get-Board -BoardId 7 -Credential $cred
+JiraAgilePSVII\Get-IssueApproximateCount -Board $board -WithoutEpic -Credential $cred
 ```
 
 Returns an approximate count for board issues without an epic assignment.
@@ -241,15 +241,15 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### AtlassianPS.JiraAgilePS.Board
+### AtlassianPSVII.JiraAgilePSVII.Board
 
-### AtlassianPS.JiraAgilePS.Sprint[]
+### AtlassianPSVII.JiraAgilePSVII.Sprint[]
 
-### AtlassianPS.JiraAgilePS.Epic[]
+### AtlassianPSVII.JiraAgilePSVII.Epic[]
 
 ## OUTPUTS
 
-### AtlassianPS.JiraAgilePS.IssueApproximateCount
+### AtlassianPSVII.JiraAgilePSVII.IssueApproximateCount
 
 ## NOTES
 

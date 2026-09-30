@@ -1,6 +1,6 @@
 ---
-external help file: JiraAgilePS-help.xml
-Module Name: JiraAgilePS
+external help file: JiraAgilePSVII-help.xml
+Module Name: JiraAgilePSVII
 online version: https://atlassianps.org/docs/JiraAgilePS/commands/Get-Sprint/
 locale: en-US
 layout: documentation
@@ -42,8 +42,8 @@ When imported normally, run this command as `Get-JiraAgileSprint`.
 ### EXAMPLE 1
 
 ```powershell
-$board = JiraAgilePS\Get-Board -Credential $cred | Select-Object -First 1
-JiraAgilePS\Get-Sprint -Board $board -Credential $cred
+$board = JiraAgilePSVII\Get-Board -Credential $cred | Select-Object -First 1
+JiraAgilePSVII\Get-Sprint -Board $board -Credential $cred
 ```
 
 Lists sprints for a board.
@@ -51,8 +51,8 @@ Lists sprints for a board.
 ### EXAMPLE 2
 
 ```powershell
-$board = JiraAgilePS\Get-Board -Credential $cred | Select-Object -First 1
-JiraAgilePS\Get-Sprint -Board $board -State Active -Credential $cred
+$board = JiraAgilePSVII\Get-Board -Credential $cred | Select-Object -First 1
+JiraAgilePSVII\Get-Sprint -Board $board -State Active -Credential $cred
 ```
 
 Returns only active sprints for the selected board.
@@ -60,8 +60,8 @@ Returns only active sprints for the selected board.
 ### EXAMPLE 3
 
 ```powershell
-$sprint = [AtlassianPS.JiraAgilePS.Sprint]::new(42)
-JiraAgilePS\Get-Sprint -Sprint $sprint -Credential $cred
+$sprint = [AtlassianPSVII.JiraAgilePSVII.Sprint]::new(42)
+JiraAgilePSVII\Get-Sprint -Sprint $sprint -Credential $cred
 ```
 
 Gets sprint details by sprint ID context.
@@ -69,7 +69,7 @@ Gets sprint details by sprint ID context.
 ### EXAMPLE 4
 
 ```powershell
-JiraAgilePS\Get-Sprint -Board $board -First 20 -IncludeTotalCount -Credential $cred
+JiraAgilePSVII\Get-Sprint -Board $board -First 20 -IncludeTotalCount -Credential $cred
 ```
 
 Returns the first 20 sprints for a board and emits the total available count.
@@ -213,17 +213,17 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### AtlassianPS.JiraAgilePS.Board
+### AtlassianPSVII.JiraAgilePSVII.Board
 
 Board object when using the `_All` parameter set.
 
-### AtlassianPS.JiraAgilePS.Sprint[]
+### AtlassianPSVII.JiraAgilePSVII.Sprint[]
 
 Sprint object(s) when using the `_ById` parameter set.
 
 ## OUTPUTS
 
-### AtlassianPS.JiraAgilePS.Sprint
+### AtlassianPSVII.JiraAgilePSVII.Sprint
 
 ## NOTES
 

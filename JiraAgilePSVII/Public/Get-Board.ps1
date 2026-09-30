@@ -1,7 +1,7 @@
 function Get-Board {
-    # .ExternalHelp ..\JiraAgilePS-help.xml
+    # .ExternalHelp ..\JiraAgilePSVII-help.xml
     [CmdletBinding( SupportsPaging, DefaultParameterSetName = '_All' )]
-    [OutputType( [AtlassianPS.JiraAgilePS.Board] )]
+    [OutputType( [AtlassianPSVII.JiraAgilePSVII.Board] )]
     param(
         [Parameter( Position = 0, Mandatory, ValueFromPipeline, ParameterSetName = '_Search' )]
         [UInt64[]]

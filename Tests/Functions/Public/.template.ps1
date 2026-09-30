@@ -6,7 +6,7 @@ BeforeDiscovery {
     $script:moduleToTest = Initialize-TestEnvironment
 }
 
-InModuleScope JiraAgilePS {
+InModuleScope JiraAgilePSVII {
     # TODO: replace %RESOURCE% and %RESOURCEJSON% with the actual resource name and JSON used in the tests
     Describe "%NAME OF THE FUNCTION TO TEST%" -Tag 'Unit' {
         BeforeAll {
@@ -22,30 +22,30 @@ InModuleScope JiraAgilePS {
             #endregion Definitions
 
             #region Mocks
-            Mock Get-JiraConfigServer -ModuleName JiraAgilePS {
+            Mock Get-JiraConfigServer -ModuleName JiraAgilePSVII {
                 Write-MockDebugInfo 'Get-JiraConfigServer'
                 $jiraServer
             }
 
             # TODO: Adjust the mock to return a valid %RESOURCE% object
-            Mock ConvertTo-Jira%RESOURCE% -ModuleName JiraAgilePS {
+            Mock ConvertTo-Jira%RESOURCE% -ModuleName JiraAgilePSVII {
                 Write-MockDebugInfo 'ConvertTo-Jira%RESOURCE'
                 $i = New-Object -TypeName PSCustomObject
-                $i.PSObject.TypeNames.Insert(0, 'JiraAgilePS.%RESOURCE')
+                $i.PSObject.TypeNames.Insert(0, 'JiraAgilePSVII.%RESOURCE')
                 $i
             }
 
             # TODO: Add a mock for every function used by the function under test
 
             # TODO: Adjust ParameterFilter to match the expected calls
-            Mock Invoke-JiraMethod -ModuleName JiraAgilePS -ParameterFilter {
+            Mock Invoke-JiraMethod -ModuleName JiraAgilePSVII -ParameterFilter {
                 $Method -eq 'Post' -and $URI -like "$jiraServer/rest/api/*/filter/*/permission"
             } {
                 Write-MockDebugInfo 'Invoke-JiraMethod' 'Method', 'Uri', 'Body'
                 ConvertFrom-Json $permissionJSON
             }
 
-            Mock Invoke-JiraMethod -ModuleName JiraAgilePS {
+            Mock Invoke-JiraMethod -ModuleName JiraAgilePSVII {
                 # Generic catch-all mock to identify unhandled calls
                 Write-MockDebugInfo 'Invoke-JiraMethod' 'Method', 'Uri'
                 throw "Unidentified call to Invoke-JiraMethod: $Method $URI"
@@ -106,7 +106,7 @@ InModuleScope JiraAgilePS {
                 It "resolves input string to object" {
                     { %FUNCTION-NAME% -Id '12345' -Type "Global" } | Should -Not -Throw
 
-                    Should -Invoke 'Get-Jira%RESOURCE%' -ModuleName 'JiraAgilePS' -Exactly -Times 1 -Scope It
+                    Should -Invoke 'Get-Jira%RESOURCE%' -ModuleName 'JiraAgilePSVII' -Exactly -Times 1 -Scope It
                 }
             }
 
@@ -114,7 +114,7 @@ InModuleScope JiraAgilePS {
                 It "calls Invoke-JiraMethod with correct parameters" {
                     { %FUNCTION-NAME% -Id 12844 -Type "Global" } | Should -Not -Throw
 
-                    Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+                    Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It -ParameterFilter {
                         $Method -eq 'Post' -and
                         $URI -like '*/rest/api/*/filter/12844/permission'
                     }
@@ -122,10 +122,10 @@ InModuleScope JiraAgilePS {
             }
 
             Context "returns an object" {
-                It "returns a JiraAgilePS.%RESOURCE% object" {
+                It "returns a JiraAgilePSVII.%RESOURCE% object" {
                     { %FUNCTION-NAME% -Id '12345' -Type "Global" } | Should -Not -Throw
 
-                    Should -Invoke 'ConvertTo-Jira%RESOURCE%' -ModuleName 'JiraAgilePS' -Exactly -Times 1 -Scope It
+                    Should -Invoke 'ConvertTo-Jira%RESOURCE%' -ModuleName 'JiraAgilePSVII' -Exactly -Times 1 -Scope It
                 }
             }
         }
@@ -163,13 +163,13 @@ InModuleScope JiraAgilePS {
 
                     { %FUNCTION-NAME% -%RESOURCE% $collection } | Should -Not -Throw
 
-                    Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 5 -Scope It
+                    Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 5 -Scope It
                 }
 
                 It "can process a list" {
                     { %FUNCTION-NAME% -Id 1, 2, 3, 4, 5 } | Should -Not -Throw
 
-                    Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 5 -Scope It
+                    Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 5 -Scope It
                 }
             }
         }

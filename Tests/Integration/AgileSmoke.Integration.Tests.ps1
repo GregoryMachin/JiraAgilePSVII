@@ -9,7 +9,7 @@ BeforeDiscovery {
     $script:Skip = Skip-IntegrationTest
 }
 
-InModuleScope JiraAgilePS {
+InModuleScope JiraAgilePSVII {
     Describe "Agile smoke" -Tag 'Integration', 'Smoke', 'CanaryRead', 'Cloud' -Skip:$Skip {
         BeforeAll {
             . "$PSScriptRoot/../Helpers/IntegrationTestTools.ps1"
@@ -31,7 +31,7 @@ InModuleScope JiraAgilePS {
             { $script:boards = @(Get-JiraAgileBoard -PageSize 1 -ErrorAction Stop) } | Should -Not -Throw
 
             if ($script:boards.Count -gt 0) {
-                $script:boards[0].PSObject.TypeNames[0] | Should -Be 'AtlassianPS.JiraAgilePS.Board'
+                $script:boards[0].PSObject.TypeNames[0] | Should -Be 'AtlassianPSVII.JiraAgilePSVII.Board'
                 $script:boards[0].Id | Should -Not -BeNullOrEmpty
             }
         }

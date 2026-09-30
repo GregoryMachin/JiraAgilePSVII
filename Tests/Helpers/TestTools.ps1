@@ -8,7 +8,7 @@ function Initialize-TestEnvironment {
 
     $manifestPath = Resolve-ModuleSource
     $moduleDir = Split-Path $manifestPath -Parent
-    Import-JiraPSCandidate
+    Import-JiraPSVIICandidate
 
     $fingerprint = (
         Get-ChildItem $moduleDir -Recurse -File -ErrorAction SilentlyContinue |
@@ -17,7 +17,7 @@ function Initialize-TestEnvironment {
             Measure-Object -Maximum
     ).Maximum
 
-    $loaded = Get-Module JiraAgilePS
+    $loaded = Get-Module JiraAgilePSVII
     if ($loaded -and $loaded.ModuleBase -eq $moduleDir) {
         $cached = & $loaded { $script:__TestImportFingerprint }
         if ($cached -eq $fingerprint) {
@@ -28,30 +28,30 @@ function Initialize-TestEnvironment {
     Get-Module |
         Where-Object {
             $_.RequiredModules -and
-            (@($_.RequiredModules | ForEach-Object { $_.Name }) -contains 'JiraAgilePS')
+            (@($_.RequiredModules | ForEach-Object { $_.Name }) -contains 'JiraAgilePSVII')
         } |
         Remove-Module -Force -ErrorAction SilentlyContinue
-    Remove-Module JiraAgilePS -Force -ErrorAction SilentlyContinue
+    Remove-Module JiraAgilePSVII -Force -ErrorAction SilentlyContinue
 
     Import-Module $manifestPath -Force -ErrorAction Stop
-    & (Get-Module JiraAgilePS) { param($fp) $script:__TestImportFingerprint = $fp } $fingerprint
+    & (Get-Module JiraAgilePSVII) { param($fp) $script:__TestImportFingerprint = $fp } $fingerprint
 
     return $manifestPath
 }
 
-function Import-JiraPSCandidate {
+function Import-JiraPSVIICandidate {
     [CmdletBinding()]
     param()
 
     $projectRoot = Resolve-ProjectRoot
     $workspaceRoot = Split-Path $projectRoot -Parent
-    $localJiraManifest = Join-Path $workspaceRoot 'JiraPS/JiraPS/JiraPS.psd1'
+    $localJiraManifest = Join-Path $workspaceRoot 'JiraPSVII/JiraPSVII/JiraPSVII.psd1'
 
     if (Test-Path -LiteralPath $localJiraManifest -PathType Leaf) {
         $manifest = Test-ModuleManifest -Path $localJiraManifest -ErrorAction Stop -WarningAction SilentlyContinue
         if ($manifest.Version -ge [Version]'3.0.0') {
             $pathSeparator = [IO.Path]::PathSeparator
-            $moduleSearchRoot = Join-Path $workspaceRoot 'JiraPS'
+            $moduleSearchRoot = Join-Path $workspaceRoot 'JiraPSVII'
             $modulePaths = @($env:PSModulePath -split [Regex]::Escape($pathSeparator))
             if ($moduleSearchRoot -notin $modulePaths) {
                 $env:PSModulePath = "$moduleSearchRoot$pathSeparator$env:PSModulePath"
@@ -61,7 +61,7 @@ function Import-JiraPSCandidate {
         }
     }
 
-    Import-Module JiraPS -RequiredVersion 3.0.0 -Force -ErrorAction Stop
+    Import-Module JiraPSVII -RequiredVersion 3.0.0 -Force -ErrorAction Stop
 }
 
 function Resolve-ModuleSource {
@@ -76,10 +76,10 @@ function Resolve-ModuleSource {
         $projectRoot = (Resolve-Path "$projectRoot/Release").Path
     }
 
-    $moduleManifest = Join-Path $projectRoot "JiraAgilePS/JiraAgilePS.psd1"
+    $moduleManifest = Join-Path $projectRoot "JiraAgilePSVII/JiraAgilePSVII.psd1"
 
     if (-not (Test-Path $moduleManifest)) {
-        throw "Could not find JiraAgilePS module at: $moduleManifest"
+        throw "Could not find JiraAgilePSVII module at: $moduleManifest"
     }
 
     Write-Verbose "Using module at: $moduleManifest"
@@ -95,7 +95,7 @@ function Resolve-ProjectRoot {
     while ($candidate -and ($candidate -ne [System.IO.Path]::GetPathRoot($candidate))) {
         if (
             (Test-Path (Join-Path $candidate "CODEOWNERS")) -or
-            (Test-Path (Join-Path $candidate "JiraAgilePS.build.ps1"))
+            (Test-Path (Join-Path $candidate "JiraAgilePSVII.build.ps1"))
         ) {
             return $candidate
         }

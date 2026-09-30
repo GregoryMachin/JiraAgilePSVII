@@ -15,13 +15,13 @@ Describe "New-JiraAgileSprint" -Tag 'Unit' {
     BeforeAll {
         $script:jiraServer = "https://jira.example.com"
 
-        Mock Get-JiraConfigServer -ModuleName JiraAgilePS {
+        Mock Get-JiraConfigServer -ModuleName JiraAgilePSVII {
             $jiraServer
         }
     }
 
     BeforeEach {
-        Mock Invoke-JiraMethod -ModuleName JiraAgilePS {
+        Mock Invoke-JiraMethod -ModuleName JiraAgilePSVII {
             [pscustomobject]@{
                 id            = 101
                 name          = 'Sprint 101'
@@ -44,7 +44,7 @@ Describe "New-JiraAgileSprint" -Tag 'Unit' {
         Context "Parameter Types" {
             It "has a parameter '<parameter>' of type '<type>'" -TestCases @(
                 @{ parameter = "Name"; type = [string] }
-                @{ parameter = "Board"; type = [AtlassianPS.JiraAgilePS.Board] }
+                @{ parameter = "Board"; type = [AtlassianPSVII.JiraAgilePSVII.Board] }
                 @{ parameter = "StartDate"; type = [DateTime] }
                 @{ parameter = "EndDate"; type = [DateTime] }
                 @{ parameter = "Goal"; type = [string] }
@@ -66,13 +66,13 @@ Describe "New-JiraAgileSprint" -Tag 'Unit' {
 
     Describe "Behavior" {
         It "posts a sprint create payload and returns a typed sprint" {
-            $board = [AtlassianPS.JiraAgilePS.Board]::new(9)
+            $board = [AtlassianPSVII.JiraAgilePSVII.Board]::new(9)
             $startDate = [DateTime]'2026-06-01T00:00:00Z'
             $endDate = [DateTime]'2026-06-14T00:00:00Z'
 
             $result = New-JiraAgileSprint -Board $board -Name 'Sprint 101' -StartDate $startDate -EndDate $endDate -Goal 'Ship write cmdlets' -Confirm:$false
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It -ParameterFilter {
                 $payload = $Body | ConvertFrom-Json
                 $Method -eq "POST" -and
                 $Uri -eq "$jiraServer/rest/agile/1.0/sprint" -and
@@ -82,23 +82,23 @@ Describe "New-JiraAgileSprint" -Tag 'Unit' {
                 $Body -match '"startDate"\s*:\s*"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}[+-]\d{2}:\d{2}"' -and
                 $Body -match '"endDate"\s*:\s*"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}[+-]\d{2}:\d{2}"'
             }
-            $result | Should -BeOfType ([AtlassianPS.JiraAgilePS.Sprint])
+            $result | Should -BeOfType ([AtlassianPSVII.JiraAgilePSVII.Sprint])
             $result.Id | Should -Be 101
         }
 
         It "throws when Board has no numeric id" {
-            $board = [AtlassianPS.JiraAgilePS.Board]::new("team-board")
+            $board = [AtlassianPSVII.JiraAgilePSVII.Board]::new("team-board")
 
             { New-JiraAgileSprint -Board $board -Name 'Sprint 101' -Confirm:$false } |
                 Should -Throw "*Board input must contain a non-zero Id.*"
         }
 
         It "does not invoke Jira when WhatIf is used" {
-            $board = [AtlassianPS.JiraAgilePS.Board]::new(9)
+            $board = [AtlassianPSVII.JiraAgilePSVII.Board]::new(9)
 
             New-JiraAgileSprint -Board $board -Name 'Sprint 101' -WhatIf
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 0 -Scope It
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 0 -Scope It
         }
     }
 }

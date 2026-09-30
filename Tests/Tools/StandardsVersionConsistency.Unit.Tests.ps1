@@ -1,6 +1,6 @@
 #requires -modules @{ ModuleName = "Pester"; ModuleVersion = "5.7"; MaximumVersion = "5.999" }
 
-Describe 'AtlassianPS.Standards version consistency' -Tag Unit {
+Describe 'AtlassianPSVII.Standards version consistency' -Tag Unit {
     BeforeAll {
         $script:projectRoot = if (
             $env:BHProjectPath -and
@@ -15,7 +15,7 @@ Describe 'AtlassianPS.Standards version consistency' -Tag Unit {
         $requirements = Import-PowerShellDataFile -LiteralPath $requirementsPath
         $script:standardsVersion = [String](
             $requirements |
-                Where-Object { $_.ModuleName -eq 'AtlassianPS.Standards' } |
+                Where-Object { $_.ModuleName -eq 'AtlassianPSVII.Standards' } |
                 Select-Object -First 1 -ExpandProperty RequiredVersion
         )
     }
@@ -46,19 +46,19 @@ Describe 'AtlassianPS.Standards version consistency' -Tag Unit {
     It 'keeps build and setup imports aligned with build.requirements' {
         $escapedVersion = [Regex]::Escape($script:standardsVersion)
         $buildScript = Get-Content `
-            -LiteralPath (Join-Path $script:projectRoot 'JiraAgilePS.build.ps1') `
+            -LiteralPath (Join-Path $script:projectRoot 'JiraAgilePSVII.build.ps1') `
             -Raw
         $setupScript = Get-Content `
             -LiteralPath (Join-Path $script:projectRoot 'Tools/setup.ps1') `
             -Raw
 
         $buildScript | Should -Match (
-            "ModuleName\s*=\s*'AtlassianPS\.Standards';\s*" +
+            "ModuleName\s*=\s*'AtlassianPSVII\.Standards';\s*" +
             "ModuleVersion\s*=\s*'$escapedVersion';\s*" +
             "MaximumVersion\s*=\s*'$escapedVersion'"
         )
         $setupScript | Should -Match (
-            "Import-Module\s+AtlassianPS\.Standards\s+-RequiredVersion\s+'$escapedVersion'"
+            "Import-Module\s+AtlassianPSVII\.Standards\s+-RequiredVersion\s+'$escapedVersion'"
         )
     }
 }

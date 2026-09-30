@@ -5,7 +5,7 @@ function ConvertTo-BoardConfiguration {
 
     .DESCRIPTION
         Clones each response object into a PSCustomObject and applies the
-        AtlassianPS.JiraAgilePS.BoardConfiguration typename for formatting
+        AtlassianPSVII.JiraAgilePSVII.BoardConfiguration typename for formatting
         and downstream processing.
     #>
     [CmdletBinding()]
@@ -22,10 +22,10 @@ function ConvertTo-BoardConfiguration {
                 continue
             }
 
-            Write-Debug "[$($MyInvocation.MyCommand.Name)] Converting `$InputObject to AtlassianPS.JiraAgilePS.BoardConfiguration"
+            Write-Debug "[$($MyInvocation.MyCommand.Name)] Converting `$InputObject to AtlassianPSVII.JiraAgilePSVII.BoardConfiguration"
 
             $configuration = [PSCustomObject](ConvertTo-Hashtable -InputObject ($object | Select-Object -Property *))
-            $configuration.PSObject.TypeNames.Insert(0, "AtlassianPS.JiraAgilePS.BoardConfiguration")
+            $configuration.PSObject.TypeNames.Insert(0, "AtlassianPSVII.JiraAgilePSVII.BoardConfiguration")
 
             $configuration
         }

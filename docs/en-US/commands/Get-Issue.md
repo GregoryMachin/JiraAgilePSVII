@@ -1,6 +1,6 @@
 ---
-external help file: JiraAgilePS-help.xml
-Module Name: JiraAgilePS
+external help file: JiraAgilePSVII-help.xml
+Module Name: JiraAgilePSVII
 online version: https://atlassianps.org/docs/JiraAgilePS/commands/Get-Issue/
 locale: en-US
 layout: documentation
@@ -63,8 +63,8 @@ For Jira Data Center, the command preserves the existing `/rest/agile/1.0` route
 - Cloud: `GET /rest/software/1.0/board/{boardId}/epic/{epicId}/issue`; Data Center: `GET /rest/agile/1.0/board/{boardId}/epic/{epicId}/issue`.
 - Cloud: `GET /rest/software/1.0/board/{boardId}/epic/none/issue`; Data Center: `GET /rest/agile/1.0/board/{boardId}/epic/none/issue`.
 
-The command supports paging and converts issue results into JiraAgilePS issue objects while preserving JiraPS issue typing.
-Cloud issue-list routes use token pagination (`nextPageToken`/`isLast`) through JiraPS; Data Center routes keep offset pagination.
+The command supports paging and converts issue results into JiraAgilePSVII issue objects while preserving JiraPSVII issue typing.
+Cloud issue-list routes use token pagination (`nextPageToken`/`isLast`) through JiraPSVII; Data Center routes keep offset pagination.
 `-Query`, `-Fields`, and `-Expand` are forwarded as query parameters to Jira.
 `-ReconcileIssue` is Cloud-only and forwards up to 50 unique numeric Jira issue IDs through the enhanced issue-list reconciliation option.
 
@@ -73,8 +73,8 @@ Cloud issue-list routes use token pagination (`nextPageToken`/`isLast`) through 
 ### EXAMPLE 1
 
 ```powershell
-$board = JiraAgilePS\Get-Board -BoardId 7 -Credential $cred
-JiraAgilePS\Get-Issue -Board $board -Credential $cred
+$board = JiraAgilePSVII\Get-Board -BoardId 7 -Credential $cred
+JiraAgilePSVII\Get-Issue -Board $board -Credential $cred
 ```
 
 Returns issues visible on board 7.
@@ -82,8 +82,8 @@ Returns issues visible on board 7.
 ### EXAMPLE 2
 
 ```powershell
-$board = JiraAgilePS\Get-Board -BoardId 7 -Credential $cred
-JiraAgilePS\Get-Issue -Board $board -Backlog -Credential $cred
+$board = JiraAgilePSVII\Get-Board -BoardId 7 -Credential $cred
+JiraAgilePSVII\Get-Issue -Board $board -Backlog -Credential $cred
 ```
 
 Returns backlog issues for board 7.
@@ -91,9 +91,9 @@ Returns backlog issues for board 7.
 ### EXAMPLE 3
 
 ```powershell
-$board = JiraAgilePS\Get-Board -BoardId 7 -Credential $cred
-$sprint = JiraAgilePS\Get-Sprint -Board $board -State Active -Credential $cred | Select-Object -First 1
-JiraAgilePS\Get-Issue -Board $board -Sprint $sprint -Credential $cred
+$board = JiraAgilePSVII\Get-Board -BoardId 7 -Credential $cred
+$sprint = JiraAgilePSVII\Get-Sprint -Board $board -State Active -Credential $cred | Select-Object -First 1
+JiraAgilePSVII\Get-Issue -Board $board -Sprint $sprint -Credential $cred
 ```
 
 Returns issues for the active sprint.
@@ -101,8 +101,8 @@ Returns issues for the active sprint.
 ### EXAMPLE 4
 
 ```powershell
-$epic = [AtlassianPS.JiraAgilePS.Epic]::new(10001)
-JiraAgilePS\Get-Issue -Epic $epic -Credential $cred
+$epic = [AtlassianPSVII.JiraAgilePSVII.Epic]::new(10001)
+JiraAgilePSVII\Get-Issue -Epic $epic -Credential $cred
 ```
 
 Returns issues for epic 10001.
@@ -110,9 +110,9 @@ Returns issues for epic 10001.
 ### EXAMPLE 5
 
 ```powershell
-$board = JiraAgilePS\Get-Board -BoardId 7 -Credential $cred
-$epic = [AtlassianPS.JiraAgilePS.Epic]::new(10001)
-JiraAgilePS\Get-Issue -Board $board -Epic $epic -Credential $cred
+$board = JiraAgilePSVII\Get-Board -BoardId 7 -Credential $cred
+$epic = [AtlassianPSVII.JiraAgilePSVII.Epic]::new(10001)
+JiraAgilePSVII\Get-Issue -Board $board -Epic $epic -Credential $cred
 ```
 
 Returns board-scoped issues for the epic.
@@ -120,8 +120,8 @@ Returns board-scoped issues for the epic.
 ### EXAMPLE 6
 
 ```powershell
-$board = JiraAgilePS\Get-Board -BoardId 7 -Credential $cred
-JiraAgilePS\Get-Issue -Board $board -WithoutEpic -Credential $cred
+$board = JiraAgilePSVII\Get-Board -BoardId 7 -Credential $cred
+JiraAgilePSVII\Get-Issue -Board $board -WithoutEpic -Credential $cred
 ```
 
 Returns board issues that are not assigned to an epic.
@@ -129,8 +129,8 @@ Returns board issues that are not assigned to an epic.
 ### EXAMPLE 7
 
 ```powershell
-$board = JiraAgilePS\Get-Board -BoardId 7 -Credential $cred
-JiraAgilePS\Get-Issue -Board $board -Query 'project = AG ORDER BY rank' -Fields key,summary,status -Credential $cred
+$board = JiraAgilePSVII\Get-Board -BoardId 7 -Credential $cred
+JiraAgilePSVII\Get-Issue -Board $board -Query 'project = AG ORDER BY rank' -Fields key,summary,status -Credential $cred
 ```
 
 Returns board issues matching the JQL expression with only the requested fields.
@@ -138,8 +138,8 @@ Returns board issues matching the JQL expression with only the requested fields.
 ### EXAMPLE 8
 
 ```powershell
-$board = JiraAgilePS\Get-Board -BoardId 7 -Credential $cred
-JiraAgilePS\Get-Issue -Board $board -ReconcileIssue 10000,10001 -Credential $cred
+$board = JiraAgilePSVII\Get-Board -BoardId 7 -Credential $cred
+JiraAgilePSVII\Get-Issue -Board $board -ReconcileIssue 10000,10001 -Credential $cred
 ```
 
 Returns board issues while asking Jira Cloud to reconcile the supplied issue IDs during eventually consistent search.
@@ -292,7 +292,7 @@ Accept wildcard characters: False
 
 ### -ReconcileIssue
 
-Cloud-only Jira issue IDs, or JiraPS issue objects with numeric `Id` values, to reconcile during enhanced issue-list retrieval.
+Cloud-only Jira issue IDs, or JiraPSVII issue objects with numeric `Id` values, to reconcile during enhanced issue-list retrieval.
 The command deduplicates values and accepts at most 50 unique IDs.
 
 ```yaml
@@ -380,15 +380,15 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### AtlassianPS.JiraAgilePS.Board
+### AtlassianPSVII.JiraAgilePSVII.Board
 
-### AtlassianPS.JiraAgilePS.Sprint[]
+### AtlassianPSVII.JiraAgilePSVII.Sprint[]
 
-### AtlassianPS.JiraAgilePS.Epic[]
+### AtlassianPSVII.JiraAgilePSVII.Epic[]
 
 ## OUTPUTS
 
-### AtlassianPS.JiraAgilePS.Issue
+### AtlassianPSVII.JiraAgilePSVII.Issue
 
 ## NOTES
 

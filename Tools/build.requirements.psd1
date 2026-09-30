@@ -1,6 +1,6 @@
 @(
-    @{ ModuleName = "AtlassianPS.Standards"; RequiredVersion = "0.2.0" }
-    @{ ModuleName = "JiraPS"; RequiredVersion = "3.0.0" }
+    @{ ModuleName = "AtlassianPSVII.Standards"; RequiredVersion = "0.2.0" }
+    @{ ModuleName = "JiraPSVII"; RequiredVersion = "3.1.1" }
     @{ ModuleName = "InvokeBuild"; RequiredVersion = "5.14.23" }
     @{ ModuleName = "Metadata"; RequiredVersion = "1.5.7" }
     @{ ModuleName = "Pester"; RequiredVersion = "5.7.1" }

@@ -2,29 +2,29 @@
 locale: en-US
 layout: documentation
 online version: https://atlassianps.org/docs/JiraAgilePS/about/boards-and-sprints.html
-Module Name: JiraAgilePS
+Module Name: JiraAgilePSVII
 permalink: /docs/JiraAgilePS/about/boards-and-sprints.html
 ---
 # Boards and Sprints
 
-## about_JiraAgilePS_BoardsAndSprints
+## about_JiraAgilePSVII_BoardsAndSprints
 
 # SHORT DESCRIPTION
 
-JiraAgilePS focuses on board and sprint discovery plus sprint assignment.
+JiraAgilePSVII focuses on board and sprint discovery plus sprint assignment.
 
 # LONG DESCRIPTION
 
-The core JiraAgilePS flow is:
+The core JiraAgilePSVII flow is:
 
 1. Find a board.
 2. Find one or more sprints on that board.
 3. Add issues to a target sprint.
 
 ```powershell
-$board = JiraAgilePS\Get-Board -Credential $cred | Select-Object -First 1
-$sprint = JiraAgilePS\Get-Sprint -Board $board -State Active -Credential $cred | Select-Object -First 1
-JiraAgilePS\Add-IssueToSprint -Issue $issue -Sprint $sprint -Credential $cred
+$board = JiraAgilePSVII\Get-Board -Credential $cred | Select-Object -First 1
+$sprint = JiraAgilePSVII\Get-Sprint -Board $board -State Active -Credential $cred | Select-Object -First 1
+JiraAgilePSVII\Add-IssueToSprint -Issue $issue -Sprint $sprint -Credential $cred
 ```
 
 ## Querying by identity vs by container

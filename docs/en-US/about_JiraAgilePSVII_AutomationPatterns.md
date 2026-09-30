@@ -2,12 +2,12 @@
 locale: en-US
 layout: documentation
 online version: https://atlassianps.org/docs/JiraAgilePS/about/automation-patterns.html
-Module Name: JiraAgilePS
+Module Name: JiraAgilePSVII
 permalink: /docs/JiraAgilePS/about/automation-patterns.html
 ---
 # Automation Patterns
 
-## about_JiraAgilePS_AutomationPatterns
+## about_JiraAgilePSVII_AutomationPatterns
 
 # SHORT DESCRIPTION
 
@@ -18,19 +18,19 @@ Practical scripting patterns for repeatable board/sprint automation.
 ## Add all issues from a JQL query to the active sprint
 
 ```powershell
-$board = JiraAgilePS\Get-Board -BoardId 42 -Credential $cred
-$activeSprint = JiraAgilePS\Get-Sprint -Board $board -State Active -Credential $cred | Select-Object -First 1
+$board = JiraAgilePSVII\Get-Board -BoardId 42 -Credential $cred
+$activeSprint = JiraAgilePSVII\Get-Sprint -Board $board -State Active -Credential $cred | Select-Object -First 1
 $issues = Get-JiraIssue -Query 'project = APP AND status = "Selected for Development"' -Credential $cred
 
-JiraAgilePS\Add-IssueToSprint -Issue $issues -Sprint $activeSprint -Credential $cred
+JiraAgilePSVII\Add-IssueToSprint -Issue $issues -Sprint $activeSprint -Credential $cred
 ```
 
 ## Resolve sprint context once, then pipeline issues
 
 ```powershell
-$sprint = JiraAgilePS\Get-Sprint -Board $board -State Active -Credential $cred | Select-Object -First 1
+$sprint = JiraAgilePSVII\Get-Sprint -Board $board -State Active -Credential $cred | Select-Object -First 1
 Get-JiraIssue -Query 'project = APP AND labels = automation' -Credential $cred |
-    JiraAgilePS\Add-IssueToSprint -Sprint $sprint -Credential $cred
+    JiraAgilePSVII\Add-IssueToSprint -Sprint $sprint -Credential $cred
 ```
 
 ## Defensive checks

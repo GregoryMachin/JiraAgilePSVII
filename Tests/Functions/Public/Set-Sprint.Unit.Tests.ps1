@@ -15,13 +15,13 @@ Describe "Set-JiraAgileSprint" -Tag 'Unit' {
     BeforeAll {
         $script:jiraServer = "https://jira.example.com"
 
-        Mock Get-JiraConfigServer -ModuleName JiraAgilePS {
+        Mock Get-JiraConfigServer -ModuleName JiraAgilePSVII {
             $jiraServer
         }
     }
 
     BeforeEach {
-        Mock Invoke-JiraMethod -ModuleName JiraAgilePS {
+        Mock Invoke-JiraMethod -ModuleName JiraAgilePSVII {
             [pscustomobject]@{
                 id            = 21
                 name          = 'Updated Sprint'
@@ -43,9 +43,9 @@ Describe "Set-JiraAgileSprint" -Tag 'Unit' {
 
         Context "Parameter Types" {
             It "has a parameter '<parameter>' of type '<type>'" -TestCases @(
-                @{ parameter = "Sprint"; type = [AtlassianPS.JiraAgilePS.Sprint[]] }
+                @{ parameter = "Sprint"; type = [AtlassianPSVII.JiraAgilePSVII.Sprint[]] }
                 @{ parameter = "Name"; type = [string] }
-                @{ parameter = "State"; type = [AtlassianPS.JiraAgilePS.SprintState] }
+                @{ parameter = "State"; type = [AtlassianPSVII.JiraAgilePSVII.SprintState] }
                 @{ parameter = "StartDate"; type = [DateTime] }
                 @{ parameter = "EndDate"; type = [DateTime] }
                 @{ parameter = "Goal"; type = [string] }
@@ -66,13 +66,13 @@ Describe "Set-JiraAgileSprint" -Tag 'Unit' {
 
     Describe "Behavior" {
         It "posts a partial update payload and returns a typed sprint" {
-            $sprint = [AtlassianPS.JiraAgilePS.Sprint]::new(21)
+            $sprint = [AtlassianPSVII.JiraAgilePSVII.Sprint]::new(21)
             $startDate = [DateTime]'2026-06-01T00:00:00Z'
             $endDate = [DateTime]'2026-06-14T00:00:00Z'
 
             $result = Set-JiraAgileSprint -Sprint $sprint -Name 'Updated Sprint' -State active -StartDate $startDate -EndDate $endDate -Goal 'Updated goal' -Confirm:$false
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It -ParameterFilter {
                 $payload = $Body | ConvertFrom-Json
                 $Method -eq "POST" -and
                 $Uri -eq "$jiraServer/rest/agile/1.0/sprint/21" -and
@@ -83,23 +83,23 @@ Describe "Set-JiraAgileSprint" -Tag 'Unit' {
                 $Body -match '"startDate"\s*:\s*"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}[+-]\d{2}:\d{2}"' -and
                 $Body -match '"endDate"\s*:\s*"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}[+-]\d{2}:\d{2}"'
             }
-            $result | Should -BeOfType ([AtlassianPS.JiraAgilePS.Sprint])
+            $result | Should -BeOfType ([AtlassianPSVII.JiraAgilePSVII.Sprint])
             $result.Name | Should -Be 'Updated Sprint'
         }
 
         It "throws when Sprint has no numeric id" {
-            $sprint = [AtlassianPS.JiraAgilePS.Sprint]::new("sprint-name")
+            $sprint = [AtlassianPSVII.JiraAgilePSVII.Sprint]::new("sprint-name")
 
             { Set-JiraAgileSprint -Sprint $sprint -Name 'Updated Sprint' -Confirm:$false } |
                 Should -Throw "*Sprint input must contain a non-zero Id.*"
         }
 
         It "does not invoke the update when WhatIf is used" {
-            $sprint = [AtlassianPS.JiraAgilePS.Sprint]::new(21)
+            $sprint = [AtlassianPSVII.JiraAgilePSVII.Sprint]::new(21)
 
             Set-JiraAgileSprint -Sprint $sprint -Name 'Updated Sprint' -WhatIf
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 0 -Scope It
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 0 -Scope It
         }
     }
 }

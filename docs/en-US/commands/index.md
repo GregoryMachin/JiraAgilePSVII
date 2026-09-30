@@ -2,9 +2,9 @@
 layout: documentation
 permalink: /docs/JiraAgilePS/commands/
 ---
-# JiraAgilePS commands
+# JiraAgilePSVII commands
 
-JiraAgilePS exports these commands with the `JiraAgile` default command prefix.
+JiraAgilePSVII exports these commands with the `JiraAgile` default command prefix.
 The documentation pages use the source function names that back the exported commands.
 
 | Exported command | Documentation |
@@ -21,4 +21,4 @@ The documentation pages use the source function names that back the exported com
 | `Remove-JiraAgileSprint` | [Remove-Sprint](/docs/JiraAgilePS/commands/Remove-Sprint/) |
 | `Set-JiraAgileSprint` | [Set-Sprint](/docs/JiraAgilePS/commands/Set-Sprint/) |
 
-For module overview and setup, see [about_JiraAgilePS](/docs/JiraAgilePS/).
+For module overview and setup, see [about_JiraAgilePSVII](/docs/JiraAgilePS/).

@@ -16,7 +16,7 @@ Describe "Get-JiraAgileSprint" -Tag 'Unit' {
         . "$PSScriptRoot/../../Helpers/TestTools.ps1"
         $script:jiraServer = "https://jira.example.com"
 
-        Mock Get-JiraConfigServer -ModuleName JiraAgilePS {
+        Mock Get-JiraConfigServer -ModuleName JiraAgilePSVII {
             $jiraServer
         }
     }
@@ -28,9 +28,9 @@ Describe "Get-JiraAgileSprint" -Tag 'Unit' {
 
         Context "Parameter Types" {
             It "has a parameter '<parameter>' of type '<type>'" -TestCases @(
-                @{ parameter = "Sprint"; type = [AtlassianPS.JiraAgilePS.Sprint[]] }
-                @{ parameter = "Board"; type = [AtlassianPS.JiraAgilePS.Board] }
-                @{ parameter = "State"; type = [AtlassianPS.JiraAgilePS.SprintState] }
+                @{ parameter = "Sprint"; type = [AtlassianPSVII.JiraAgilePSVII.Sprint[]] }
+                @{ parameter = "Board"; type = [AtlassianPSVII.JiraAgilePSVII.Board] }
+                @{ parameter = "State"; type = [AtlassianPSVII.JiraAgilePSVII.SprintState] }
                 @{ parameter = "PageSize"; type = [UInt32] }
                 @{ parameter = "Credential"; type = [System.Management.Automation.PSCredential] }
             ) {
@@ -49,7 +49,7 @@ Describe "Get-JiraAgileSprint" -Tag 'Unit' {
 
     Describe "Behavior" {
         It "requests all sprints for a board" {
-            Mock Invoke-JiraMethod -ModuleName JiraAgilePS {
+            Mock Invoke-JiraMethod -ModuleName JiraAgilePSVII {
                 [pscustomobject]@{
                     Id            = 13
                     Name          = "Sprint 13"
@@ -62,11 +62,11 @@ Describe "Get-JiraAgileSprint" -Tag 'Unit' {
                     Self          = "$jiraServer/rest/agile/1.0/sprint/13"
                 }
             }
-            $board = [AtlassianPS.JiraAgilePS.Board]::new(4)
+            $board = [AtlassianPSVII.JiraAgilePSVII.Board]::new(4)
 
             $result = Get-JiraAgileSprint -Board $board -State active
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It -ParameterFilter {
                 $Method -eq "GET" -and
                 $Uri -eq "$jiraServer/rest/agile/1.0/board/4/sprint" -and
                 $Paging
@@ -76,7 +76,7 @@ Describe "Get-JiraAgileSprint" -Tag 'Unit' {
         }
 
         It "requests sprint details by sprint id" {
-            Mock Invoke-JiraMethod -ModuleName JiraAgilePS {
+            Mock Invoke-JiraMethod -ModuleName JiraAgilePSVII {
                 [pscustomobject]@{
                     Id            = 21
                     Name          = "Sprint 21"
@@ -89,11 +89,11 @@ Describe "Get-JiraAgileSprint" -Tag 'Unit' {
                     Self          = "$jiraServer/rest/agile/1.0/sprint/21"
                 }
             }
-            $sprint = [AtlassianPS.JiraAgilePS.Sprint]::new(21)
+            $sprint = [AtlassianPSVII.JiraAgilePSVII.Sprint]::new(21)
 
             $result = Get-JiraAgileSprint -Sprint $sprint
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It -ParameterFilter {
                 $Method -eq "GET" -and
                 $Uri -eq "$jiraServer/rest/agile/1.0/sprint/21" -and
                 (-not $Paging)
@@ -103,7 +103,7 @@ Describe "Get-JiraAgileSprint" -Tag 'Unit' {
         }
 
         It "requests each sprint id independently when multiple sprints are supplied" {
-            Mock Invoke-JiraMethod -ModuleName JiraAgilePS {
+            Mock Invoke-JiraMethod -ModuleName JiraAgilePSVII {
                 param($Uri)
                 $sprintId = [int]($Uri -replace "^.*/", "")
 
@@ -119,18 +119,18 @@ Describe "Get-JiraAgileSprint" -Tag 'Unit' {
                     Self          = "$jiraServer/rest/agile/1.0/sprint/$sprintId"
                 }
             }
-            $sprintA = [AtlassianPS.JiraAgilePS.Sprint]::new(21)
-            $sprintB = [AtlassianPS.JiraAgilePS.Sprint]::new(22)
+            $sprintA = [AtlassianPSVII.JiraAgilePSVII.Sprint]::new(21)
+            $sprintB = [AtlassianPSVII.JiraAgilePSVII.Sprint]::new(22)
 
             $result = Get-JiraAgileSprint -Sprint @($sprintA, $sprintB)
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 2 -Scope It
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 2 -Scope It
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It -ParameterFilter {
                 $Method -eq "GET" -and
                 $Uri -eq "$jiraServer/rest/agile/1.0/sprint/21" -and
                 (-not $Paging)
             }
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It -ParameterFilter {
                 $Method -eq "GET" -and
                 $Uri -eq "$jiraServer/rest/agile/1.0/sprint/22" -and
                 (-not $Paging)

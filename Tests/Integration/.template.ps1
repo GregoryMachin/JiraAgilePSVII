@@ -2,7 +2,7 @@
 
 <#
 .SYNOPSIS
-    Integration test template for JiraAgilePS functions.
+    Integration test template for JiraAgilePSVII functions.
 
 .DESCRIPTION
     This template provides the standard structure for integration tests that run
@@ -17,7 +17,7 @@
     REQUIREMENTS - All integration tests MUST follow these patterns:
 
     1. RESOURCE NAMING: Use New-TestResourceName for ALL created resources
-       This generates names like "JiraAgilePS-IntTest-Issue-20260419120000" that are:
+       This generates names like "JiraAgilePSVII-IntTest-Issue-20260419120000" that are:
        - Easily identifiable as test data
        - Unique per test run (timestamp suffix)
        - Discoverable by Remove-StaleTestResource for cleanup
@@ -36,7 +36,7 @@
     4. CLEANUP STRATEGY:
        a. Remove-StaleTestResource runs at start to clean up from failed runs
        b. AfterAll cleans up resources created in this specific run
-       c. Both use the JiraAgilePS-IntTest- prefix to identify test resources
+       c. Both use the JiraAgilePSVII-IntTest- prefix to identify test resources
 
     5. TAGGING: All Describe blocks MUST include -Tag 'Integration'
        Add -Tag 'Smoke' only for the minimal Cloud tests that should run on every PR.
@@ -81,7 +81,7 @@ BeforeDiscovery {
     }
 }
 
-InModuleScope JiraAgilePS {
+InModuleScope JiraAgilePSVII {
     Describe "FunctionName" -Tag 'Integration', 'Server', 'Cloud' -Skip:$Skip {
         BeforeAll {
             . "$PSScriptRoot/../Helpers/IntegrationTestTools.ps1"
@@ -166,7 +166,7 @@ InModuleScope JiraAgilePS {
             It "returns objects with the correct type name" {
                 $result = Get-JiraIssue -Key $fixtures.TestIssue
 
-                $result.PSObject.TypeNames[0] | Should -Be 'AtlassianPS.JiraAgilePS.Issue'
+                $result.PSObject.TypeNames[0] | Should -Be 'AtlassianPSVII.JiraAgilePSVII.Issue'
             }
 
             It "returns objects with expected properties" {

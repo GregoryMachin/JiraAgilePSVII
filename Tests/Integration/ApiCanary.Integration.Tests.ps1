@@ -44,7 +44,7 @@ BeforeDiscovery {
     }
 }
 
-InModuleScope JiraAgilePS {
+InModuleScope JiraAgilePSVII {
     Describe "Api Canary - Sprint Lifecycle" -Tag 'Integration', 'CanaryWrite', 'Cloud' -Skip:($Skip -or $SkipWrite) {
         BeforeAll {
             . "$PSScriptRoot/../Helpers/IntegrationTestTools.ps1"

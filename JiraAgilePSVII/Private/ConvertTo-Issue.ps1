@@ -5,7 +5,7 @@ function ConvertTo-Issue {
 
     .DESCRIPTION
         Copies all properties from each issue response object and applies the
-        AtlassianPS.JiraAgilePS.Issue typename to preserve rich output typing.
+        AtlassianPSVII.JiraAgilePSVII.Issue typename to preserve rich output typing.
     #>
     [CmdletBinding()]
     [OutputType([PSObject])]
@@ -21,15 +21,15 @@ function ConvertTo-Issue {
                 continue
             }
 
-            Write-Debug "[$($MyInvocation.MyCommand.Name)] Converting `$InputObject to AtlassianPS.JiraAgilePS.Issue"
+            Write-Debug "[$($MyInvocation.MyCommand.Name)] Converting `$InputObject to AtlassianPSVII.JiraAgilePSVII.Issue"
 
             $issue = [PSCustomObject](ConvertTo-Hashtable -InputObject ($object | Select-Object -Property *))
             foreach ($typeName in @($object.PSObject.TypeNames)) {
-                if ($typeName -like 'AtlassianPS.JiraPS.*' -and $issue.PSObject.TypeNames -notcontains $typeName) {
+                if ($typeName -like 'AtlassianPSVII.JiraPSVII.*' -and $issue.PSObject.TypeNames -notcontains $typeName) {
                     $issue.PSObject.TypeNames.Insert(0, $typeName)
                 }
             }
-            $issue.PSObject.TypeNames.Insert(0, "AtlassianPS.JiraAgilePS.Issue")
+            $issue.PSObject.TypeNames.Insert(0, "AtlassianPSVII.JiraAgilePSVII.Issue")
 
             $issue
         }

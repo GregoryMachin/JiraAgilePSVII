@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Management.Automation;
 using Microsoft.PowerShell.Commands;
 
-namespace AtlassianPS
+namespace AtlassianPSVII
 {
-    namespace JiraAgilePS
+    namespace JiraAgilePSVII
     {
         public enum BoardType
         {

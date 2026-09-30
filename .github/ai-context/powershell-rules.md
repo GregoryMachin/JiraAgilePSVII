@@ -1,4 +1,4 @@
-# JiraAgilePS PowerShell Rules
+# JiraAgilePSVII PowerShell Rules
 
 This file captures practical coding/build/test rules shared across AI entry points.
 
@@ -24,10 +24,10 @@ Validation expectations for this repository's current legacy state:
 
 ## Source Layout
 
-- Public cmdlets: `JiraAgilePS/Public/*.ps1`
-- Private helpers/converters: `JiraAgilePS/Private/*.ps1`
+- Public cmdlets: `JiraAgilePSVII/Public/*.ps1`
+- Private helpers/converters: `JiraAgilePSVII/Private/*.ps1`
 - Public source names are unprefixed (`Get-Board`, `Get-Sprint`) and module import applies `JiraAgile` command prefix.
-- Build script: `JiraAgilePS.build.ps1`
+- Build script: `JiraAgilePSVII.build.ps1`
 - Docs/help sources: `docs/en-US/commands/*.md`
 - Tests: `Tests/**/*.ps1` (optional legacy coverage; copied into `Release/Tests/` by build when present)
 

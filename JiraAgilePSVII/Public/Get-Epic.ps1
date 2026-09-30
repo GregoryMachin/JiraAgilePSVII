@@ -1,14 +1,14 @@
 function Get-Epic {
-    # .ExternalHelp ..\JiraAgilePS-help.xml
+    # .ExternalHelp ..\JiraAgilePSVII-help.xml
     [CmdletBinding(SupportsPaging, DefaultParameterSetName = '_ById')]
-    [OutputType([AtlassianPS.JiraAgilePS.Epic])]
+    [OutputType([AtlassianPSVII.JiraAgilePSVII.Epic])]
     param(
         [Parameter(Position = 0, Mandatory, ValueFromPipeline, ParameterSetName = '_ById')]
-        [AtlassianPS.JiraAgilePS.Epic[]]
+        [AtlassianPSVII.JiraAgilePSVII.Epic[]]
         $Epic,
 
         [Parameter(Position = 0, Mandatory, ValueFromPipeline, ParameterSetName = '_ByBoard')]
-        [AtlassianPS.JiraAgilePS.Board]
+        [AtlassianPSVII.JiraAgilePSVII.Board]
         $Board,
 
         [Parameter(ParameterSetName = '_ByBoard')]

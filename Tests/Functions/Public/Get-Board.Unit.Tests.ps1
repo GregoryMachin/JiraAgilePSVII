@@ -16,7 +16,7 @@ Describe "Get-JiraAgileBoard" -Tag 'Unit' {
         . "$PSScriptRoot/../../Helpers/TestTools.ps1"
         $script:jiraServer = "https://jira.example.com"
 
-        Mock Get-JiraConfigServer -ModuleName JiraAgilePS {
+        Mock Get-JiraConfigServer -ModuleName JiraAgilePSVII {
             $jiraServer
         }
     }
@@ -47,7 +47,7 @@ Describe "Get-JiraAgileBoard" -Tag 'Unit' {
 
     Describe "Behavior" {
         It "requests all boards from the agile board endpoint" {
-            Mock Invoke-JiraMethod -ModuleName JiraAgilePS {
+            Mock Invoke-JiraMethod -ModuleName JiraAgilePSVII {
                 [pscustomobject]@{
                     Id   = 1
                     Name = "Main board"
@@ -58,7 +58,7 @@ Describe "Get-JiraAgileBoard" -Tag 'Unit' {
 
             $result = Get-JiraAgileBoard
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It -ParameterFilter {
                 $Method -eq "GET" -and
                 $Uri -eq "$jiraServer/rest/agile/1.0/board" -and
                 $Paging
@@ -68,7 +68,7 @@ Describe "Get-JiraAgileBoard" -Tag 'Unit' {
         }
 
         It "requests a specific board when BoardId is supplied" {
-            Mock Invoke-JiraMethod -ModuleName JiraAgilePS {
+            Mock Invoke-JiraMethod -ModuleName JiraAgilePSVII {
                 [pscustomobject]@{
                     Id   = 7
                     Name = "Target board"
@@ -79,7 +79,7 @@ Describe "Get-JiraAgileBoard" -Tag 'Unit' {
 
             $result = Get-JiraAgileBoard -BoardId 7
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It -ParameterFilter {
                 $Method -eq "GET" -and
                 $Uri -eq "$jiraServer/rest/agile/1.0/board/7" -and
                 (-not $Paging)
@@ -89,7 +89,7 @@ Describe "Get-JiraAgileBoard" -Tag 'Unit' {
         }
 
         It "requests each board id with an independent URI when multiple ids are supplied" {
-            Mock Invoke-JiraMethod -ModuleName JiraAgilePS {
+            Mock Invoke-JiraMethod -ModuleName JiraAgilePSVII {
                 [pscustomobject]@{
                     Id   = 7
                     Name = "Target board"
@@ -100,13 +100,13 @@ Describe "Get-JiraAgileBoard" -Tag 'Unit' {
 
             $null = Get-JiraAgileBoard -BoardId 7, 8
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 2 -Scope It
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 2 -Scope It
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It -ParameterFilter {
                 $Method -eq "GET" -and
                 $Uri -eq "$jiraServer/rest/agile/1.0/board/7" -and
                 (-not $Paging)
             }
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It -ParameterFilter {
                 $Method -eq "GET" -and
                 $Uri -eq "$jiraServer/rest/agile/1.0/board/8" -and
                 (-not $Paging)

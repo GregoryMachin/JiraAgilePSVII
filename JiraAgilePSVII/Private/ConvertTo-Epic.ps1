@@ -4,11 +4,11 @@ function ConvertTo-Epic {
         Converts Jira Agile epic payloads to Epic objects.
 
     .DESCRIPTION
-        Maps API response fields to [AtlassianPS.JiraAgilePS.Epic], including
+        Maps API response fields to [AtlassianPSVII.JiraAgilePSVII.Epic], including
         normalization of color values returned as either strings or objects.
     #>
     [CmdletBinding()]
-    [OutputType([AtlassianPS.JiraAgilePS.Epic])]
+    [OutputType([AtlassianPSVII.JiraAgilePSVII.Epic])]
     param(
         [Parameter(ValueFromPipeline)]
         [PSObject[]]
@@ -21,9 +21,9 @@ function ConvertTo-Epic {
                 continue
             }
 
-            Write-Debug "[$($MyInvocation.MyCommand.Name)] Converting `$InputObject to AtlassianPS.JiraAgilePS.Epic"
+            Write-Debug "[$($MyInvocation.MyCommand.Name)] Converting `$InputObject to AtlassianPSVII.JiraAgilePSVII.Epic"
 
-            [AtlassianPS.JiraAgilePS.Epic](ConvertTo-Hashtable -InputObject ($object | Select-Object `
+            [AtlassianPSVII.JiraAgilePSVII.Epic](ConvertTo-Hashtable -InputObject ($object | Select-Object `
                         Id,
                     Key,
                     Name,

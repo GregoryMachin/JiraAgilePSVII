@@ -1,6 +1,6 @@
 ---
-external help file: JiraAgilePS-help.xml
-Module Name: JiraAgilePS
+external help file: JiraAgilePSVII-help.xml
+Module Name: JiraAgilePSVII
 online version: https://atlassianps.org/docs/JiraAgilePS/commands/Add-IssueToSprint/
 locale: en-US
 layout: documentation
@@ -31,11 +31,11 @@ When imported normally, run this command as `Add-JiraAgileIssueToSprint`.
 ### EXAMPLE 1
 
 ```powershell
-$board  = JiraAgilePS\Get-Board -Credential $cred | Select-Object -First 1
-$sprint = JiraAgilePS\Get-Sprint -Board $board -State Active -Credential $cred | Select-Object -First 1
+$board  = JiraAgilePSVII\Get-Board -Credential $cred | Select-Object -First 1
+$sprint = JiraAgilePSVII\Get-Sprint -Board $board -State Active -Credential $cred | Select-Object -First 1
 $issue  = Get-JiraIssue -Issue "PROJ-123" -Credential $cred
 
-JiraAgilePS\Add-IssueToSprint -Issue $issue -Sprint $sprint -Credential $cred
+JiraAgilePSVII\Add-IssueToSprint -Issue $issue -Sprint $sprint -Credential $cred
 ```
 
 Adds one Jira issue to the active sprint.
@@ -48,7 +48,7 @@ $issues = @(
     Get-JiraIssue -Issue "PROJ-124" -Credential $cred
 )
 
-JiraAgilePS\Add-IssueToSprint -Issue $issues -Sprint $sprint -Credential $cred
+JiraAgilePSVII\Add-IssueToSprint -Issue $issues -Sprint $sprint -Credential $cred
 ```
 
 Adds multiple issues to a sprint.
@@ -56,7 +56,7 @@ Adds multiple issues to a sprint.
 ### EXAMPLE 3
 
 ```powershell
-$issues | JiraAgilePS\Add-IssueToSprint -Sprint $sprint -Credential $cred
+$issues | JiraAgilePSVII\Add-IssueToSprint -Sprint $sprint -Credential $cred
 ```
 
 Pipes issue objects directly into the command.
@@ -122,7 +122,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### System.Object
 
-Issue object(s) from JiraPS commands, for example `Get-JiraIssue`.
+Issue object(s) from JiraPSVII commands, for example `Get-JiraIssue`.
 
 ## OUTPUTS
 

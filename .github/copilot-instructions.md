@@ -17,7 +17,7 @@ GitHub Copilot should treat these files as canonical:
 
 ## File Locations
 
-- Public functions: `JiraAgilePS/Public/`
-- Private functions: `JiraAgilePS/Private/`
+- Public functions: `JiraAgilePSVII/Public/`
+- Private functions: `JiraAgilePSVII/Private/`
 - Tests (optional legacy coverage): `Tests/` (copied to `Release/Tests/` when present)
 - Docs/help sources: `docs/en-US/commands/` (add files when command help changes)

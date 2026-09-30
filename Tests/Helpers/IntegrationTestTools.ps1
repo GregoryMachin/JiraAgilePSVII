@@ -1,6 +1,6 @@
 . "$PSScriptRoot/TestTools.ps1"
 
-$script:TestResourcePrefix = 'JiraAgilePS-IntTest-'
+$script:TestResourcePrefix = 'JiraAgilePSVII-IntTest-'
 $script:_CachedIntegrationEnv = $null
 $script:_EnvLoaded = $false
 $script:_CleanupInProgress = $false
@@ -109,7 +109,7 @@ function Initialize-IntegrationEnvironment {
     }
 
     if ($missing.Count -gt 0) {
-        $warnedFlag = Get-Variable -Name _JiraAgilePSIntegrationEnvWarned -Scope Global -ErrorAction SilentlyContinue
+        $warnedFlag = Get-Variable -Name _JiraAgilePSVIIIntegrationEnvWarned -Scope Global -ErrorAction SilentlyContinue
         if (-not $warnedFlag -or -not [bool]$warnedFlag.Value) {
             Write-Warning "Integration tests ($deploymentType track) require the following environment variables: $($missing -join ', ')"
             if ($deploymentType -eq 'Server') {
@@ -118,7 +118,7 @@ function Initialize-IntegrationEnvironment {
             else {
                 Write-Warning "Copy .env.example to .env and configure your Jira Cloud connection."
             }
-            $global:_JiraAgilePSIntegrationEnvWarned = $true
+            $global:_JiraAgilePSVIIIntegrationEnvWarned = $true
         }
         $script:_EnvLoaded = $true
         $script:_CachedIntegrationEnv = $null
@@ -316,7 +316,7 @@ function New-TemporaryTestIssue {
         Project     = $Fixtures.TestProject
         IssueType   = $IssueType
         Summary     = $Summary
-        Description = "Temporary test issue created by JiraAgilePS integration tests. Safe to delete."
+        Description = "Temporary test issue created by JiraAgilePSVII integration tests. Safe to delete."
     }
 
     $extras = Get-MinimumValidIssueParameter -Fixtures $Fixtures -IssueType $IssueType -SkipFieldId @('description')
@@ -394,7 +394,7 @@ function Get-MinimumValidIssueParameter {
         }
 
         switch ($field.Schema.type) {
-            'string' { $result.Fields[$field.Id] = "JiraAgilePS-IntTest default for $($field.Name)"; break }
+            'string' { $result.Fields[$field.Id] = "JiraAgilePSVII-IntTest default for $($field.Name)"; break }
             'number' { $result.Fields[$field.Id] = 0; break }
             'array' { $result.Fields[$field.Id] = @(); break }
             'user' {
@@ -454,7 +454,7 @@ function Remove-StaleTestResource {
 
     try {
         # Quote the prefix as a phrase so Jira's text search does not tokenize on '-'
-        # (which would match any of "JiraAgilePS", "IntTest" individually).
+        # (which would match any of "JiraAgilePSVII", "IntTest" individually).
         $jql = "project = $($Fixtures.TestProject) AND summary ~ ""\""$prefix\"""" ORDER BY created ASC"
         $staleIssues = Get-JiraIssue -Query $jql -ErrorAction SilentlyContinue
         foreach ($issue in $staleIssues) {

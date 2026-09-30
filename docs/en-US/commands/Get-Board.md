@@ -1,6 +1,6 @@
 ---
-external help file: JiraAgilePS-help.xml
-Module Name: JiraAgilePS
+external help file: JiraAgilePSVII-help.xml
+Module Name: JiraAgilePSVII
 online version: https://atlassianps.org/docs/JiraAgilePS/commands/Get-Board/
 locale: en-US
 layout: documentation
@@ -40,7 +40,7 @@ When imported normally, run this command as `Get-JiraAgileBoard`.
 ### EXAMPLE 1
 
 ```powershell
-JiraAgilePS\Get-Board -Credential $cred
+JiraAgilePSVII\Get-Board -Credential $cred
 ```
 
 Returns boards visible to the authenticated user.
@@ -48,7 +48,7 @@ Returns boards visible to the authenticated user.
 ### EXAMPLE 2
 
 ```powershell
-JiraAgilePS\Get-Board -BoardId 12, 45 -Credential $cred
+JiraAgilePSVII\Get-Board -BoardId 12, 45 -Credential $cred
 ```
 
 Returns only the boards with IDs 12 and 45.
@@ -56,7 +56,7 @@ Returns only the boards with IDs 12 and 45.
 ### EXAMPLE 3
 
 ```powershell
-JiraAgilePS\Get-Board -First 10 -IncludeTotalCount -Credential $cred
+JiraAgilePSVII\Get-Board -First 10 -IncludeTotalCount -Credential $cred
 ```
 
 Returns the first 10 boards and emits the total available board count.
@@ -174,7 +174,7 @@ Board IDs when using the `_Search` parameter set.
 
 ## OUTPUTS
 
-### AtlassianPS.JiraAgilePS.Board
+### AtlassianPSVII.JiraAgilePSVII.Board
 
 ## NOTES
 

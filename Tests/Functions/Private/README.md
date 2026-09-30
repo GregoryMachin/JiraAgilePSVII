@@ -1,6 +1,6 @@
 # Private Function Tests
 
-This directory contains unit tests for internal JiraAgilePS helpers and converters.
+This directory contains unit tests for internal JiraAgilePSVII helpers and converters.
 
 ## Pattern
 

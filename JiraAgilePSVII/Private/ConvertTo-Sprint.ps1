@@ -5,10 +5,10 @@ function ConvertTo-Sprint {
 
     .DESCRIPTION
         Projects sprint fields from API responses and normalizes date fields
-        before casting to [AtlassianPS.JiraAgilePS.Sprint].
+        before casting to [AtlassianPSVII.JiraAgilePSVII.Sprint].
     #>
     [CmdletBinding()]
-    [OutputType( [AtlassianPS.JiraAgilePS.Sprint] )]
+    [OutputType( [AtlassianPSVII.JiraAgilePSVII.Sprint] )]
     param(
         [Parameter( ValueFromPipeline )]
         [PSObject[]]
@@ -19,7 +19,7 @@ function ConvertTo-Sprint {
         foreach ($object in $InputObject) {
             Write-Debug "[$($MyInvocation.MyCommand.Name)] Converting `$object to custom object"
 
-            [AtlassianPS.JiraAgilePS.Sprint](ConvertTo-Hashtable -InputObject ( $object | Select-Object `
+            [AtlassianPSVII.JiraAgilePSVII.Sprint](ConvertTo-Hashtable -InputObject ( $object | Select-Object `
                         Id,
                     Name,
                     State,

@@ -1,5 +1,5 @@
 function Get-Issue {
-    # .ExternalHelp ..\JiraAgilePS-help.xml
+    # .ExternalHelp ..\JiraAgilePSVII-help.xml
     [CmdletBinding(SupportsPaging, DefaultParameterSetName = '_Board')]
     [OutputType([PSObject])]
     param(
@@ -8,7 +8,7 @@ function Get-Issue {
         [Parameter(Position = 0, Mandatory, ValueFromPipeline, ParameterSetName = '_Sprint')]
         [Parameter(Position = 0, Mandatory, ValueFromPipeline, ParameterSetName = '_BoardEpic')]
         [Parameter(Position = 0, Mandatory, ValueFromPipeline, ParameterSetName = '_BoardWithoutEpic')]
-        [AtlassianPS.JiraAgilePS.Board]
+        [AtlassianPSVII.JiraAgilePSVII.Board]
         $Board,
 
         [Parameter(Mandatory, ParameterSetName = '_Backlog')]
@@ -16,12 +16,12 @@ function Get-Issue {
         $Backlog,
 
         [Parameter(Position = 1, Mandatory, ValueFromPipeline, ParameterSetName = '_Sprint')]
-        [AtlassianPS.JiraAgilePS.Sprint[]]
+        [AtlassianPSVII.JiraAgilePSVII.Sprint[]]
         $Sprint,
 
         [Parameter(Position = 0, Mandatory, ValueFromPipeline, ParameterSetName = '_Epic')]
         [Parameter(Position = 1, Mandatory, ValueFromPipeline, ParameterSetName = '_BoardEpic')]
-        [AtlassianPS.JiraAgilePS.Epic[]]
+        [AtlassianPSVII.JiraAgilePSVII.Epic[]]
         $Epic,
 
         [Parameter(Mandatory, ParameterSetName = '_BoardWithoutEpic')]

@@ -15,13 +15,13 @@ Describe "Remove-JiraAgileSprint" -Tag 'Unit' {
     BeforeAll {
         $script:jiraServer = "https://jira.example.com"
 
-        Mock Get-JiraConfigServer -ModuleName JiraAgilePS {
+        Mock Get-JiraConfigServer -ModuleName JiraAgilePSVII {
             $jiraServer
         }
     }
 
     BeforeEach {
-        Mock Invoke-JiraMethod -ModuleName JiraAgilePS { }
+        Mock Invoke-JiraMethod -ModuleName JiraAgilePSVII { }
     }
 
     Describe "Signature" {
@@ -31,7 +31,7 @@ Describe "Remove-JiraAgileSprint" -Tag 'Unit' {
 
         Context "Parameter Types" {
             It "has a parameter '<parameter>' of type '<type>'" -TestCases @(
-                @{ parameter = "Sprint"; type = [AtlassianPS.JiraAgilePS.Sprint[]] }
+                @{ parameter = "Sprint"; type = [AtlassianPSVII.JiraAgilePSVII.Sprint[]] }
                 @{ parameter = "Credential"; type = [System.Management.Automation.PSCredential] }
             ) {
                 $command | Should -HaveParameter $parameter -Type $type
@@ -49,33 +49,33 @@ Describe "Remove-JiraAgileSprint" -Tag 'Unit' {
 
     Describe "Behavior" {
         It "deletes each supplied sprint" {
-            $sprintA = [AtlassianPS.JiraAgilePS.Sprint]::new(21)
-            $sprintB = [AtlassianPS.JiraAgilePS.Sprint]::new(22)
+            $sprintA = [AtlassianPSVII.JiraAgilePSVII.Sprint]::new(21)
+            $sprintB = [AtlassianPSVII.JiraAgilePSVII.Sprint]::new(22)
 
             { Remove-JiraAgileSprint -Sprint @($sprintA, $sprintB) -Confirm:$false } | Should -Not -Throw
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 2 -Scope It
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 2 -Scope It
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It -ParameterFilter {
                 $Method -eq "DELETE" -and $Uri -eq "$jiraServer/rest/agile/1.0/sprint/21"
             }
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It -ParameterFilter {
                 $Method -eq "DELETE" -and $Uri -eq "$jiraServer/rest/agile/1.0/sprint/22"
             }
         }
 
         It "throws when Sprint has no numeric id" {
-            $sprint = [AtlassianPS.JiraAgilePS.Sprint]::new("sprint-name")
+            $sprint = [AtlassianPSVII.JiraAgilePSVII.Sprint]::new("sprint-name")
 
             { Remove-JiraAgileSprint -Sprint $sprint -Confirm:$false } |
                 Should -Throw "*Sprint input must contain a non-zero Id.*"
         }
 
         It "does not invoke Jira when WhatIf is used" {
-            $sprint = [AtlassianPS.JiraAgilePS.Sprint]::new(21)
+            $sprint = [AtlassianPSVII.JiraAgilePSVII.Sprint]::new(21)
 
             Remove-JiraAgileSprint -Sprint $sprint -WhatIf
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 0 -Scope It
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 0 -Scope It
         }
     }
 }

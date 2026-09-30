@@ -1,14 +1,14 @@
 function New-Sprint {
-    # .ExternalHelp ..\JiraAgilePS-help.xml
+    # .ExternalHelp ..\JiraAgilePSVII-help.xml
     [CmdletBinding(SupportsShouldProcess)]
-    [OutputType([AtlassianPS.JiraAgilePS.Sprint])]
+    [OutputType([AtlassianPSVII.JiraAgilePSVII.Sprint])]
     param(
         [Parameter(Mandatory)]
         [string]
         $Name,
 
         [Parameter(Position = 0, Mandatory, ValueFromPipeline)]
-        [AtlassianPS.JiraAgilePS.Board]
+        [AtlassianPSVII.JiraAgilePSVII.Board]
         $Board,
 
         [Parameter()]

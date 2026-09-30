@@ -1,19 +1,19 @@
 ---
 layout: module
-permalink: /module/JiraAgilePS/
+permalink: /module/JiraAgilePSVII/
 ---
-# [JiraAgilePS](https://atlassianps.org/module/JiraAgilePS)
+# [JiraAgilePSVII](https://atlassianps.org/module/JiraAgilePS)
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/AtlassianPS/JiraAgilePS/ci.yml?style=for-the-badge)](https://github.com/AtlassianPS/JiraAgilePS/actions/workflows/ci.yml)
 [![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/JiraAgilePS.svg?style=for-the-badge)](https://www.powershellgallery.com/packages/JiraAgilePS)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)
 
-JiraAgilePS is a PowerShell module to interact with _Agile_, Atlassian [JIRA]'s plugin,
+JiraAgilePSVII is a PowerShell module to interact with _Agile_, Atlassian [JIRA]'s plugin,
 via a REST API, while maintaining a consistent PowerShell look and feel.
 
-> JiraAgilePS is a module that extends [JiraPS](https://atlassianps.org/module/JiraPS).
+> JiraAgilePSVII is a module that extends [JiraPSVII](https://atlassianps.org/module/JiraPS).
 
-Join the conversation on [![SlackLogo][] AtlassianPS.Slack.com](https://atlassianps.org/slack)
+Join the conversation on [![SlackLogo][] AtlassianPSVII.Slack.com](https://atlassianps.org/slack)
 
 [SlackLogo]: https://atlassianps.org/assets/img/Slack_Mark_Web_28x28.png
 <!--more-->
@@ -24,22 +24,22 @@ Join the conversation on [![SlackLogo][] AtlassianPS.Slack.com](https://atlassia
 
 ### Installation
 
-Install JiraAgilePS from the [PowerShell Gallery]! `Install-Module` requires
+Install JiraAgilePSVII from the [PowerShell Gallery]! `Install-Module` requires
 PowerShellGet (included in PS v5, or download for v3/v4 via the gallery link)
 
 ```powershell
 # One time only install:
-Install-Module JiraAgilePS -Scope CurrentUser
+Install-Module JiraAgilePSVII -Scope CurrentUser
 
 # Check for updates occasionally:
-Update-Module JiraAgilePS
+Update-Module JiraAgilePSVII
 ```
 
 ### Usage
 
 ```powershell
 # To use each session:
-Import-Module JiraAgilePS
+Import-Module JiraAgilePSVII
 Set-JiraConfigServer 'https://YourCloud.atlassian.net'
 New-JiraSession -Credential $cred
 ```
@@ -49,27 +49,27 @@ and in the console.
 
 ```powershell
 # Review the help at any time!
-Get-Help about_JiraAgilePS
-Get-Command -Module JiraAgilePS
+Get-Help about_JiraAgilePSVII
+Get-Command -Module JiraAgilePSVII
 Get-Help Get-JiraAgileBoard -Full # or any other command
 ```
 
-For more information on how to use JiraAgilePS, check out the [Documentation](https://atlassianps.org/docs/JiraAgilePS/).
+For more information on how to use JiraAgilePSVII, check out the [Documentation](https://atlassianps.org/docs/JiraAgilePS/).
 For release planning context, see the [Jira Agile API coverage matrix](docs/agile-api-coverage-matrix.md).
 
 ### Integration tests (local)
 
-JiraAgilePS uses the same `.env`-based integration test setup as JiraPS.
+JiraAgilePSVII uses the same `.env`-based integration test setup as JiraPSVII.
 
 1. Copy `.env.example` to `.env` in the repository root.
 2. Fill in the `JIRA_CLOUD_*` and `JIRA_TEST_*` values.
 3. Optionally set `CI_JIRA_TYPE=Server` and `CI_JIRA_*` for Data Center track testing.
 
-The integration helper in `Tests/Helpers/IntegrationTestTools.ps1` reads `.env` and applies the same Cloud/Server variable model used in JiraPS.
+The integration helper in `Tests/Helpers/IntegrationTestTools.ps1` reads `.env` and applies the same Cloud/Server variable model used in JiraPSVII.
 
 ### Contribute
 
-Want to contribute to AtlassianPS? Great!
+Want to contribute to AtlassianPSVII? Great!
 We appreciate [everyone](https://atlassianps.org/#people) who invests their time
 to make our modules the best they can be.
 

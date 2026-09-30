@@ -1,19 +1,19 @@
 function Get-Sprint {
-    # .ExternalHelp ..\JiraAgilePS-help.xml
+    # .ExternalHelp ..\JiraAgilePSVII-help.xml
     [CmdletBinding( SupportsPaging, DefaultParameterSetName = '_All' )]
-    [OutputType( [AtlassianPS.JiraAgilePS.Sprint] )]
+    [OutputType( [AtlassianPSVII.JiraAgilePSVII.Sprint] )]
     param(
         [Parameter( Position = 0, Mandatory, ValueFromPipeline, ParameterSetName = '_ById' )]
-        [AtlassianPS.JiraAgilePS.Sprint[]]
+        [AtlassianPSVII.JiraAgilePSVII.Sprint[]]
         $Sprint,
 
 
         [Parameter( Position, Mandatory, ValueFromPipeline, ParameterSetName = '_All' )]
-        [AtlassianPS.JiraAgilePS.Board]
+        [AtlassianPSVII.JiraAgilePSVII.Board]
         $Board,
 
         [Parameter( ParameterSetName = '_All' )]
-        [AtlassianPS.JiraAgilePS.SprintState]
+        [AtlassianPSVII.JiraAgilePSVII.SprintState]
         $State,
 
         [Parameter( ParameterSetName = '_All' )]

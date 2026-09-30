@@ -1,4 +1,4 @@
-# AI Instructions for JiraAgilePS
+# AI Instructions for JiraAgilePSVII
 
 > **Single source of truth for AI coding assistants.**
 > Tool-specific entry-point files in this repository reference this file.
@@ -19,20 +19,20 @@
 |------|-------------|----------------------|
 | GitHub Copilot | `.github/copilot-instructions.md` | `AGENTS.md`, `.github/ai-context/powershell-rules.md` |
 | GitHub Copilot (file rules) | `.github/instructions/jiraagile-api-compatibility.instructions.md` | `.github/ai-context/powershell-rules.md` |
-| Cursor | `.cursor/rules/jiraagileps.mdc` | `AGENTS.md`, `.github/ai-context/powershell-rules.md` |
+| Cursor | `.cursor/rules/jiraagilepsvii.mdc` | `AGENTS.md`, `.github/ai-context/powershell-rules.md` |
 | Claude Code | `CLAUDE.md` | `AGENTS.md`, `.github/ai-context/powershell-rules.md` |
 | Gemini/Antigravity | `GEMINI.md` | `AGENTS.md`, `.github/ai-context/powershell-rules.md` |
 
 ## Project Overview
 
-`JiraAgilePS` adds Jira Agile cmdlets on top of JiraPS.
-The repository is older and currently has less mature automated test coverage than JiraPS.
+`JiraAgilePSVII` adds Jira Agile cmdlets on top of JiraPSVII.
+The repository is older and currently has less mature automated test coverage than JiraPSVII.
 
 ## Architecture
 
-- Module source: `JiraAgilePS/Public/` and `JiraAgilePS/Private/`
+- Module source: `JiraAgilePSVII/Public/` and `JiraAgilePSVII/Private/`
 - Public function files use unprefixed names (for example `Get-Board`) and are exported with manifest `DefaultCommandPrefix = 'JiraAgile'`.
-- Build entrypoint: `JiraAgilePS.build.ps1`
+- Build entrypoint: `JiraAgilePSVII.build.ps1`
 - Docs/help sources: `docs/en-US/`
 - Build helpers: `Tools/`
 - Optional tests source: `Tests/` (copied to `Release/Tests/` by `PrepareTests` when present)

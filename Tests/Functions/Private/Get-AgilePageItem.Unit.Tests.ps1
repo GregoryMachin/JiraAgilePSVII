@@ -6,7 +6,7 @@ BeforeDiscovery {
     $script:moduleToTest = Initialize-TestEnvironment
 }
 
-InModuleScope JiraAgilePS {
+InModuleScope JiraAgilePSVII {
     Describe "Get-AgilePageItem" -Tag 'Unit' {
         Describe "Behavior" {
             It "expands issues from a paged response" {

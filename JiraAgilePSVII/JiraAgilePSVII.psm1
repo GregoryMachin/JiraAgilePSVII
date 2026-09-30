@@ -1,11 +1,11 @@
 #region Dependencies
-# Load the ConfluencePS namespace from C#
-if (!("AtlassianPS.JiraAgilePS.Board" -as [Type])) {
-    Add-Type -Path (Join-Path $PSScriptRoot JiraAgilePS.Types.cs) -ReferencedAssemblies Microsoft.CSharp, Microsoft.PowerShell.Commands.Utility, System.Management.Automation, System.Text.RegularExpressions, System.Runtime.Extensions, System.Collections
+# Load the ConfluencePSVII namespace from C#
+if (!("AtlassianPSVII.JiraAgilePSVII.Board" -as [Type])) {
+    Add-Type -Path (Join-Path $PSScriptRoot JiraAgilePSVII.Types.cs) -ReferencedAssemblies Microsoft.CSharp, Microsoft.PowerShell.Commands.Utility, System.Management.Automation, System.Text.RegularExpressions, System.Runtime.Extensions, System.Collections
 }
 
 if (!("ArgumentCompleter" -as [Type])) {
-    Add-Type -Path (Join-Path $PSScriptRoot JiraAgilePS.Attributes.cs) -ReferencedAssemblies Microsoft.CSharp, Microsoft.PowerShell.Commands.Utility, System.Management.Automation
+    Add-Type -Path (Join-Path $PSScriptRoot JiraAgilePSVII.Attributes.cs) -ReferencedAssemblies Microsoft.CSharp, Microsoft.PowerShell.Commands.Utility, System.Management.Automation
 }
 #endregion Dependencies
 

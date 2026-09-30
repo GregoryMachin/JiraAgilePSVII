@@ -1,10 +1,10 @@
 function Get-BoardConfiguration {
-    # .ExternalHelp ..\JiraAgilePS-help.xml
+    # .ExternalHelp ..\JiraAgilePSVII-help.xml
     [CmdletBinding()]
     [OutputType([PSObject])]
     param(
         [Parameter(Position = 0, Mandatory, ValueFromPipeline)]
-        [AtlassianPS.JiraAgilePS.Board]
+        [AtlassianPSVII.JiraAgilePSVII.Board]
         $Board,
 
         [Parameter()]

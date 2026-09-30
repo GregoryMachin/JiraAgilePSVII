@@ -45,14 +45,14 @@ Describe "IntegrationTestTools helper functions" -Tag 'Unit' {
         $script:_CachedIntegrationEnv = $null
         $script:_EnvLoaded = $false
         $script:_CleanupInProgress = $false
-        Remove-Variable -Name _JiraAgilePSIntegrationEnvWarned -Scope Global -ErrorAction SilentlyContinue
+        Remove-Variable -Name _JiraAgilePSVIIIntegrationEnvWarned -Scope Global -ErrorAction SilentlyContinue
     }
 
     AfterEach {
         foreach ($name in $trackedEnvVars) {
             [System.Environment]::SetEnvironmentVariable($name, $script:envBackup[$name])
         }
-        Remove-Variable -Name _JiraAgilePSIntegrationEnvWarned -Scope Global -ErrorAction SilentlyContinue
+        Remove-Variable -Name _JiraAgilePSVIIIntegrationEnvWarned -Scope Global -ErrorAction SilentlyContinue
 
         Remove-Item -Path $script:testRoot -Recurse -Force -ErrorAction SilentlyContinue
     }

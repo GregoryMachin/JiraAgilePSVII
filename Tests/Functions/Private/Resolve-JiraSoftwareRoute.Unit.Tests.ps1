@@ -6,7 +6,7 @@ BeforeDiscovery {
     $script:moduleToTest = Initialize-TestEnvironment
 }
 
-InModuleScope JiraAgilePS {
+InModuleScope JiraAgilePSVII {
     Describe "Resolve-JiraSoftwareRoute" -Tag 'Unit' {
         It "resolves Cloud issue-list routes to the enhanced Jira Software API" -TestCases @(
             @{ Operation = 'BoardIssue'; BoardId = 7; Expected = 'https://jira.example.com/rest/software/1.0/board/7/issue' }

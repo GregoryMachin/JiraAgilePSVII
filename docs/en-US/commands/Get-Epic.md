@@ -1,6 +1,6 @@
 ---
-external help file: JiraAgilePS-help.xml
-Module Name: JiraAgilePS
+external help file: JiraAgilePSVII-help.xml
+Module Name: JiraAgilePSVII
 online version: https://atlassianps.org/docs/JiraAgilePS/commands/Get-Epic/
 locale: en-US
 layout: documentation
@@ -33,15 +33,15 @@ Get-Epic [-Board] <Board> [[-PageSize] <UInt32>] [-Credential <PSCredential>] [<
 - `GET /rest/agile/1.0/epic/{epicId}`
 - `GET /rest/agile/1.0/board/{boardId}/epic`
 
-Returns JiraAgilePS epic objects for direct epic lookup or board-scoped epic listing.
+Returns JiraAgilePSVII epic objects for direct epic lookup or board-scoped epic listing.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 
 ```powershell
-$epic = [AtlassianPS.JiraAgilePS.Epic]::new(10001)
-JiraAgilePS\Get-Epic -Epic $epic -Credential $cred
+$epic = [AtlassianPSVII.JiraAgilePSVII.Epic]::new(10001)
+JiraAgilePSVII\Get-Epic -Epic $epic -Credential $cred
 ```
 
 Returns details for epic 10001.
@@ -49,8 +49,8 @@ Returns details for epic 10001.
 ### EXAMPLE 2
 
 ```powershell
-$board = JiraAgilePS\Get-Board -BoardId 7 -Credential $cred
-JiraAgilePS\Get-Epic -Board $board -Credential $cred
+$board = JiraAgilePSVII\Get-Board -BoardId 7 -Credential $cred
+JiraAgilePSVII\Get-Epic -Board $board -Credential $cred
 ```
 
 Returns epics associated with board 7.
@@ -178,13 +178,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### AtlassianPS.JiraAgilePS.Epic
+### AtlassianPSVII.JiraAgilePSVII.Epic
 
-### AtlassianPS.JiraAgilePS.Board
+### AtlassianPSVII.JiraAgilePSVII.Board
 
 ## OUTPUTS
 
-### AtlassianPS.JiraAgilePS.Epic
+### AtlassianPSVII.JiraAgilePSVII.Epic
 
 ## NOTES
 

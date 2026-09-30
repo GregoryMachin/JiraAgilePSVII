@@ -6,7 +6,7 @@ BeforeDiscovery {
     $script:moduleToTest = Initialize-TestEnvironment
 }
 
-InModuleScope JiraAgilePS {
+InModuleScope JiraAgilePSVII {
     Describe "ConvertTo-Board" -Tag 'Unit' {
         BeforeAll {
             . "$PSScriptRoot/../../Helpers/TestTools.ps1"
@@ -25,13 +25,13 @@ InModuleScope JiraAgilePS {
             }
 
             It "returns a typed board object" {
-                $result | Should -BeOfType ([AtlassianPS.JiraAgilePS.Board])
+                $result | Should -BeOfType ([AtlassianPSVII.JiraAgilePSVII.Board])
             }
 
             It "maps board properties" {
                 $result.Id | Should -Be 7
                 $result.Name | Should -Be 'Delivery board'
-                $result.Type | Should -Be ([AtlassianPS.JiraAgilePS.BoardType]::scrum)
+                $result.Type | Should -Be ([AtlassianPSVII.JiraAgilePSVII.BoardType]::scrum)
                 $result.Self.AbsoluteUri | Should -Be 'https://jira.example.com/rest/agile/1.0/board/7'
             }
 
@@ -51,7 +51,7 @@ InModuleScope JiraAgilePS {
 
                 $simpleBoard = ConvertTo-Board -InputObject $simpleBoardPayload
 
-                $simpleBoard.Type | Should -Be ([AtlassianPS.JiraAgilePS.BoardType]::simple)
+                $simpleBoard.Type | Should -Be ([AtlassianPSVII.JiraAgilePSVII.BoardType]::simple)
             }
         }
     }

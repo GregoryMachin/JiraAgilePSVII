@@ -1,6 +1,6 @@
 ---
-external help file: JiraAgilePS-help.xml
-Module Name: JiraAgilePS
+external help file: JiraAgilePSVII-help.xml
+Module Name: JiraAgilePSVII
 online version: https://atlassianps.org/docs/JiraAgilePS/commands/New-Sprint/
 locale: en-US
 layout: documentation
@@ -31,8 +31,8 @@ When imported normally, run this command as `New-JiraAgileSprint`.
 ### EXAMPLE 1
 
 ```powershell
-$board = JiraAgilePS\Get-Board -BoardId 7 -Credential $cred
-JiraAgilePS\New-Sprint -Board $board -Name "Sprint 42" -Credential $cred
+$board = JiraAgilePSVII\Get-Board -BoardId 7 -Credential $cred
+JiraAgilePSVII\New-Sprint -Board $board -Name "Sprint 42" -Credential $cred
 ```
 
 Creates a future sprint on board 7.
@@ -40,8 +40,8 @@ Creates a future sprint on board 7.
 ### EXAMPLE 2
 
 ```powershell
-$board = JiraAgilePS\Get-Board -BoardId 7 -Credential $cred
-JiraAgilePS\New-Sprint -Board $board -Name "Sprint 42" -StartDate (Get-Date) -EndDate (Get-Date).AddDays(14) -Goal "Ship API write cmdlets" -Credential $cred
+$board = JiraAgilePSVII\Get-Board -BoardId 7 -Credential $cred
+JiraAgilePSVII\New-Sprint -Board $board -Name "Sprint 42" -StartDate (Get-Date) -EndDate (Get-Date).AddDays(14) -Goal "Ship API write cmdlets" -Credential $cred
 ```
 
 Creates a sprint with dates and a goal.
@@ -153,11 +153,11 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### AtlassianPS.JiraAgilePS.Board
+### AtlassianPSVII.JiraAgilePSVII.Board
 
 ## OUTPUTS
 
-### AtlassianPS.JiraAgilePS.Sprint
+### AtlassianPSVII.JiraAgilePSVII.Sprint
 
 ## NOTES
 

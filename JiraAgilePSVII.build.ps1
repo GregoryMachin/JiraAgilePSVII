@@ -1,4 +1,4 @@
-#requires -Modules @{ ModuleName = 'AtlassianPS.Standards'; ModuleVersion = '0.2.0'; MaximumVersion = '0.2.0' }
+#requires -Modules @{ ModuleName = 'AtlassianPSVII.Standards'; ModuleVersion = '0.2.0'; MaximumVersion = '0.2.0' }
 
 [CmdletBinding()]
 param(
@@ -31,12 +31,12 @@ if ($VersionToPublish) {
 
 Import-Module "$PSScriptRoot/Tools/BuildTools.psm1" -Force
 
-if (Test-Path -LiteralPath (Join-Path (Split-Path $PSScriptRoot -Parent) 'JiraPS/JiraPS/JiraPS.psd1') -PathType Leaf) {
-    Add-ToModulePath -Path (Join-Path (Split-Path $PSScriptRoot -Parent) 'JiraPS')
+if (Test-Path -LiteralPath (Join-Path (Split-Path $PSScriptRoot -Parent) 'JiraPSVII/JiraPSVII/JiraPSVII.psd1') -PathType Leaf) {
+    Add-ToModulePath -Path (Join-Path (Split-Path $PSScriptRoot -Parent) 'JiraPSVII')
 }
 
-$ProjectName = 'JiraAgilePS'
-$script:BuildInfo = Initialize-AtlassianPSBuildEnvironment `
+$ProjectName = 'JiraAgilePSVII'
+$script:BuildInfo = Initialize-AtlassianPSVIIBuildEnvironment `
     -ProjectName $ProjectName `
     -ProjectPath $PSScriptRoot `
     -VersionToPublish $VersionToPublish `
@@ -45,23 +45,23 @@ $script:BuildInfo = Initialize-AtlassianPSBuildEnvironment `
 $builtManifestPath = $script:BuildInfo.BuiltManifestPath
 
 Task ShowDebugInfo {
-    Write-AtlassianPSBuildInfo -BuildInfo $script:BuildInfo
+    Write-AtlassianPSVIIBuildInfo -BuildInfo $script:BuildInfo
 }
 
 Task ShowInfo ShowDebugInfo
 
 Task Lint {
     $analyzerPaths = @(
-        "$env:BHProjectPath/JiraAgilePS"
+        "$env:BHProjectPath/JiraAgilePSVII"
         "$env:BHProjectPath/Tests"
         "$env:BHProjectPath/Tools"
-        "$env:BHProjectPath/JiraAgilePS.build.ps1"
+        "$env:BHProjectPath/JiraAgilePSVII.build.ps1"
     )
 
-    $null = Invoke-AtlassianPSLint `
+    $null = Invoke-AtlassianPSVIILint `
         -ProjectPath $env:BHProjectPath `
         -ModulePath $env:BHModulePath `
-        -BuildScriptPath "$env:BHProjectPath/JiraAgilePS.build.ps1" `
+        -BuildScriptPath "$env:BHProjectPath/JiraAgilePSVII.build.ps1" `
         -StyleTestPath "$env:BHProjectPath/Tests/Style.Tests.ps1" `
         -AnalyzerSettingsPath "$env:BHProjectPath/PSScriptAnalyzerSettings.psd1" `
         -AnalyzerPaths $analyzerPaths `
@@ -72,7 +72,7 @@ Task Lint {
 Task Clean {
     Remove-Item $env:BHBuildOutput -Force -Recurse -ErrorAction SilentlyContinue
     Remove-Item "Test*.xml" -Force -ErrorAction SilentlyContinue
-    # `JiraAgilePS/<locale>/` is preserved as the GenerateExternalHelp incremental cache.
+    # `JiraAgilePSVII/<locale>/` is preserved as the GenerateExternalHelp incremental cache.
 }
 
 Task Build Clean, {
@@ -127,7 +127,7 @@ Task CopyModuleFiles {
         'README.md'
     )
 
-    $null = Copy-AtlassianPSModuleArtifacts `
+    $null = Copy-AtlassianPSVIIModuleArtifacts `
         -ProjectPath $env:BHProjectPath `
         -ModuleName $env:BHProjectName `
         -BuildOutputPath $env:BHBuildOutput `
@@ -138,7 +138,7 @@ Task CopyModuleFiles {
 }
 
 Task CompileModule {
-    $null = Join-AtlassianPSModuleSource `
+    $null = Join-AtlassianPSVIIModuleSource `
         -ReleaseModulePath "$env:BHBuildOutput/$env:BHProjectName" `
         -RegionsToKeep @('Dependencies', 'Configuration')
 }
@@ -278,14 +278,14 @@ Task GenerateExternalHelp -Inputs {
 }
 
 Task UpdateManifest {
-    $null = Update-AtlassianPSModuleManifestExports `
+    $null = Update-AtlassianPSVIIModuleManifestExports `
         -SourceModulePath $env:BHModulePath `
         -BuiltManifestPath $builtManifestPath `
         -ModuleName $env:BHProjectName
 }
 
 Task SetVersion {
-    $versionString = Set-AtlassianPSModuleManifestVersion `
+    $versionString = Set-AtlassianPSVIIModuleManifestVersion `
         -BuiltManifestPath $builtManifestPath `
         -ModuleName $env:BHProjectName `
         -VersionToPublish $VersionToPublish
@@ -299,7 +299,7 @@ Task Test {
         $integrationTestFiles = @(Get-ChildItem -Path $integrationPath -Filter '*.Tests.ps1' -File | Select-Object -ExpandProperty FullName)
     }
 
-    $null = Invoke-AtlassianPSModuleTests `
+    $null = Invoke-AtlassianPSVIIModuleTests `
         -TestPath "$env:BHBuildOutput/Tests" `
         -PesterVerbosity $PesterVerbosity `
         -Tag $Tag `
@@ -376,7 +376,7 @@ See Tests/Integration/README.md for integration test configuration details.
         Write-Build Gray "Excluding tag(s): $($ExcludeTag -join ', ')"
     }
     if ($ThrottleLimit -ne 4) {
-        Write-Build Gray "ThrottleLimit is accepted for JiraPS parity but direct Pester execution is sequential in JiraAgilePS. Requested: $ThrottleLimit"
+        Write-Build Gray "ThrottleLimit is accepted for JiraPSVII parity but direct Pester execution is sequential in JiraAgilePSVII. Requested: $ThrottleLimit"
     }
 
     $result = Invoke-Pester -Configuration $config
@@ -410,7 +410,7 @@ Task StopJiraDocker {
 
 Task Publish SetVersion, SignCode, Package, {
     Assert-True (-not [String]::IsNullOrEmpty($PSGalleryAPIKey)) "No key for the PSGallery"
-    Publish-AtlassianPSModuleRelease -BuildOutputPath $env:BHBuildOutput -ModuleName $env:BHProjectName -ApiKey $PSGalleryAPIKey
+    Publish-AtlassianPSVIIModuleRelease -BuildOutputPath $env:BHBuildOutput -ModuleName $env:BHProjectName -ApiKey $PSGalleryAPIKey
 }, UpdateHomepage
 
 Task UpdateHomepage {
@@ -422,7 +422,7 @@ Task SignCode {
 }
 
 Task Package {
-    $null = New-AtlassianPSModulePackage -BuildOutputPath $env:BHBuildOutput -ModuleName $env:BHProjectName
+    $null = New-AtlassianPSVIIModulePackage -BuildOutputPath $env:BHBuildOutput -ModuleName $env:BHProjectName
 }
 
 Task . Clean, Build, Test

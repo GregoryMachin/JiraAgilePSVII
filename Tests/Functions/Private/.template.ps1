@@ -6,7 +6,7 @@ BeforeDiscovery {
     $script:moduleToTest = Initialize-TestEnvironment
 }
 
-InModuleScope JiraAgilePS {
+InModuleScope JiraAgilePSVII {
     Describe "ConvertTo-%RESOURCE%" -Tag 'Unit' {
         BeforeAll {
             . "$PSScriptRoot/../../Helpers/TestTools.ps1"
@@ -48,8 +48,8 @@ InModuleScope JiraAgilePS {
                     $result | Should -BeOfType [PSCustomObject]
                 }
 
-                It "adds the custom type name 'JiraAgilePS.%RESOURCE%'" {
-                    $result.PSObject.TypeNames[0] | Should -Be 'JiraAgilePS.%RESOURCE%'
+                It "adds the custom type name 'JiraAgilePSVII.%RESOURCE%'" {
+                    $result.PSObject.TypeNames[0] | Should -Be 'JiraAgilePSVII.%RESOURCE%'
                 }
             }
 
@@ -58,7 +58,7 @@ InModuleScope JiraAgilePS {
                 It "defines '<property>' of type '<type>' with value '<value>'" -TestCases @(
                     @{ property = "Id"; type = [string]; value = '123' }
                     @{ property = "Name"; type = [string]; value = 'Example' }
-                    @{ property = "Author"; type = 'AtlassianPS.JiraAgilePS.User'; value = 'JonDoe' }
+                    @{ property = "Author"; type = 'AtlassianPSVII.JiraAgilePSVII.User'; value = 'JonDoe' }
                     @{ property = "Created"; type = [System.DateTime]; value = (Get-Date "2025-01-01T00:00:00.000Z") }
                 ) {
                     # Check value (if specified)
@@ -85,7 +85,7 @@ InModuleScope JiraAgilePS {
                 It "accepts input from pipeline" {
                     $pipelineResult = $sampleObject | ConvertTo-%RESOURCE%
                     $pipelineResult | Should -Not -BeNullOrEmpty
-                    $pipelineResult.PSObject.TypeNames[0] | Should -Be 'JiraAgilePS.%RESOURCE%'
+                    $pipelineResult.PSObject.TypeNames[0] | Should -Be 'JiraAgilePSVII.%RESOURCE%'
                 }
 
                 It "handles array input" {

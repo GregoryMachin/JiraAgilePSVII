@@ -17,22 +17,22 @@ Describe "General project validation" -Tag Unit {
         { Test-ModuleManifest -Path $moduleToTest -ErrorAction Stop } | Should -Not -Throw
     }
 
-    It "module 'JiraAgilePS' can import cleanly" {
+    It "module 'JiraAgilePSVII' can import cleanly" {
         { Import-Module $moduleToTest } | Should -Not -Throw
     }
 
-    It "module 'JiraAgilePS' exports functions" {
+    It "module 'JiraAgilePSVII' exports functions" {
         Import-Module $moduleToTest
 
-        (Get-Command -Module JiraAgilePS | Measure-Object).Count | Should -BeGreaterThan 0
+        (Get-Command -Module JiraAgilePSVII | Measure-Object).Count | Should -BeGreaterThan 0
     }
 
     It "module uses the correct root module" {
-        $manifest.RootModule | Should -Be 'JiraAgilePS.psm1'
+        $manifest.RootModule | Should -Be 'JiraAgilePSVII.psm1'
     }
 
     It "module uses the correct guid" {
-        $manifest.Guid | Should -Be '4de7d140-4fb6-4ac3-a187-82dcd762ebe9'
+        $manifest.Guid | Should -Be '1f85db59-454c-4ade-89df-626c225a5f7d'
     }
 
     It "module uses a valid version" {

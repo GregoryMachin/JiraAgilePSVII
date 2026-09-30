@@ -1,6 +1,6 @@
 ---
-external help file: JiraAgilePS-help.xml
-Module Name: JiraAgilePS
+external help file: JiraAgilePSVII-help.xml
+Module Name: JiraAgilePSVII
 online version: https://atlassianps.org/docs/JiraAgilePS/commands/Get-BoardConfiguration/
 locale: en-US
 layout: documentation
@@ -24,15 +24,15 @@ Get-BoardConfiguration [-Board] <Board> [-Credential <PSCredential>] [<CommonPar
 
 - `GET /rest/agile/1.0/board/{boardId}/configuration`
 
-Returns the board configuration payload as a typed JiraAgilePS board configuration object.
+Returns the board configuration payload as a typed JiraAgilePSVII board configuration object.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 
 ```powershell
-$board = JiraAgilePS\Get-Board -BoardId 7 -Credential $cred
-JiraAgilePS\Get-BoardConfiguration -Board $board -Credential $cred
+$board = JiraAgilePSVII\Get-Board -BoardId 7 -Credential $cred
+JiraAgilePSVII\Get-BoardConfiguration -Board $board -Credential $cred
 ```
 
 Returns configuration details for board 7.
@@ -80,11 +80,11 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### AtlassianPS.JiraAgilePS.Board
+### AtlassianPSVII.JiraAgilePSVII.Board
 
 ## OUTPUTS
 
-### AtlassianPS.JiraAgilePS.BoardConfiguration
+### AtlassianPSVII.JiraAgilePSVII.BoardConfiguration
 
 ## NOTES
 

@@ -15,7 +15,7 @@ Describe "Move-JiraAgileIssueToBacklog" -Tag 'Unit' {
     BeforeAll {
         $script:jiraServer = "https://jira.example.com"
 
-        Mock Get-JiraConfigServer -ModuleName JiraAgilePS {
+        Mock Get-JiraConfigServer -ModuleName JiraAgilePSVII {
             $jiraServer
         }
     }
@@ -23,7 +23,7 @@ Describe "Move-JiraAgileIssueToBacklog" -Tag 'Unit' {
     BeforeEach {
         $script:postedBodies = [System.Collections.Generic.List[string]]::new()
 
-        Mock Invoke-JiraMethod -ModuleName JiraAgilePS {
+        Mock Invoke-JiraMethod -ModuleName JiraAgilePSVII {
             param($Body)
             $null = $script:postedBodies.Add($Body)
         }
@@ -69,7 +69,7 @@ Describe "Move-JiraAgileIssueToBacklog" -Tag 'Unit' {
 
             { Move-JiraAgileIssueToBacklog -Issue $issues -Confirm:$false } | Should -Not -Throw
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It -ParameterFilter {
                 $Method -eq "POST" -and
                 $Uri -eq "$jiraServer/rest/agile/1.0/backlog/issue" -and
                 (($Body | ConvertFrom-Json).issues -join ",") -eq "AG-1,AG-2"
@@ -79,20 +79,20 @@ Describe "Move-JiraAgileIssueToBacklog" -Tag 'Unit' {
         It "accepts string issue identifiers" {
             { Move-JiraAgileIssueToBacklog -Issue @("AG-3", "10004") -Confirm:$false } | Should -Not -Throw
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It -ParameterFilter {
                 (($Body | ConvertFrom-Json).issues -join ",") -eq "AG-3,10004"
             }
         }
 
-        It "accepts JiraPS 3 typed issue objects" {
+        It "accepts JiraPSVII 3 typed issue objects" {
             $issues = @(
-                [AtlassianPS.JiraPS.Issue]::new("AG-4")
-                [AtlassianPS.JiraPS.Issue]::new("AG-5")
+                [AtlassianPSVII.JiraPSVII.Issue]::new("AG-4")
+                [AtlassianPSVII.JiraPSVII.Issue]::new("AG-5")
             )
 
             { Move-JiraAgileIssueToBacklog -Issue $issues -Confirm:$false } | Should -Not -Throw
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It -ParameterFilter {
                 (($Body | ConvertFrom-Json).issues -join ",") -eq "AG-4,AG-5"
             }
         }
@@ -102,7 +102,7 @@ Describe "Move-JiraAgileIssueToBacklog" -Tag 'Unit' {
 
             { Move-JiraAgileIssueToBacklog -Issue $issues -Confirm:$false } | Should -Not -Throw
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 2 -Scope It
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 2 -Scope It
 
             $firstBodyIssues = ($script:postedBodies[0] | ConvertFrom-Json).issues
             $secondBodyIssues = ($script:postedBodies[1] | ConvertFrom-Json).issues
@@ -119,7 +119,7 @@ Describe "Move-JiraAgileIssueToBacklog" -Tag 'Unit' {
         It "does not invoke Jira when WhatIf is used" {
             Move-JiraAgileIssueToBacklog -Issue "AG-1" -WhatIf
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 0 -Scope It
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 0 -Scope It
         }
     }
 }

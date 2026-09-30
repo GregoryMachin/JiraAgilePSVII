@@ -20,14 +20,14 @@ Describe "Add-JiraAgileIssueToSprint" -Tag 'Unit' {
     BeforeEach {
         $script:postedBodies = [System.Collections.Generic.List[string]]::new()
 
-        Mock Get-Sprint -ModuleName JiraAgilePS {
-            [AtlassianPS.JiraAgilePS.Sprint]@{
+        Mock Get-Sprint -ModuleName JiraAgilePSVII {
+            [AtlassianPSVII.JiraAgilePSVII.Sprint]@{
                 Id   = 99
                 Self = [Uri]$sprintUri
             }
         }
 
-        Mock Invoke-JiraMethod -ModuleName JiraAgilePS {
+        Mock Invoke-JiraMethod -ModuleName JiraAgilePSVII {
             param($Uri, $Method, $Body)
             $null = $script:postedBodies.Add($Body)
         }
@@ -41,7 +41,7 @@ Describe "Add-JiraAgileIssueToSprint" -Tag 'Unit' {
         Context "Parameter Types" {
             It "has a parameter '<parameter>' of type '<type>'" -TestCases @(
                 @{ parameter = "Issue"; type = [Object] }
-                @{ parameter = "Sprint"; type = [AtlassianPS.JiraAgilePS.Sprint] }
+                @{ parameter = "Sprint"; type = [AtlassianPSVII.JiraAgilePSVII.Sprint] }
                 @{ parameter = "Credential"; type = [System.Management.Automation.PSCredential] }
             ) {
                 $command | Should -HaveParameter $parameter -Type $type
@@ -68,7 +68,7 @@ Describe "Add-JiraAgileIssueToSprint" -Tag 'Unit' {
 
     Describe "Behavior" {
         It "posts issue keys to the sprint issue endpoint" {
-            $sprint = [AtlassianPS.JiraAgilePS.Sprint]::new(99)
+            $sprint = [AtlassianPSVII.JiraAgilePSVII.Sprint]::new(99)
             $sprint.Self = [Uri]$sprintUri
             $issues = @(
                 [pscustomobject]@{ Key = "AG-1" }
@@ -77,47 +77,47 @@ Describe "Add-JiraAgileIssueToSprint" -Tag 'Unit' {
 
             { Add-JiraAgileIssueToSprint -Issue $issues -Sprint $sprint } | Should -Not -Throw
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It -ParameterFilter {
                 $Method -eq "POST" -and
                 $Uri -eq "$sprintUri/issue" -and
                 (($Body | ConvertFrom-Json).issues -join ",") -eq "AG-1,AG-2"
             }
         }
 
-        It "accepts JiraPS 3 typed issue objects" {
-            $sprint = [AtlassianPS.JiraAgilePS.Sprint]::new(99)
+        It "accepts JiraPSVII 3 typed issue objects" {
+            $sprint = [AtlassianPSVII.JiraAgilePSVII.Sprint]::new(99)
             $sprint.Self = [Uri]$sprintUri
             $issues = @(
-                [AtlassianPS.JiraPS.Issue]::new("AG-3")
-                [AtlassianPS.JiraPS.Issue]::new("AG-4")
+                [AtlassianPSVII.JiraPSVII.Issue]::new("AG-3")
+                [AtlassianPSVII.JiraPSVII.Issue]::new("AG-4")
             )
 
             { Add-JiraAgileIssueToSprint -Issue $issues -Sprint $sprint } | Should -Not -Throw
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It -ParameterFilter {
                 (($Body | ConvertFrom-Json).issues -join ",") -eq "AG-3,AG-4"
             }
         }
 
         It "resolves sprint details when Self is not provided" {
-            $sprintWithoutSelf = [AtlassianPS.JiraAgilePS.Sprint]::new(99)
+            $sprintWithoutSelf = [AtlassianPSVII.JiraAgilePSVII.Sprint]::new(99)
             $issues = @([pscustomobject]@{ Key = "AG-1" })
 
             { Add-JiraAgileIssueToSprint -Issue $issues -Sprint $sprintWithoutSelf } | Should -Not -Throw
 
-            Should -Invoke -CommandName Get-Sprint -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It
+            Should -Invoke -CommandName Get-Sprint -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It
         }
 
         It "sends sprint issue payloads in pages of 50 issue keys" {
-            $sprint = [AtlassianPS.JiraAgilePS.Sprint]::new(99)
+            $sprint = [AtlassianPSVII.JiraAgilePSVII.Sprint]::new(99)
             $sprint.Self = [Uri]$sprintUri
             $issues = @(1..55 | ForEach-Object { [pscustomobject]@{ Key = "AG-$_" } })
 
             { Add-JiraAgileIssueToSprint -Issue $issues -Sprint $sprint } | Should -Not -Throw
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 2 -Scope It
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 2 -Scope It -ParameterFilter {
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 2 -Scope It
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 2 -Scope It -ParameterFilter {
                 $Method -eq "POST" -and
                 $Uri -eq "$sprintUri/issue"
             }

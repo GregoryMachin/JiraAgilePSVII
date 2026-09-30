@@ -1,20 +1,20 @@
 ---
-external help file: JiraAgilePS-help.xml
-Module Name: JiraAgilePS
+external help file: JiraAgilePSVII-help.xml
+Module Name: JiraAgilePSVII
 online version: https://atlassianps.org/docs/JiraAgilePS/
 locale: en-US
 layout: documentation
 permalink: /docs/JiraAgilePS/
 ---
-# about_JiraAgilePS
+# about_JiraAgilePSVII
 
 ## SHORT DESCRIPTION
 
-JiraAgilePS extends JiraPS with Jira Agile board, sprint, and epic automation commands.
+JiraAgilePSVII extends JiraPSVII with Jira Agile board, sprint, and epic automation commands.
 
 ## LONG DESCRIPTION
 
-Use JiraAgilePS when you need Jira Software Agile REST operations from PowerShell.
+Use JiraAgilePSVII when you need Jira Software Agile REST operations from PowerShell.
 
 ## SEE ALSO
 

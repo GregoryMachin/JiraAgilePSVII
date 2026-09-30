@@ -30,7 +30,7 @@ Describe "Jira Agile API coverage matrix" -Tag Unit {
         )
 
         $script:exportedFunctionNames = @(
-            (Get-Module "JiraAgilePS").ExportedFunctions.Keys | Sort-Object
+            (Get-Module "JiraAgilePSVII").ExportedFunctions.Keys | Sort-Object
         )
 
         $script:expectedContracts = @(
@@ -41,7 +41,7 @@ Describe "Jira Agile API coverage matrix" -Tag Unit {
             }
         ) | Sort-Object
 
-        $referencePattern = '\[[^\]]+\]\((?<Path>\.\./(?:JiraAgilePS|Tests)/[^)]+)\)'
+        $referencePattern = '\[[^\]]+\]\((?<Path>\.\./(?:JiraAgilePSVII|Tests)/[^)]+)\)'
         $script:referencedFiles = @(
             [regex]::Matches($matrixContent, $referencePattern) |
                 ForEach-Object { $_.Groups["Path"].Value } |
@@ -74,7 +74,7 @@ Describe "Jira Agile API coverage matrix" -Tag Unit {
         }
 
         It "references its public source file" {
-            $matrixEntry.Source | Should -Be "../JiraAgilePS/Public/$sourceFunctionName.ps1"
+            $matrixEntry.Source | Should -Be "../JiraAgilePSVII/Public/$sourceFunctionName.ps1"
         }
 
         It "references its unit test file" {

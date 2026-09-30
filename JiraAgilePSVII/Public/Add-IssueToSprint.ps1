@@ -1,14 +1,14 @@
 function Add-IssueToSprint {
-    # .ExternalHelp ..\JiraAgilePS-help.xml
+    # .ExternalHelp ..\JiraAgilePSVII-help.xml
     [CmdletBinding( SupportsPaging )]
     [OutputType( [void] )]
     param(
         [Parameter( Position = 0, Mandatory, ValueFromPipeline )]
-        <# Waiting on JiraPS v3.0 : [AtlassianPS.JiraPS.Issue[]] #>
+        <# Waiting on JiraPSVII v3.0 : [AtlassianPSVII.JiraPSVII.Issue[]] #>
         $Issue,
 
         [Parameter( Mandatory )]
-        [AtlassianPS.JiraAgilePS.Sprint]
+        [AtlassianPSVII.JiraAgilePSVII.Sprint]
         $Sprint,
 
         [Parameter()]
@@ -45,7 +45,7 @@ function Add-IssueToSprint {
                 Uri        = "$($Sprint.Self)/issue"
                 Method     = "POST"
                 Body       = ConvertTo-Json @{
-                    issues = @($thisIssuePage.Key) # TODO: pass Issue object with JiraPS v3.0
+                    issues = @($thisIssuePage.Key) # TODO: pass Issue object with JiraPSVII v3.0
                     # "rankBeforeIssue": "<string>",
                     # "rankAfterIssue": "<string>",
                     # "rankCustomFieldId": 2154

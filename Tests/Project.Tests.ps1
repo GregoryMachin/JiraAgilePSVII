@@ -9,13 +9,13 @@ BeforeDiscovery {
 
 Describe "General project validation" -Tag Unit {
     BeforeDiscovery {
-        $script:module = Get-Module 'JiraAgilePS'
+        $script:module = Get-Module 'JiraAgilePSVII'
         $modulePrefix = $script:module.Prefix
 
         $script:testFiles = Get-ChildItem $PSScriptRoot -Include "*.Tests.ps1" -Recurse
 
-        $script:publicFunctionFiles = (Get-ChildItem "$moduleRoot/JiraAgilePS/Public/*.ps1").BaseName
-        $script:privateFunctionFiles = (Get-ChildItem "$moduleRoot/JiraAgilePS/Private/*.ps1").BaseName
+        $script:publicFunctionFiles = (Get-ChildItem "$moduleRoot/JiraAgilePSVII/Public/*.ps1").BaseName
+        $script:privateFunctionFiles = (Get-ChildItem "$moduleRoot/JiraAgilePSVII/Private/*.ps1").BaseName
 
         $script:exportedFunctionNames = @($script:module.ExportedFunctions.Keys)
         $script:normalizedExportedFunctionNames = @(
@@ -84,7 +84,7 @@ Describe "General project validation" -Tag Unit {
     Describe "Project structure" {
         It "only exports functions from the Public folder" {
             foreach ($normalizedExportedFunctionName in $normalizedExportedFunctionNames) {
-                $publicFunctionFiles | Should -Contain $normalizedExportedFunctionName -Because "exported function '$normalizedExportedFunctionName' should have a corresponding file in JiraAgilePS/Public/"
+                $publicFunctionFiles | Should -Contain $normalizedExportedFunctionName -Because "exported function '$normalizedExportedFunctionName' should have a corresponding file in JiraAgilePSVII/Public/"
             }
         }
 
@@ -99,7 +99,7 @@ Describe "General project validation" -Tag Unit {
             # baseline: unlike the Public-folder-consistency checks above (which only catch a
             # folder/export mismatch), this catches an unreviewed addition or removal of a
             # public command, since updating the manifest is the explicit approval step.
-            $manifestData = Import-PowerShellDataFile -Path "$moduleRoot/JiraAgilePS/JiraAgilePS.psd1"
+            $manifestData = Import-PowerShellDataFile -Path "$moduleRoot/JiraAgilePSVII/JiraAgilePSVII.psd1"
             $manifestData.FunctionsToExport | Should -Not -Be '*'
             Compare-Object -ReferenceObject ($manifestData.FunctionsToExport | Sort-Object) -DifferenceObject ($publicFunctionFiles | Sort-Object) |
                 Should -BeNullOrEmpty

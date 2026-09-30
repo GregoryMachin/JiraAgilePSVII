@@ -1,14 +1,14 @@
 @{
-    RootModule           = 'JiraAgilePS.psm1'
+    RootModule           = 'JiraAgilePSVII.psm1'
     ModuleVersion        = '0.2'
-    GUID                 = '4de7d140-4fb6-4ac3-a187-82dcd762ebe9'
-    Author               = 'AtlassianPS'
+    GUID                 = '1f85db59-454c-4ade-89df-626c225a5f7d'
+    Author               = 'AtlassianPSVII'
     CompanyName          = 'AtlassianPS.org'
-    Copyright            = '(c) 2017 AtlassianPS. All rights reserved.'
+    Copyright            = '(c) 2017 AtlassianPSVII. All rights reserved.'
     Description          = 'placeholder'
     PowerShellVersion    = '5.1'
-    RequiredModules      = @("JiraPS")
-    FormatsToProcess     = 'JiraAgilePS.format.ps1xml'
+    RequiredModules      = @("JiraPSVII")
+    FormatsToProcess     = 'JiraAgilePSVII.format.ps1xml'
     # NestedModules     = @()
     FunctionsToExport    = @(
         'Add-IssueToSprint'
@@ -29,13 +29,13 @@
     FileList             = @()
     PrivateData          = @{
         PSData = @{
-            Tags                       = @( "rest", "api", "atlassianps", "jira", "atlassian", "agile" )
+            Tags                       = @( "rest", "api", "atlassianpsvii", "jira", "atlassian", "agile" )
             LicenseUri                 = 'https://github.com/AtlassianPS/JiraAgilePS/blob/master/LICENSE'
             ProjectUri                 = 'https://AtlassianPS.org/module/JiraAgilePS'
             IconUri                    = 'https://AtlassianPS.org/assets/img/JiraAgilePS.png'
             Prerelease                 = ''
             ReleaseNotes               = 'https://github.com/AtlassianPS/JiraAgilePS/blob/master/CHANGELOG.md'
-            ExternalModuleDependencies = 'JiraPS'
+            ExternalModuleDependencies = 'JiraPSVII'
         }
     }
     DefaultCommandPrefix = 'JiraAgile'

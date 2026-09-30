@@ -16,7 +16,7 @@ Describe "Get-JiraAgileBoardConfiguration" -Tag 'Unit' {
         . "$PSScriptRoot/../../Helpers/TestTools.ps1"
         $script:jiraServer = "https://jira.example.com"
 
-        Mock Get-JiraConfigServer -ModuleName JiraAgilePS {
+        Mock Get-JiraConfigServer -ModuleName JiraAgilePSVII {
             $jiraServer
         }
     }
@@ -28,7 +28,7 @@ Describe "Get-JiraAgileBoardConfiguration" -Tag 'Unit' {
 
         Context "Parameter Types" {
             It "has a parameter '<parameter>' of type '<type>'" -TestCases @(
-                @{ parameter = "Board"; type = [AtlassianPS.JiraAgilePS.Board] }
+                @{ parameter = "Board"; type = [AtlassianPSVII.JiraAgilePSVII.Board] }
                 @{ parameter = "Credential"; type = [System.Management.Automation.PSCredential] }
             ) {
                 $command | Should -HaveParameter $parameter -Type $type
@@ -38,7 +38,7 @@ Describe "Get-JiraAgileBoardConfiguration" -Tag 'Unit' {
 
     Describe "Behavior" {
         It "requests board configuration and returns converted object" {
-            Mock Invoke-JiraMethod -ModuleName JiraAgilePS {
+            Mock Invoke-JiraMethod -ModuleName JiraAgilePSVII {
                 [pscustomobject]@{
                     id     = 9
                     name   = "Main board"
@@ -49,18 +49,18 @@ Describe "Get-JiraAgileBoardConfiguration" -Tag 'Unit' {
                     }
                 }
             }
-            $board = [AtlassianPS.JiraAgilePS.Board]::new(9)
+            $board = [AtlassianPSVII.JiraAgilePSVII.Board]::new(9)
 
             $result = Get-JiraAgileBoardConfiguration -Board $board
 
-            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePS -Exactly -Times 1 -Scope It -ParameterFilter {
+            Should -Invoke -CommandName Invoke-JiraMethod -ModuleName JiraAgilePSVII -Exactly -Times 1 -Scope It -ParameterFilter {
                 $Method -eq "GET" -and
                 $Uri -eq "$jiraServer/rest/agile/1.0/board/9/configuration"
             }
 
             $result.id | Should -Be 9
             $result.filter.id | Should -Be 10030
-            $result.PSObject.TypeNames[0] | Should -Be "AtlassianPS.JiraAgilePS.BoardConfiguration"
+            $result.PSObject.TypeNames[0] | Should -Be "AtlassianPSVII.JiraAgilePSVII.BoardConfiguration"
         }
     }
 }

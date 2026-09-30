@@ -6,7 +6,7 @@ BeforeDiscovery {
     $script:moduleToTest = Initialize-TestEnvironment
 }
 
-InModuleScope JiraAgilePS {
+InModuleScope JiraAgilePSVII {
     Describe "ConvertTo-Issue" -Tag 'Unit' {
         BeforeAll {
             . "$PSScriptRoot/../../Helpers/TestTools.ps1"
@@ -24,7 +24,7 @@ InModuleScope JiraAgilePS {
             It "adds the Agile issue type name" {
                 $result = ConvertTo-Issue -InputObject $issuePayload
 
-                $result.PSObject.TypeNames[0] | Should -Be 'AtlassianPS.JiraAgilePS.Issue'
+                $result.PSObject.TypeNames[0] | Should -Be 'AtlassianPSVII.JiraAgilePSVII.Issue'
             }
 
             It "preserves all payload properties" {
@@ -35,17 +35,17 @@ InModuleScope JiraAgilePS {
                 $result.fields.summary | Should -Be 'Fix board view'
             }
 
-            It "preserves JiraPS issue typing behind the Agile issue type" {
+            It "preserves JiraPSVII issue typing behind the Agile issue type" {
                 $typedIssue = [pscustomobject]@{
                     id  = '10011'
                     key = 'DEL-11'
                 }
-                $typedIssue.PSObject.TypeNames.Insert(0, 'AtlassianPS.JiraPS.Issue')
+                $typedIssue.PSObject.TypeNames.Insert(0, 'AtlassianPSVII.JiraPSVII.Issue')
 
                 $result = ConvertTo-Issue -InputObject $typedIssue
 
-                $result.PSObject.TypeNames[0] | Should -Be 'AtlassianPS.JiraAgilePS.Issue'
-                $result.PSObject.TypeNames | Should -Contain 'AtlassianPS.JiraPS.Issue'
+                $result.PSObject.TypeNames[0] | Should -Be 'AtlassianPSVII.JiraAgilePSVII.Issue'
+                $result.PSObject.TypeNames | Should -Contain 'AtlassianPSVII.JiraPSVII.Issue'
             }
 
             It "ignores null pipeline input" {

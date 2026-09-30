@@ -1,6 +1,6 @@
 ---
-external help file: JiraAgilePS-help.xml
-Module Name: JiraAgilePS
+external help file: JiraAgilePSVII-help.xml
+Module Name: JiraAgilePSVII
 online version: https://atlassianps.org/docs/JiraAgilePS/commands/Set-Sprint/
 locale: en-US
 layout: documentation
@@ -31,8 +31,8 @@ When imported normally, run this command as `Set-JiraAgileSprint`.
 ### EXAMPLE 1
 
 ```powershell
-$sprint = [AtlassianPS.JiraAgilePS.Sprint]::new(42)
-JiraAgilePS\Set-Sprint -Sprint $sprint -Name "Sprint 42 - revised" -Goal "Complete the release candidate" -Credential $cred
+$sprint = [AtlassianPSVII.JiraAgilePSVII.Sprint]::new(42)
+JiraAgilePSVII\Set-Sprint -Sprint $sprint -Name "Sprint 42 - revised" -Goal "Complete the release candidate" -Credential $cred
 ```
 
 Updates the sprint name and goal.
@@ -40,8 +40,8 @@ Updates the sprint name and goal.
 ### EXAMPLE 2
 
 ```powershell
-$sprint = [AtlassianPS.JiraAgilePS.Sprint]::new(42)
-JiraAgilePS\Set-Sprint -Sprint $sprint -State Active -StartDate (Get-Date) -EndDate (Get-Date).AddDays(14) -Credential $cred
+$sprint = [AtlassianPSVII.JiraAgilePSVII.Sprint]::new(42)
+JiraAgilePSVII\Set-Sprint -Sprint $sprint -State Active -StartDate (Get-Date) -EndDate (Get-Date).AddDays(14) -Credential $cred
 ```
 
 Starts a future sprint by setting state and dates.
@@ -169,11 +169,11 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### AtlassianPS.JiraAgilePS.Sprint[]
+### AtlassianPSVII.JiraAgilePSVII.Sprint[]
 
 ## OUTPUTS
 
-### AtlassianPS.JiraAgilePS.Sprint
+### AtlassianPSVII.JiraAgilePSVII.Sprint
 
 ## NOTES
 

@@ -6,7 +6,7 @@ BeforeDiscovery {
     $script:moduleToTest = Initialize-TestEnvironment
 }
 
-InModuleScope JiraAgilePS {
+InModuleScope JiraAgilePSVII {
     Describe "ConvertTo-Epic" -Tag 'Unit' {
         BeforeAll {
             . "$PSScriptRoot/../../Helpers/TestTools.ps1"
@@ -28,7 +28,7 @@ InModuleScope JiraAgilePS {
             }
 
             It "returns a typed epic object" {
-                $result | Should -BeOfType ([AtlassianPS.JiraAgilePS.Epic])
+                $result | Should -BeOfType ([AtlassianPSVII.JiraAgilePSVII.Epic])
             }
 
             It "maps epic properties" {

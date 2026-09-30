@@ -1,6 +1,6 @@
 # Public Function Tests
 
-This directory contains unit tests for exported JiraAgilePS cmdlets.
+This directory contains unit tests for exported JiraAgilePSVII cmdlets.
 
 ## Pattern
 

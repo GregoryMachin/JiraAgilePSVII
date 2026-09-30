@@ -6,7 +6,7 @@ BeforeDiscovery {
     $script:moduleToTest = Initialize-TestEnvironment
 }
 
-InModuleScope JiraAgilePS {
+InModuleScope JiraAgilePSVII {
     Describe "ConvertTo-BoardConfiguration" -Tag 'Unit' {
         BeforeAll {
             . "$PSScriptRoot/../../Helpers/TestTools.ps1"
@@ -24,7 +24,7 @@ InModuleScope JiraAgilePS {
             It "adds the board configuration type name" {
                 $result = ConvertTo-BoardConfiguration -InputObject $configurationPayload
 
-                $result.PSObject.TypeNames[0] | Should -Be 'AtlassianPS.JiraAgilePS.BoardConfiguration'
+                $result.PSObject.TypeNames[0] | Should -Be 'AtlassianPSVII.JiraAgilePSVII.BoardConfiguration'
             }
 
             It "preserves payload properties" {

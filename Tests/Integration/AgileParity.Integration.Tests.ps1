@@ -9,7 +9,7 @@ BeforeDiscovery {
     $script:Skip = Skip-IntegrationTest
 }
 
-InModuleScope JiraAgilePS {
+InModuleScope JiraAgilePSVII {
     Describe "Agile parity" -Tag 'Integration', 'Full', 'Server', 'Cloud' -Skip:$Skip {
         BeforeAll {
             . "$PSScriptRoot/../Helpers/IntegrationTestTools.ps1"
@@ -39,7 +39,7 @@ InModuleScope JiraAgilePS {
                 $filter = New-JiraFilter `
                     -Name $filterName `
                     -JQL $filterJql `
-                    -Description 'Auto-seeded by JiraAgilePS integration tests so Cloud and Data Center run the same board parity coverage. Safe to delete.' `
+                    -Description 'Auto-seeded by JiraAgilePSVII integration tests so Cloud and Data Center run the same board parity coverage. Safe to delete.' `
                     -Favorite `
                     -ErrorAction Stop
                 $null = $script:createdFilters.Add($filter)
@@ -104,7 +104,7 @@ InModuleScope JiraAgilePS {
             { $script:boards = @(Get-JiraAgileBoard -PageSize 1 -ErrorAction Stop) } | Should -Not -Throw
 
             if ($script:boards.Count -gt 0) {
-                $script:boards[0].PSObject.TypeNames[0] | Should -Be 'AtlassianPS.JiraAgilePS.Board'
+                $script:boards[0].PSObject.TypeNames[0] | Should -Be 'AtlassianPSVII.JiraAgilePSVII.Board'
                 $script:boards[0].Id | Should -Not -BeNullOrEmpty
             }
         }
@@ -117,7 +117,7 @@ InModuleScope JiraAgilePS {
 
             $board = Get-JiraAgileBoard -BoardId $script:testBoard.Id -ErrorAction Stop
 
-            $board.PSObject.TypeNames[0] | Should -Be 'AtlassianPS.JiraAgilePS.Board'
+            $board.PSObject.TypeNames[0] | Should -Be 'AtlassianPSVII.JiraAgilePSVII.Board'
             $board.Id | Should -Be $script:testBoard.Id
             $board.Name | Should -Be $script:testBoard.Name
         }
@@ -143,7 +143,7 @@ InModuleScope JiraAgilePS {
             $script:sprints = @(Get-JiraAgileSprint -Board $script:testBoard -PageSize 1 -ErrorAction Stop)
 
             if ($script:sprints.Count -gt 0) {
-                $script:sprints[0].PSObject.TypeNames[0] | Should -Be 'AtlassianPS.JiraAgilePS.Sprint'
+                $script:sprints[0].PSObject.TypeNames[0] | Should -Be 'AtlassianPSVII.JiraAgilePSVII.Sprint'
                 $script:sprints[0].Id | Should -Not -BeNullOrEmpty
             }
         }
@@ -156,7 +156,7 @@ InModuleScope JiraAgilePS {
 
             $sprint = Get-JiraAgileSprint -Sprint $script:sprints[0] -ErrorAction Stop
 
-            $sprint.PSObject.TypeNames[0] | Should -Be 'AtlassianPS.JiraAgilePS.Sprint'
+            $sprint.PSObject.TypeNames[0] | Should -Be 'AtlassianPSVII.JiraAgilePSVII.Sprint'
             $sprint.Id | Should -Be $script:sprints[0].Id
         }
 
@@ -169,7 +169,7 @@ InModuleScope JiraAgilePS {
             $epics = @(Get-JiraAgileEpic -Board $script:testBoard -PageSize 1 -ErrorAction Stop)
 
             if ($epics.Count -gt 0) {
-                $epics[0].PSObject.TypeNames[0] | Should -Be 'AtlassianPS.JiraAgilePS.Epic'
+                $epics[0].PSObject.TypeNames[0] | Should -Be 'AtlassianPSVII.JiraAgilePSVII.Epic'
                 $epics[0].Id | Should -Not -BeNullOrEmpty
             }
         }
@@ -336,7 +336,7 @@ InModuleScope JiraAgilePS {
             $sprintName = "JAPS-$([Guid]::NewGuid().ToString('N').Substring(0, 8))"
             $newSprint = New-JiraAgileSprint -Board $script:createdBoard -Name $sprintName -Goal 'Integration write coverage' -Confirm:$false -ErrorAction Stop
 
-            $newSprint.PSObject.TypeNames[0] | Should -Be 'AtlassianPS.JiraAgilePS.Sprint'
+            $newSprint.PSObject.TypeNames[0] | Should -Be 'AtlassianPSVII.JiraAgilePSVII.Sprint'
             $newSprint.Id | Should -Not -BeNullOrEmpty
 
             Invoke-JiraMethod -Uri "$($script:env.CloudUrl)/rest/agile/1.0/sprint/$($newSprint.Id)" -Method DELETE -ErrorAction SilentlyContinue
@@ -351,7 +351,7 @@ InModuleScope JiraAgilePS {
             $updatedGoal = New-TestResourceName -Type 'SprintGoal'
             $updatedSprint = Set-JiraAgileSprint -Sprint $script:createdSprint -Goal $updatedGoal -Confirm:$false -ErrorAction Stop
 
-            $updatedSprint.PSObject.TypeNames[0] | Should -Be 'AtlassianPS.JiraAgilePS.Sprint'
+            $updatedSprint.PSObject.TypeNames[0] | Should -Be 'AtlassianPSVII.JiraAgilePSVII.Sprint'
             $updatedSprint.Goal | Should -Be $updatedGoal
         }
 

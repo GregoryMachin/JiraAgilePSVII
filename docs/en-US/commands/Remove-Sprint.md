@@ -1,6 +1,6 @@
 ---
-external help file: JiraAgilePS-help.xml
-Module Name: JiraAgilePS
+external help file: JiraAgilePSVII-help.xml
+Module Name: JiraAgilePSVII
 online version: https://atlassianps.org/docs/JiraAgilePS/commands/Remove-Sprint/
 locale: en-US
 layout: documentation
@@ -31,8 +31,8 @@ When imported normally, run this command as `Remove-JiraAgileSprint`.
 ### EXAMPLE 1
 
 ```powershell
-$sprint = [AtlassianPS.JiraAgilePS.Sprint]::new(42)
-JiraAgilePS\Remove-Sprint -Sprint $sprint -Credential $cred -Confirm:$false
+$sprint = [AtlassianPSVII.JiraAgilePSVII.Sprint]::new(42)
+JiraAgilePSVII\Remove-Sprint -Sprint $sprint -Credential $cred -Confirm:$false
 ```
 
 Deletes sprint 42 without an interactive confirmation prompt.
@@ -40,8 +40,8 @@ Deletes sprint 42 without an interactive confirmation prompt.
 ### EXAMPLE 2
 
 ```powershell
-$sprints = JiraAgilePS\Get-Sprint -Board $board -State Future -Credential $cred
-$sprints | JiraAgilePS\Remove-Sprint -Credential $cred -WhatIf
+$sprints = JiraAgilePSVII\Get-Sprint -Board $board -State Future -Credential $cred
+$sprints | JiraAgilePSVII\Remove-Sprint -Credential $cred -WhatIf
 ```
 
 Shows which future sprints would be deleted without deleting them.
@@ -89,7 +89,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### AtlassianPS.JiraAgilePS.Sprint[]
+### AtlassianPSVII.JiraAgilePSVII.Sprint[]
 
 ## OUTPUTS
 

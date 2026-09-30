@@ -1,6 +1,6 @@
 ---
-external help file: JiraAgilePS-help.xml
-Module Name: JiraAgilePS
+external help file: JiraAgilePSVII-help.xml
+Module Name: JiraAgilePSVII
 online version: https://atlassianps.org/docs/JiraAgilePS/commands/Move-IssueToBacklog/
 locale: en-US
 layout: documentation
@@ -32,7 +32,7 @@ When imported normally, run this command as `Move-JiraAgileIssueToBacklog`.
 
 ```powershell
 $issue = Get-JiraIssue -Issue "PROJ-123" -Credential $cred
-JiraAgilePS\Move-IssueToBacklog -Issue $issue -Credential $cred
+JiraAgilePSVII\Move-IssueToBacklog -Issue $issue -Credential $cred
 ```
 
 Moves one Jira issue to the backlog.
@@ -41,7 +41,7 @@ Moves one Jira issue to the backlog.
 
 ```powershell
 $issues = Get-JiraIssue -Query 'project = PROJ AND sprint is not EMPTY' -Credential $cred
-$issues | JiraAgilePS\Move-IssueToBacklog -Credential $cred
+$issues | JiraAgilePSVII\Move-IssueToBacklog -Credential $cred
 ```
 
 Pipes multiple Jira issues to the backlog command.
@@ -91,7 +91,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### System.Object
 
-Issue object(s) from JiraPS commands, for example `Get-JiraIssue`, or issue key strings.
+Issue object(s) from JiraPSVII commands, for example `Get-JiraIssue`, or issue key strings.
 
 ## OUTPUTS
 
