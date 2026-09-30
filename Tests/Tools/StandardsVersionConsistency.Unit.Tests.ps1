@@ -30,7 +30,7 @@ Describe 'AtlassianPSVII.Standards version consistency' -Tag Unit {
                 $workflow = Get-Content -LiteralPath $workflowPath.FullName -Raw
                 [Regex]::Matches(
                     $workflow,
-                    'AtlassianPS/AtlassianPS\.Standards/\.github/actions/setup-powershell@' +
+                    'GregoryMachin/AtlassianPSVII\.Standards/\.github/actions/setup-powershell@' +
                     '(?<sha>[0-9a-f]{40})\s+#\s+v(?<version>\d+\.\d+\.\d+)'
                 )
             }

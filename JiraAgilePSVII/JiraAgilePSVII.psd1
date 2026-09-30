@@ -4,7 +4,7 @@
     GUID                 = '1f85db59-454c-4ade-89df-626c225a5f7d'
     Author               = 'AtlassianPSVII'
     CompanyName          = 'AtlassianPS.org'
-    Copyright            = '(c) 2017 AtlassianPSVII. All rights reserved.'
+    Copyright            = '(c) 2017 AtlassianPS; (c) 2026 Gregory Machin. MIT License.'
     Description          = 'placeholder'
     PowerShellVersion    = '5.1'
     RequiredModules      = @("JiraPSVII")
@@ -30,11 +30,11 @@
     PrivateData          = @{
         PSData = @{
             Tags                       = @( "rest", "api", "atlassianpsvii", "jira", "atlassian", "agile" )
-            LicenseUri                 = 'https://github.com/AtlassianPS/JiraAgilePS/blob/master/LICENSE'
+            LicenseUri                 = 'https://github.com/GregoryMachin/JiraAgilePSVII/blob/master/LICENSE'
             ProjectUri                 = 'https://AtlassianPS.org/module/JiraAgilePS'
             IconUri                    = 'https://AtlassianPS.org/assets/img/JiraAgilePS.png'
             Prerelease                 = ''
-            ReleaseNotes               = 'https://github.com/AtlassianPS/JiraAgilePS/blob/master/CHANGELOG.md'
+            ReleaseNotes               = 'https://github.com/GregoryMachin/JiraAgilePSVII/blob/master/CHANGELOG.md'
             ExternalModuleDependencies = 'JiraPSVII'
         }
     }

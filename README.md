@@ -1,11 +1,12 @@
+
+> **Fork notice:** JiraAgilePSVII is a fork of [JiraAgilePS](https://github.com/AtlassianPS/JiraAgilePS) by the [AtlassianPS](https://github.com/AtlassianPS) team (MIT License), renamed and maintained by Gregory Machin. "VII" is only part of the name: it supports Windows PowerShell 5.1 and PowerShell 7.4+, and can be loaded side by side with the upstream module.
 ---
 layout: module
 permalink: /module/JiraAgilePSVII/
 ---
 # [JiraAgilePSVII](https://atlassianps.org/module/JiraAgilePS)
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/AtlassianPS/JiraAgilePS/ci.yml?style=for-the-badge)](https://github.com/AtlassianPS/JiraAgilePS/actions/workflows/ci.yml)
-[![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/JiraAgilePS.svg?style=for-the-badge)](https://www.powershellgallery.com/packages/JiraAgilePS)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/GregoryMachin/JiraAgilePSVII/ci.yml?style=for-the-badge)](https://github.com/GregoryMachin/JiraAgilePSVII/actions/workflows/ci.yml)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)
 
 JiraAgilePSVII is a PowerShell module to interact with _Agile_, Atlassian [JIRA]'s plugin,
@@ -24,16 +25,18 @@ Join the conversation on [![SlackLogo][] AtlassianPSVII.Slack.com](https://atlas
 
 ### Installation
 
-Install JiraAgilePSVII from the [PowerShell Gallery]! `Install-Module` requires
-PowerShellGet (included in PS v5, or download for v3/v4 via the gallery link)
+JiraAgilePSVII is not published to the PowerShell Gallery; use it straight from its repository:
 
 ```powershell
-# One time only install:
-Install-Module JiraAgilePSVII -Scope CurrentUser
-
-# Check for updates occasionally:
-Update-Module JiraAgilePSVII
+git clone https://github.com/GregoryMachin/JiraAgilePSVII.git
+# JiraAgilePSVII requires JiraPSVII: clone it alongside and put that folder on PSModulePath
+git clone https://github.com/GregoryMachin/JiraPSVII.git
+$env:PSModulePath = "$PWD/JiraPSVII;$env:PSModulePath"
+Import-Module ./JiraAgilePSVII/JiraAgilePSVII/JiraAgilePSVII.psd1
 ```
+
+For the built release copy (merged module and compiled help) run `./Tools/setup.ps1` and
+`Invoke-Build -Task Build` in the clone, then import `./Release/JiraAgilePSVII/JiraAgilePSVII.psd1`.
 
 ### Usage
 
@@ -99,10 +102,10 @@ And once installed, you will be prompted to "Reopen in Container".
 
 | Configuration | Status |
 | ------------- | ------ |
-| Windows PowerShell v5.1 | [CI workflow](https://github.com/AtlassianPS/JiraAgilePS/actions/workflows/ci.yml) |
-| PowerShell 7 on Windows | [CI workflow](https://github.com/AtlassianPS/JiraAgilePS/actions/workflows/ci.yml) |
-| PowerShell 7 on Ubuntu | [CI workflow](https://github.com/AtlassianPS/JiraAgilePS/actions/workflows/ci.yml) |
-| PowerShell 7 on macOS | [CI workflow](https://github.com/AtlassianPS/JiraAgilePS/actions/workflows/ci.yml) |
+| Windows PowerShell v5.1 | [CI workflow](https://github.com/GregoryMachin/JiraAgilePSVII/actions/workflows/ci.yml) |
+| PowerShell 7 on Windows | [CI workflow](https://github.com/GregoryMachin/JiraAgilePSVII/actions/workflows/ci.yml) |
+| PowerShell 7 on Ubuntu | [CI workflow](https://github.com/GregoryMachin/JiraAgilePSVII/actions/workflows/ci.yml) |
+| PowerShell 7 on macOS | [CI workflow](https://github.com/GregoryMachin/JiraAgilePSVII/actions/workflows/ci.yml) |
 
 ## Acknowledgements
 
@@ -115,7 +118,7 @@ And once installed, you will be prompted to "Reopen in Container".
 * [Latest Release]
 * [Submit an Issue]
 * [Contributing]
-* How you can help us: [List of Issues](https://github.com/AtlassianPS/JiraAgilePS/issues?q=is%3Aissue+is%3Aopen+label%3Aup-for-grabs)
+* How you can help us: [List of Issues](https://github.com/GregoryMachin/JiraAgilePSVII/issues?q=is%3Aissue+is%3Aopen+label%3Aup-for-grabs)
 
 ## Disclaimer
 
@@ -128,11 +131,11 @@ Hopefully this is obvious, but:
 <!-- reference-style links -->
   [JIRA]: https://www.atlassian.com/software/jira
   [PowerShell Gallery]: https://www.powershellgallery.com/
-  [Source Code]: https://github.com/AtlassianPS/JiraAgilePS
-  [Latest Release]: https://github.com/AtlassianPS/JiraAgilePS/releases/latest
-  [Submit an Issue]: https://github.com/AtlassianPS/JiraAgilePS/issues/new
+  [Source Code]: https://github.com/GregoryMachin/JiraAgilePSVII
+  [Latest Release]: https://github.com/GregoryMachin/JiraAgilePSVII/releases/latest
+  [Submit an Issue]: https://github.com/GregoryMachin/JiraAgilePSVII/issues/new
   [replicaJunction]: https://github.com/replicaJunction
-  [MIT license]: https://github.com/AtlassianPS/JiraAgilePS/blob/master/LICENSE
+  [MIT license]: https://github.com/GregoryMachin/JiraAgilePSVII/blob/master/LICENSE
   [Contributing]: https://atlassianps.org/docs/Contributing/
 
 <!-- [//]: # (Sweet online markdown editor at http://dillinger.io) -->

@@ -18,7 +18,7 @@ Use this checklist for the first production release and later JiraAgilePSVII rel
 ## Required repository secrets and variables
 
 - `PSGALLERY_API_KEY`: required by `release.yml` to publish the module to PowerShell Gallery.
-- `HOMEPAGE_PAT`: required by `release.yml` to notify `AtlassianPSVII.github.io` after a stable release.
+- `HOMEPAGE_PAT`: no longer used; the fork has no homepage to notify, so `release.yml` does not dispatch to a website repository.
 - `GITHUB_TOKEN`: provided by GitHub Actions and used by `release.yml` to create the GitHub release.
 - `JIRA_CLOUD_URL`, `ATLASSIAN_CLOUD_USER`, `ATLASSIAN_CLOUD_PAT`, `JIRA_TEST_PROJECT`, and `JIRA_TEST_ISSUE`: required for CI Cloud smoke tests.
 
