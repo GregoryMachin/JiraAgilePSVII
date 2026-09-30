@@ -4,7 +4,7 @@ This guide explains the JiraAgilePSVII test layout and the expected commands for
 
 ## Test Structure
 
-JiraAgilePSVII uses Pester 5.7+.
+JiraAgilePSVII uses Pester 6.2+.
 Tests mirror the module structure so contributors can find the test for a function from its source path.
 
 - `Tests/Functions/Public/` contains unit tests for exported cmdlets.

@@ -25,7 +25,7 @@ Three workflow files had pre-existing line-ending-only working-tree changes duri
 - Unit tests cover public commands and private converters/helpers.
 - CI lints, builds, performs a release dry-run, tests Windows PowerShell 5.1 and PowerShell 7 across Windows/Linux/macOS, and runs Cloud smoke tests when secrets are available.
 - Scheduled/manual integration workflows cover Cloud and Dockerized Jira Data Center.
-- Build dependencies pin Pester 5.7.1, JiraPSVII 2.16.0, and Standards 0.1.2.
+- Build dependencies pin Pester 6.2.0, JiraPSVII 4.0.0, and AtlassianPSVII.Standards 1.0.0.
 
 ## Current strengths
 

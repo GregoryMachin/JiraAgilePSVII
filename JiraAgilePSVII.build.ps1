@@ -306,7 +306,7 @@ Task Test {
         -ExcludeTag $ExcludeTag `
         -DefaultExcludeTag @('Integration') `
         -ExcludePath $integrationTestFiles `
-        -MinimumPesterVersion ([Version]'5.7.0')
+        -MinimumPesterVersion ([Version]'6.2.0')
 }
 
 # Synopsis: Run integration tests against live Jira Agile (Cloud or Data Center; no build required)
