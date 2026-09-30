@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 1.0 - 2026-10-01
+
+- **Breaking:** forked from `JiraAgilePS` 0.2 and renamed to `JiraAgilePSVII`: new module name and GUID; it now requires `JiraPSVII` instead of `JiraPS`; .NET types moved to the `AtlassianPSVII.JiraAgilePSVII` namespace (for example `[AtlassianPSVII.JiraAgilePSVII.Board]`). Command names (`*-JiraAgile*`) are unchanged.
+- Build now pins `AtlassianPSVII.Standards` 1.0.0 and `JiraPSVII` 4.0.0 (resolved from the sibling `JiraPSVII` checkout).
+
 ## 0.2 - 2026-09-17
 
 ### Added
