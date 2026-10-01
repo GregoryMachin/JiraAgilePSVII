@@ -56,6 +56,42 @@ if ($standardsPin -and $standardsReleaseSha256.ContainsKey([String]$standardsPin
     }
 }
 
+# JiraAgilePSVII also needs JiraPSVII, which is not on the PowerShell Gallery either: fetch the
+# pinned version from its GitHub release the same way. (Locally the build also puts a sibling
+# ../JiraPSVII checkout on PSModulePath; CI runners only have this download.)
+$jiraPSReleaseSha256 = @{
+    '4.0.0' = 'db801e204adf63bf1fb9e471f6b393b73f5450d883a1e4b6c8f5289991c9784c'
+}
+$jiraPSPin = $requirementsAst.EndBlock.Statements[0].PipelineElements[0].Expression.SafeGetValue() |
+    Where-Object { $_.ModuleName -eq 'JiraPSVII' } |
+    Select-Object -First 1
+if ($jiraPSPin -and $jiraPSReleaseSha256.ContainsKey([String]$jiraPSPin.RequiredVersion)) {
+    $expectedSha256 = $jiraPSReleaseSha256[[String]$jiraPSPin.RequiredVersion]
+    $jiraPSTarget = Join-Path -Path $localModulesPath -ChildPath "JiraPSVII/$($jiraPSPin.RequiredVersion)"
+    if (-not (Test-Path -LiteralPath (Join-Path -Path $jiraPSTarget -ChildPath 'JiraPSVII.psd1'))) {
+        if ($PSVersionTable.PSEdition -eq 'Desktop') {
+            [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
+        }
+        $releaseUri = 'https://github.com/GregoryMachin/JiraPSVII/releases/download/v{0}/JiraPSVII.zip' -f $jiraPSPin.RequiredVersion
+        $downloadPath = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ([System.IO.Path]::GetRandomFileName())
+        $null = New-Item -Path $downloadPath -ItemType Directory -Force
+        try {
+            $zipPath = Join-Path -Path $downloadPath -ChildPath 'JiraPSVII.zip'
+            Invoke-WebRequest -Uri $releaseUri -OutFile $zipPath -UseBasicParsing -ErrorAction Stop
+            $actualHash = (Get-FileHash -LiteralPath $zipPath -Algorithm SHA256).Hash
+            if ($actualHash -ne $expectedSha256) {
+                throw "JiraPSVII $($jiraPSPin.RequiredVersion) from '$releaseUri' has SHA-256 $actualHash, expected $expectedSha256."
+            }
+            Expand-Archive -LiteralPath $zipPath -DestinationPath $downloadPath -Force
+            $null = New-Item -Path $jiraPSTarget -ItemType Directory -Force
+            Copy-Item -Path (Join-Path -Path $downloadPath -ChildPath 'JiraPSVII/*') -Destination $jiraPSTarget -Recurse -Force
+        }
+        finally {
+            Remove-Item -LiteralPath $downloadPath -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
+}
+
 if ((Test-Path -LiteralPath $localModulesPath -PathType Container) -and ($env:PSModulePath -notlike "*$localModulesPath*")) {
     $env:PSModulePath = '{0}{1}{2}' -f $localModulesPath, [System.IO.Path]::PathSeparator, $env:PSModulePath
     # Later GitHub Actions steps run in new processes: hand the module path on to them.

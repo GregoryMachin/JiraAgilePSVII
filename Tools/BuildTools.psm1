@@ -53,13 +53,18 @@ function Install-Dependency {
     )
 
     [Microsoft.PowerShell.Commands.ModuleSpecification[]]$RequiredModules = Import-LocalizedData -BaseDirectory $PSScriptRoot -FileName "build.requirements.psd1"
-    $Policy = (Get-PSRepository PSGallery).InstallationPolicy
-    try {
-        Set-PSRepository PSGallery -InstallationPolicy Trusted
-        $RequiredModules | Install-Module -Scope $Scope -Repository PSGallery -SkipPublisherCheck -AllowClobber
-    }
-    finally {
-        Set-PSRepository PSGallery -InstallationPolicy $Policy
+    # Only install what is missing: AtlassianPSVII.Standards and JiraPSVII are not on the
+    # PowerShell Gallery and come from ../.local-modules (see Tools/setup.ps1).
+    $missingModules = @($RequiredModules | Where-Object { -not (Get-Module -ListAvailable -FullyQualifiedName $_) })
+    if ($missingModules.Count -gt 0) {
+        $Policy = (Get-PSRepository PSGallery).InstallationPolicy
+        try {
+            Set-PSRepository PSGallery -InstallationPolicy Trusted
+            $missingModules | Install-Module -Scope $Scope -Repository PSGallery -SkipPublisherCheck -AllowClobber
+        }
+        finally {
+            Set-PSRepository PSGallery -InstallationPolicy $Policy
+        }
     }
     $RequiredModules | Import-Module
 }
