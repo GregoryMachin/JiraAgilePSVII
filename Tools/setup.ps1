@@ -112,7 +112,8 @@ function Sync-PSScriptAnalyzerSetting {
         # version that file pins, so a separate hardcoded version in this function could
         # silently drift from it and try to load a different (possibly no longer
         # installed) copy of AtlassianPSVII.Standards.
-        $buildRequirements = Import-PowerShellDataFile -Path (Join-Path $PSScriptRoot 'build.requirements.psd1')
+        # Parse the array-style requirements file: Import-PowerShellDataFile returns only its first entry.
+        $buildRequirements = @([System.Management.Automation.Language.Parser]::ParseFile((Join-Path $PSScriptRoot 'build.requirements.psd1'), [ref]$null, [ref]$null).EndBlock.Statements[0].PipelineElements[0].Expression.SafeGetValue())
         $standardsRequirement = $buildRequirements |
             Where-Object { $_.ModuleName -eq 'AtlassianPSVII.Standards' } |
             Select-Object -First 1

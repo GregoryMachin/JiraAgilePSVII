@@ -128,7 +128,8 @@ function Update-DependencyRequirement {
     }
 
     $rawContent = [System.IO.File]::ReadAllText($requirementsPath)
-    $requirements = Import-PowerShellDataFile -Path $requirementsPath
+    # Parse the array-style requirements file: Import-PowerShellDataFile returns only its first entry.
+    $requirements = @([System.Management.Automation.Language.Parser]::ParseFile($requirementsPath, [ref]$null, [ref]$null).EndBlock.Statements[0].PipelineElements[0].Expression.SafeGetValue())
     $newContent = $null
 
     if ($requirements -is [array]) {
