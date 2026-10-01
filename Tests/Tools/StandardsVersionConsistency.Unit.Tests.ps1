@@ -12,11 +12,15 @@ Describe 'AtlassianPSVII.Standards version consistency' -Tag Unit {
             (Resolve-Path -LiteralPath "$PSScriptRoot/../..").ProviderPath
         }
         $requirementsPath = Join-Path $script:projectRoot 'Tools/build.requirements.psd1'
-        $requirements = Import-PowerShellDataFile -LiteralPath $requirementsPath
+        # Parse the array-style data file (Import-PowerShellDataFile returns only its first entry).
+        $requirementsAst = [System.Management.Automation.Language.Parser]::ParseFile($requirementsPath, [ref]$null, [ref]$null)
+        $requirements = $requirementsAst.EndBlock.Statements[0].PipelineElements[0].Expression.SafeGetValue()
         $script:standardsVersion = [String](
             $requirements |
                 Where-Object { $_.ModuleName -eq 'AtlassianPSVII.Standards' } |
-                Select-Object -First 1 -ExpandProperty RequiredVersion
+                Select-Object -First 1 |
+                # Windows PowerShell 5.1's -ExpandProperty does not see hashtable keys.
+                ForEach-Object { $_.RequiredVersion }
         )
     }
 
