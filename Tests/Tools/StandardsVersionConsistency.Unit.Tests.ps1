@@ -57,8 +57,13 @@ Describe 'AtlassianPSVII.Standards version consistency' -Tag Unit {
             "ModuleVersion\s*=\s*'$escapedVersion';\s*" +
             "MaximumVersion\s*=\s*'$escapedVersion'"
         )
+        # setup.ps1 imports the version read from build.requirements.psd1 (no literal that could
+        # drift), so assert that, and that no other hard-coded Standards version is imported.
         $setupScript | Should -Match (
-            "Import-Module\s+AtlassianPSVII\.Standards\s+-RequiredVersion\s+'$escapedVersion'"
+            'Import-Module\s+AtlassianPSVII\.Standards\s+-RequiredVersion\s+\$standardsRequirement\.RequiredVersion'
+        )
+        $setupScript | Should -Not -Match (
+            "Import-Module\s+AtlassianPSVII\.Standards\s+-RequiredVersion\s+'(?!$escapedVersion')"
         )
     }
 }
