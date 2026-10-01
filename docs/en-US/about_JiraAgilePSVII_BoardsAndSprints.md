@@ -1,9 +1,7 @@
 ---
 locale: en-US
-layout: documentation
-online version: https://atlassianps.org/docs/JiraAgilePS/about/boards-and-sprints.html
+online version: https://github.com/GregoryMachin/JiraAgilePSVII/blob/master/docs/en-US/about_JiraAgilePSVII_BoardsAndSprints.md
 Module Name: JiraAgilePSVII
-permalink: /docs/JiraAgilePS/about/boards-and-sprints.html
 ---
 # Boards and Sprints
 

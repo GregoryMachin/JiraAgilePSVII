@@ -1,10 +1,8 @@
 ---
 external help file: JiraAgilePSVII-help.xml
 Module Name: JiraAgilePSVII
-online version: https://atlassianps.org/docs/JiraAgilePS/commands/Set-Sprint/
+online version: https://github.com/GregoryMachin/JiraAgilePSVII/blob/master/docs/en-US/commands/Set-Sprint.md
 locale: en-US
-layout: documentation
-permalink: /docs/JiraAgilePS/commands/Set-Sprint/
 ---
 # Set-Sprint
 

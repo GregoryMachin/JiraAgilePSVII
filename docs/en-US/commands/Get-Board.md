@@ -1,10 +1,8 @@
 ---
 external help file: JiraAgilePSVII-help.xml
 Module Name: JiraAgilePSVII
-online version: https://atlassianps.org/docs/JiraAgilePS/commands/Get-Board/
+online version: https://github.com/GregoryMachin/JiraAgilePSVII/blob/master/docs/en-US/commands/Get-Board.md
 locale: en-US
-layout: documentation
-permalink: /docs/JiraAgilePS/commands/Get-Board/
 ---
 # Get-Board
 

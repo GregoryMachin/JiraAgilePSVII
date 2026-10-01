@@ -138,16 +138,16 @@ Describe "Help tests" -Tag "Documentation", "Build" {
                 }
 
                 It "has a valid online version" {
-                    $pattern = [regex]::Escape("https://atlassianps.org/docs/JiraAgilePS/commands/$sourceCommandName/")
+                    $pattern = [regex]::Escape("https://github.com/GregoryMachin/JiraAgilePSVII/blob/master/docs/en-US/commands/$sourceCommandName.md")
 
                     $markdownFile | Should -FileContentMatch $pattern
                 }
 
-                It "defines the frontmatter for the homepage" {
+                It "has no atlassianps.org website front matter" {
                     $markdownFile | Should -Not -BeNullOrEmpty
                     $markdownFile | Should -FileContentMatch "Module Name: JiraAgilePSVII"
-                    $markdownFile | Should -FileContentMatchExactly "layout: documentation"
-                    $markdownFile | Should -FileContentMatch "permalink: /docs/JiraAgilePS/commands/$sourceCommandName/"
+                    $markdownFile | Should -Not -FileContentMatch '^layout:'
+                    $markdownFile | Should -Not -FileContentMatch '^permalink:'
                 }
             }
 
@@ -182,9 +182,9 @@ Describe "Help tests" -Tag "Documentation", "Build" {
                     # PlatyPS 1.0 uses "Online Version" without colon, older versions used "Online Version:".
                     [Uri]$onlineLink = ($help.relatedLinks.navigationLink | Where-Object { $_.linkText -match "^Online Version:?$" }).Uri
 
-                    $onlineLink.Authority | Should -Be "atlassianps.org"
+                    $onlineLink.Authority | Should -Be "github.com"
                     $onlineLink.Scheme | Should -Be "https"
-                    $onlineLink.PathAndQuery | Should -Be "/docs/JiraAgilePS/commands/$sourceCommandName/"
+                    $onlineLink.PathAndQuery | Should -Be "/GregoryMachin/JiraAgilePSVII/blob/master/docs/en-US/commands/$sourceCommandName.md"
                 }
 
                 It "does not list Object[] / System.Object[] as a pipeline INPUT type" {

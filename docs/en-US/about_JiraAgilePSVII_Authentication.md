@@ -1,9 +1,7 @@
 ---
 locale: en-US
-layout: documentation
-online version: https://atlassianps.org/docs/JiraAgilePS/about/authentication.html
+online version: https://github.com/GregoryMachin/JiraAgilePSVII/blob/master/docs/en-US/about_JiraAgilePSVII_Authentication.md
 Module Name: JiraAgilePSVII
-permalink: /docs/JiraAgilePS/about/authentication.html
 ---
 # Authentication
 
@@ -43,5 +41,5 @@ See JiraPSVII authentication guidance for details and security recommendations.
 
 # SEE ALSO
 
-- [about_JiraPSVII_Authentication](https://atlassianps.org/docs/JiraPS/about/authentication.html)
-- [New-JiraSession](https://atlassianps.org/docs/JiraPS/commands/New-JiraSession/)
+- [about_JiraPSVII_Authentication](https://github.com/GregoryMachin/JiraPSVII/blob/master/docs/en-US/about_JiraPSVII_Authentication.md)
+- [New-JiraSession](https://github.com/GregoryMachin/JiraPSVII/blob/master/docs/en-US/commands/New-JiraSession.md)

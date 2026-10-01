@@ -1,9 +1,7 @@
 ---
 locale: en-US
-layout: documentation
-online version: https://atlassianps.org/docs/JiraAgilePS/about/automation-patterns.html
+online version: https://github.com/GregoryMachin/JiraAgilePSVII/blob/master/docs/en-US/about_JiraAgilePSVII_AutomationPatterns.md
 Module Name: JiraAgilePSVII
-permalink: /docs/JiraAgilePS/about/automation-patterns.html
 ---
 # Automation Patterns
 
@@ -47,4 +45,4 @@ if (-not $issues) { throw "No issues matched the query." }
 
 - [Get-JiraAgileBoard](/docs/JiraAgilePS/commands/Get-Board/)
 - [Get-JiraAgileSprint](/docs/JiraAgilePS/commands/Get-Sprint/)
-- [Get-JiraIssue](https://atlassianps.org/docs/JiraPS/commands/Get-JiraIssue/)
+- [Get-JiraIssue](https://github.com/GregoryMachin/JiraPSVII/blob/master/docs/en-US/commands/Get-JiraIssue.md)

@@ -1,22 +1,15 @@
-
-> **Fork notice:** JiraAgilePSVII is a fork of [JiraAgilePS](https://github.com/AtlassianPS/JiraAgilePS) by the [AtlassianPS](https://github.com/AtlassianPS) team (MIT License), renamed and maintained by Gregory Machin. "VII" is only part of the name: it supports Windows PowerShell 5.1 and PowerShell 7.4+, and can be loaded side by side with the upstream module.
----
-layout: module
-permalink: /module/JiraAgilePSVII/
----
-# [JiraAgilePSVII](https://atlassianps.org/module/JiraAgilePS)
+# [JiraAgilePSVII](https://github.com/GregoryMachin/JiraAgilePSVII)
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/GregoryMachin/JiraAgilePSVII/ci.yml?style=for-the-badge)](https://github.com/GregoryMachin/JiraAgilePSVII/actions/workflows/ci.yml)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)
 
+> **Fork notice:** JiraAgilePSVII is a fork of [JiraAgilePS](https://github.com/AtlassianPS/JiraAgilePS) by the [AtlassianPS](https://github.com/AtlassianPS) team (MIT License), renamed and maintained by Gregory Machin. "VII" is only part of the name: it supports Windows PowerShell 5.1 and PowerShell 7.4+, and can be loaded side by side with the upstream module.
+
 JiraAgilePSVII is a PowerShell module to interact with _Agile_, Atlassian [JIRA]'s plugin,
 via a REST API, while maintaining a consistent PowerShell look and feel.
 
-> JiraAgilePSVII is a module that extends [JiraPSVII](https://atlassianps.org/module/JiraPS).
+> JiraAgilePSVII is a module that extends [JiraPSVII](https://github.com/GregoryMachin/JiraPSVII).
 
-Join the conversation on [![SlackLogo][] AtlassianPSVII.Slack.com](https://atlassianps.org/slack)
-
-[SlackLogo]: https://atlassianps.org/assets/img/Slack_Mark_Web_28x28.png
 <!--more-->
 
 ---
@@ -47,7 +40,7 @@ Set-JiraConfigServer 'https://YourCloud.atlassian.net'
 New-JiraSession -Credential $cred
 ```
 
-You can find the full documentation on our [homepage](https://atlassianps.org/docs/JiraAgilePS)
+The full documentation is in the [docs folder](https://github.com/GregoryMachin/JiraAgilePSVII/tree/master/docs/en-US)
 and in the console.
 
 ```powershell
@@ -57,7 +50,7 @@ Get-Command -Module JiraAgilePSVII
 Get-Help Get-JiraAgileBoard -Full # or any other command
 ```
 
-For more information on how to use JiraAgilePSVII, check out the [Documentation](https://atlassianps.org/docs/JiraAgilePS/).
+For more information on how to use JiraAgilePSVII, check out the [Documentation](https://github.com/GregoryMachin/JiraAgilePSVII/tree/master/docs/en-US).
 For release planning context, see the [Jira Agile API coverage matrix](docs/agile-api-coverage-matrix.md).
 
 ### Integration tests (local)
@@ -72,11 +65,9 @@ The integration helper in `Tests/Helpers/IntegrationTestTools.ps1` reads `.env` 
 
 ### Contribute
 
-Want to contribute to AtlassianPSVII? Great!
-We appreciate [everyone](https://atlassianps.org/#people) who invests their time
-to make our modules the best they can be.
+Want to contribute? Great!
+Contributions are welcome: open an issue or a pull request in this repository.
 
-Check out our guidelines on [Contributing] to our modules and documentation.
 
 #### DevContainer
 
@@ -109,15 +100,13 @@ And once installed, you will be prompted to "Reopen in Container".
 
 ## Acknowledgements
 
-* Thanks to everyone ([Our Contributors](https://atlassianps.org/#people)) that
-  helped with this module
+* This module is a fork of [JiraAgilePS](https://github.com/AtlassianPS/JiraAgilePS); thanks to its original authors and contributors.
 
 ## Useful links
 
 * [Source Code]
 * [Latest Release]
 * [Submit an Issue]
-* [Contributing]
 * How you can help us: [List of Issues](https://github.com/GregoryMachin/JiraAgilePSVII/issues?q=is%3Aissue+is%3Aopen+label%3Aup-for-grabs)
 
 ## Disclaimer
@@ -134,9 +123,7 @@ Hopefully this is obvious, but:
   [Source Code]: https://github.com/GregoryMachin/JiraAgilePSVII
   [Latest Release]: https://github.com/GregoryMachin/JiraAgilePSVII/releases/latest
   [Submit an Issue]: https://github.com/GregoryMachin/JiraAgilePSVII/issues/new
-  [replicaJunction]: https://github.com/replicaJunction
   [MIT license]: https://github.com/GregoryMachin/JiraAgilePSVII/blob/master/LICENSE
-  [Contributing]: https://atlassianps.org/docs/Contributing/
 
 <!-- [//]: # (Sweet online markdown editor at http://dillinger.io) -->
 <!-- [//]: # ("GitHub Flavored Markdown" https://help.github.com/articles/github-flavored-markdown/) -->

@@ -1,10 +1,8 @@
 ---
 external help file: JiraAgilePSVII-help.xml
 Module Name: JiraAgilePSVII
-online version: https://atlassianps.org/docs/JiraAgilePS/commands/Get-Sprint/
+online version: https://github.com/GregoryMachin/JiraAgilePSVII/blob/master/docs/en-US/commands/Get-Sprint.md
 locale: en-US
-layout: documentation
-permalink: /docs/JiraAgilePS/commands/Get-Sprint/
 ---
 # Get-Sprint
 

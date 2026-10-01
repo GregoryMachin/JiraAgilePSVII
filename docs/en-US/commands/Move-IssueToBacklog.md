@@ -1,10 +1,8 @@
 ---
 external help file: JiraAgilePSVII-help.xml
 Module Name: JiraAgilePSVII
-online version: https://atlassianps.org/docs/JiraAgilePS/commands/Move-IssueToBacklog/
+online version: https://github.com/GregoryMachin/JiraAgilePSVII/blob/master/docs/en-US/commands/Move-IssueToBacklog.md
 locale: en-US
-layout: documentation
-permalink: /docs/JiraAgilePS/commands/Move-IssueToBacklog/
 ---
 # Move-IssueToBacklog
 

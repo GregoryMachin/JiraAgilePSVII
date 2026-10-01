@@ -1,7 +1,3 @@
----
-layout: documentation
-permalink: /docs/JiraAgilePS/commands/
----
 # JiraAgilePSVII commands
 
 JiraAgilePSVII exports these commands with the `JiraAgile` default command prefix.
