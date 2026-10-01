@@ -61,7 +61,14 @@ function Import-JiraPSVIICandidate {
         }
     }
 
-    Import-Module JiraPSVII -RequiredVersion 3.0.0 -Force -ErrorAction Stop
+    # No sibling checkout (e.g. CI): import the JiraPSVII version pinned in
+    # Tools/build.requirements.psd1, which Tools/setup.ps1 installs into ../.local-modules.
+    $requirementsAst = [System.Management.Automation.Language.Parser]::ParseFile(
+        (Join-Path $projectRoot 'Tools/build.requirements.psd1'), [ref]$null, [ref]$null)
+    $jiraPSPin = $requirementsAst.EndBlock.Statements[0].PipelineElements[0].Expression.SafeGetValue() |
+        Where-Object { $_.ModuleName -eq 'JiraPSVII' } |
+        Select-Object -First 1
+    Import-Module JiraPSVII -RequiredVersion $jiraPSPin.RequiredVersion -Force -ErrorAction Stop
 }
 
 function Resolve-ModuleSource {
