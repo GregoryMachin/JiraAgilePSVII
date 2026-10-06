@@ -8,7 +8,8 @@ on:
   pull_request:
     branches: [master]
     paths-ignore: &paths-ignore
-      - "CHANGELOG.md"
+      # CHANGELOG.md is not ignored: release.yml needs a CI run on the tagged
+      # commit, and the release notes are cut from the changelog.
       - "LICENSE"
       - ".github/*.md"
       - ".github/ISSUE_TEMPLATE/**"
